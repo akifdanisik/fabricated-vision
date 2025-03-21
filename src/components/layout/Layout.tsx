@@ -65,7 +65,7 @@ const Layout = ({ children, fullWidth = false, hideNavbar = false }: LayoutProps
         
         <main className={cn(
           "flex-1 animate-fade-in",
-          fullWidth ? "p-0" : "p-5 md:p-8 bg-gradient-to-br from-white to-primary-light/20"
+          fullWidth ? "p-0" : "p-5 md:p-8 bg-gradient-to-br from-white to-primary-light/10"
         )}>
           <div className={cn(
             fullWidth ? "w-full h-full" : "mx-auto max-w-7xl"

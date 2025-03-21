@@ -2,10 +2,12 @@
 import { useNavigate } from 'react-router-dom';
 import Layout from '@/components/layout/Layout';
 import AlertsSection from '@/components/dashboard/AlertsSection';
-import WorkflowPreview from '@/components/workflow/WorkflowPreview';
-import { CircleAlert, Brain, Link, AlertTriangle, Workflow, Calendar, FileCheck } from 'lucide-react';
+import { CircleAlert, Brain, Link, AlertTriangle, Workflow, Calendar, FileCheck, Eye, MousePointer, Target, Zap } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import PersonalCard from '@/components/dashboard/PersonalCard';
+import MetricCircle from '@/components/dashboard/MetricCircle';
+import MetricsCard from '@/components/dashboard/MetricsCard';
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -45,15 +47,55 @@ const Dashboard = () => {
 
   return (
     <Layout>
-      <div className="space-y-8 pb-6">
-        {/* Welcome header */}
+      <div className="space-y-8 pb-10">
+        {/* Header */}
         <div className="space-y-1">
           <p className="text-gray-500 text-sm">{formattedDate}</p>
-          <h1 className="text-3xl font-semibold text-gray-900">Welcome back, John!</h1>
+          <h1 className="text-3xl font-semibold text-gray-900">Your Dashboard</h1>
+        </div>
+        
+        {/* Personal Profile Section */}
+        <div className="relative py-20">
+          <div className="flex justify-center">
+            <PersonalCard
+              name="John Doe"
+              title="Senior Procurement Specialist"
+              bio="Empowering the procurement process through data-driven decisions and innovative supplier management strategies. Focused on optimizing supply chain efficiency and reducing costs."
+              className="w-full max-w-xl z-10"
+            />
+          </div>
+          
+          {/* Metric Circles */}
+          <MetricCircle
+            title="Views"
+            value={12}
+            trend={100}
+            trendDirection="up"
+            position="left"
+            icon={Eye}
+          />
+          
+          <MetricCircle
+            title="Clicks"
+            value={18}
+            trend={100}
+            trendDirection="up"
+            position="right"
+            icon={MousePointer}
+          />
+          
+          <MetricCircle
+            title="CTR"
+            value={150}
+            suffix="%"
+            position="bottom"
+            icon={Target}
+          />
         </div>
         
         <div className="space-y-6">
           {/* Quick Actions */}
+          <h2 className="text-xl font-semibold text-gray-900">Quick Actions</h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <Card className="overflow-hidden border border-gray-200 hover:shadow-md transition-all duration-200">
               <CardContent className="p-4 flex flex-col items-center justify-center text-center gap-2">
@@ -92,62 +134,43 @@ const Dashboard = () => {
             </Card>
           </div>
           
-          {/* Critical Metrics */}
+          {/* Performance Indicators */}
+          <h2 className="text-xl font-semibold text-gray-900">Performance Indicators</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <Card className="border border-gray-200">
-              <CardContent className="p-5 flex items-center justify-between">
-                <div>
-                  <p className="text-xs font-medium text-gray-500 mb-1">Low Stock Items</p>
-                  <h3 className="text-2xl font-bold text-gray-900">3</h3>
-                </div>
-                <div className="h-10 w-10 rounded-full bg-red-50 flex items-center justify-center text-red-500">
-                  <AlertTriangle className="h-5 w-5" />
-                </div>
-              </CardContent>
-            </Card>
+            <MetricsCard
+              title="Tasks Completed"
+              value={28}
+              suffix="/35"
+              icon={FileCheck}
+              trend={12}
+              trendDirection="up"
+              description="80% completion rate"
+            />
             
-            <Card className="border border-gray-200">
-              <CardContent className="p-5 flex items-center justify-between">
-                <div>
-                  <p className="text-xs font-medium text-gray-500 mb-1">Pending Approvals</p>
-                  <h3 className="text-2xl font-bold text-gray-900">5</h3>
-                </div>
-                <div className="h-10 w-10 rounded-full bg-amber-50 flex items-center justify-center text-amber-500">
-                  <CircleAlert className="h-5 w-5" />
-                </div>
-              </CardContent>
-            </Card>
+            <MetricsCard
+              title="Pending Approvals"
+              value={5}
+              icon={CircleAlert}
+              trend={-2}
+              trendDirection="down"
+              description="Decreased from last week"
+            />
             
-            <Card className="border border-gray-200">
-              <CardContent className="p-5 flex items-center justify-between">
-                <div>
-                  <p className="text-xs font-medium text-gray-500 mb-1">Active Workflows</p>
-                  <h3 className="text-2xl font-bold text-gray-900">2</h3>
-                </div>
-                <div className="h-10 w-10 rounded-full bg-blue-50 flex items-center justify-center text-blue-500">
-                  <Workflow className="h-5 w-5" />
-                </div>
-              </CardContent>
-            </Card>
+            <MetricsCard
+              title="Active Workflows"
+              value={2}
+              icon={Workflow}
+              description="In progress"
+            />
           </div>
           
-          {/* Active Workflow */}
-          <Card className="border border-gray-200">
-            <CardHeader className="p-5 pb-0">
-              <CardTitle className="text-lg">Active Workflow</CardTitle>
-              <CardDescription>Your current procurement workflow</CardDescription>
-            </CardHeader>
-            <CardContent className="p-5">
-              <WorkflowPreview compact={true} />
-            </CardContent>
-          </Card>
-          
           {/* Alerts Section */}
+          <h2 className="text-xl font-semibold text-gray-900">Recent Alerts</h2>
           <Card className="border border-gray-200">
             <CardHeader className="p-5 pb-0 flex flex-row items-center justify-between">
               <div>
-                <CardTitle className="text-lg">Recent Alerts</CardTitle>
-                <CardDescription>Important notifications that require attention</CardDescription>
+                <CardTitle className="text-lg">Important Notifications</CardTitle>
+                <CardDescription>Items that require your attention</CardDescription>
               </div>
               <Button variant="outline" size="sm" className="gap-1">
                 <FileCheck className="h-4 w-4" />
