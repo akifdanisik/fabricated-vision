@@ -1,32 +1,25 @@
-
 import { useState, useEffect } from 'react';
 import { useLocation, Link } from 'react-router-dom';
 import { Bell, ChevronDown, Menu, Search, Settings, User } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { 
-  DropdownMenu, 
-  DropdownMenuContent, 
-  DropdownMenuItem, 
-  DropdownMenuLabel, 
-  DropdownMenuSeparator, 
-  DropdownMenuTrigger 
-} from "@/components/ui/dropdown-menu";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Badge } from "@/components/ui/badge";
 import { cn } from '@/lib/utils';
-
 interface NavbarProps {
   toggleSidebar: () => void;
   isSidebarOpen: boolean;
 }
-
-const Navbar = ({ toggleSidebar, isSidebarOpen }: NavbarProps) => {
+const Navbar = ({
+  toggleSidebar,
+  isSidebarOpen
+}: NavbarProps) => {
   const location = useLocation();
   const [scrolled, setScrolled] = useState(false);
   const [pageTitle, setPageTitle] = useState('Dashboard');
-  
+
   // Update page title based on current route
   useEffect(() => {
     const path = location.pathname;
@@ -37,38 +30,20 @@ const Navbar = ({ toggleSidebar, isSidebarOpen }: NavbarProps) => {
       setPageTitle(path.substring(1).charAt(0).toUpperCase() + path.substring(2));
     }
   }, [location]);
-  
+
   // Add shadow to navbar on scroll
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 10);
     };
-    
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-
-  return (
-    <header 
-      className={cn(
-        "sticky top-0 z-40 flex h-16 w-full items-center justify-between border-b border-gray-100 bg-white/95 px-4 backdrop-blur transition-all duration-200",
-        scrolled ? "shadow-sm" : ""
-      )}
-    >
+  return <header className={cn("sticky top-0 z-40 flex h-16 w-full items-center justify-between border-b border-gray-100 bg-white/95 px-4 backdrop-blur transition-all duration-200", scrolled ? "shadow-sm" : "")}>
       <div className="flex items-center gap-2">
-        <Button 
-          variant="ghost" 
-          size="icon" 
-          onClick={toggleSidebar}
-          className="mr-2 rounded-full text-gray-500 hover:bg-gray-100 hover:text-gray-900"
-          aria-label="Toggle sidebar"
-        >
-          <Menu className="h-5 w-5" />
-        </Button>
         
-        <h1 className="text-xl font-semibold tracking-tight text-gray-900 animate-fade-in">
-          {pageTitle}
-        </h1>
+        
+        
       </div>
       
       <div className="flex items-center gap-4 md:gap-6">
@@ -76,11 +51,7 @@ const Navbar = ({ toggleSidebar, isSidebarOpen }: NavbarProps) => {
           <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
             <Search className="h-4 w-4 text-gray-400" />
           </div>
-          <Input 
-            type="search" 
-            placeholder="Search..." 
-            className="pl-10 w-[280px] bg-gray-50 border-gray-100 rounded-xl focus:bg-white"
-          />
+          
         </div>
         
         <div className="flex items-center gap-2">
@@ -89,10 +60,7 @@ const Navbar = ({ toggleSidebar, isSidebarOpen }: NavbarProps) => {
               <TooltipTrigger asChild>
                 <Button variant="ghost" size="icon" className="relative rounded-full text-gray-500 hover:bg-gray-100 hover:text-gray-900">
                   <Bell className="h-5 w-5" />
-                  <Badge 
-                    className="absolute -top-1 -right-1 h-4 w-4 p-0 flex items-center justify-center text-xs"
-                    variant="destructive"
-                  >
+                  <Badge className="absolute -top-1 -right-1 h-4 w-4 p-0 flex items-center justify-center text-xs" variant="destructive">
                     3
                   </Badge>
                 </Button>
@@ -151,8 +119,6 @@ const Navbar = ({ toggleSidebar, isSidebarOpen }: NavbarProps) => {
           </DropdownMenu>
         </div>
       </div>
-    </header>
-  );
+    </header>;
 };
-
 export default Navbar;
