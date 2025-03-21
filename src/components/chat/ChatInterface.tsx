@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect } from 'react';
 import { Send, Mic, ArrowRight, Plus, PaperclipIcon, Grid } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -36,6 +35,13 @@ export default function ChatInterface() {
 
   const [moduleSelectOpen, setModuleSelectOpen] = useState(false);
   const [activeModules, setActiveModules] = useState<ModuleItem[]>([]);
+  
+  // Track conversation context for multi-turn interactions
+  const [conversationContext, setConversationContext] = useState<{
+    type: string;
+    step: number;
+    data: Record<string, any>;
+  } | null>(null);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -61,8 +67,14 @@ export default function ChatInterface() {
     setInput('');
 
     setTimeout(() => {
-      const aiResponse = generateAIResponse(input);
-      setMessages(prev => [...prev, aiResponse]);
+      // Check if we're in a multi-turn conversation flow
+      if (conversationContext) {
+        const aiResponse = handleConversationFlow(input, conversationContext);
+        setMessages(prev => [...prev, aiResponse]);
+      } else {
+        const aiResponse = generateAIResponse(input);
+        setMessages(prev => [...prev, aiResponse]);
+      }
       
       updatePreviewActions(input.toLowerCase());
     }, 1000);
@@ -192,39 +204,7 @@ export default function ChatInterface() {
   };
 
   const updatePreviewActions = (query: string) => {
-    if (query.includes('inventory') || query.includes('stock')) {
-      setPreviewTitle('Inventory Management');
-      setPreviewDescription('Take action on your inventory levels');
-      setPreviewActions([
-        {
-          id: '1',
-          title: 'Create Purchase Order',
-          description: 'Create a new purchase order for low stock items',
-          icon: 'package',
-          actionLabel: 'Create Order',
-          onClick: () => window.location.href = '/inventory/new-order',
-          category: 'Orders'
-        },
-        {
-          id: '2',
-          title: 'Inventory Analysis',
-          description: 'View detailed analysis of current inventory levels',
-          icon: 'chart',
-          actionLabel: 'View Analysis',
-          onClick: () => window.location.href = '/reports/inventory',
-          category: 'Reports'
-        },
-        {
-          id: '3',
-          title: 'Set Reorder Points',
-          description: 'Configure automatic reorder points for critical items',
-          icon: 'list',
-          actionLabel: 'Configure',
-          onClick: () => window.location.href = '/inventory/settings',
-          category: 'Settings'
-        }
-      ]);
-    } else if (query.includes('supplier') || query.includes('vendor')) {
+    if (query.includes('supplier') || query.includes('vendor')) {
       setPreviewTitle('Supplier Management');
       setPreviewDescription('Manage your supplier relationships');
       setPreviewActions([
@@ -245,42 +225,310 @@ export default function ChatInterface() {
           actionLabel: 'Add Supplier',
           onClick: () => window.location.href = '/suppliers/new',
           category: 'Actions'
+        },
+        {
+          id: '3',
+          title: 'Find GMP Certified Suppliers',
+          description: 'Search for suppliers with GMP certification',
+          icon: 'fileSearch',
+          actionLabel: 'Search',
+          onClick: () => handleQuickPrompt('Find suppliers with GMP certification'),
+          category: 'Search'
         }
       ]);
-    } else if (query.includes('order') || query.includes('purchase')) {
-      setPreviewTitle('Order Management');
-      setPreviewDescription('Manage and create purchase orders');
+    } else if (query.includes('find supplier') || query.includes('gmp')) {
+      setPreviewTitle('Supplier Search');
+      setPreviewDescription('Find and compare suppliers based on criteria');
       setPreviewActions([
         {
           id: '1',
-          title: 'Create Purchase Order',
-          description: 'Create a new purchase order',
-          icon: 'package',
-          actionLabel: 'Create Order',
-          onClick: () => window.location.href = '/inventory/new-order',
-          category: 'Actions'
+          title: 'Compare Top Suppliers',
+          description: 'Compare the top suppliers side by side',
+          icon: 'chart',
+          actionLabel: 'Compare',
+          onClick: () => handleQuickPrompt('Compare top suppliers'),
+          category: 'Analysis'
         },
         {
           id: '2',
-          title: 'View Recent Orders',
-          description: 'See all recent purchase orders',
+          title: 'Create RFQ',
+          description: 'Create a request for quotation',
+          icon: 'package',
+          actionLabel: 'Create RFQ',
+          onClick: () => handleQuickPrompt('Create RFQ for Paracetamol API'),
+          category: 'Actions'
+        },
+        {
+          id: '3',
+          title: 'View Supplier Profiles',
+          description: 'See detailed profiles of recommended suppliers',
           icon: 'list',
-          actionLabel: 'View Orders',
-          onClick: () => window.location.href = '/inventory/orders',
-          category: 'Reports'
+          actionLabel: 'View Profiles',
+          onClick: () => handleQuickPrompt('Show supplier profiles'),
+          category: 'Information'
         }
       ]);
     } else {
-      setPreviewTitle('Suggested Actions');
-      setPreviewDescription('Ask questions about inventory, suppliers, or orders to see actionable suggestions.');
-      setPreviewActions([]);
+      if (query.includes('inventory') || query.includes('stock')) {
+        setPreviewTitle('Inventory Management');
+        setPreviewDescription('Take action on your inventory levels');
+        setPreviewActions([
+          {
+            id: '1',
+            title: 'Create Purchase Order',
+            description: 'Create a new purchase order for low stock items',
+            icon: 'package',
+            actionLabel: 'Create Order',
+            onClick: () => window.location.href = '/inventory/new-order',
+            category: 'Orders'
+          },
+          {
+            id: '2',
+            title: 'Inventory Analysis',
+            description: 'View detailed analysis of current inventory levels',
+            icon: 'chart',
+            actionLabel: 'View Analysis',
+            onClick: () => window.location.href = '/reports/inventory',
+            category: 'Reports'
+          },
+          {
+            id: '3',
+            title: 'Set Reorder Points',
+            description: 'Configure automatic reorder points for critical items',
+            icon: 'list',
+            actionLabel: 'Configure',
+            onClick: () => window.location.href = '/inventory/settings',
+            category: 'Settings'
+          }
+        ]);
+      } else if (query.includes('supplier') || query.includes('vendor')) {
+        setPreviewTitle('Supplier Management');
+        setPreviewDescription('Manage your supplier relationships');
+        setPreviewActions([
+          {
+            id: '1',
+            title: 'Supplier Performance',
+            description: 'View performance metrics for all suppliers',
+            icon: 'chart',
+            actionLabel: 'View Performance',
+            onClick: () => window.location.href = '/suppliers/performance',
+            category: 'Analytics'
+          },
+          {
+            id: '2',
+            title: 'Add New Supplier',
+            description: 'Register a new supplier in the system',
+            icon: 'list',
+            actionLabel: 'Add Supplier',
+            onClick: () => window.location.href = '/suppliers/new',
+            category: 'Actions'
+          }
+        ]);
+      } else if (query.includes('order') || query.includes('purchase')) {
+        setPreviewTitle('Order Management');
+        setPreviewDescription('Manage and create purchase orders');
+        setPreviewActions([
+          {
+            id: '1',
+            title: 'Create Purchase Order',
+            description: 'Create a new purchase order',
+            icon: 'package',
+            actionLabel: 'Create Order',
+            onClick: () => window.location.href = '/inventory/new-order',
+            category: 'Actions'
+          },
+          {
+            id: '2',
+            title: 'View Recent Orders',
+            description: 'See all recent purchase orders',
+            icon: 'list',
+            actionLabel: 'View Orders',
+            onClick: () => window.location.href = '/inventory/orders',
+            category: 'Reports'
+          }
+        ]);
+      } else {
+        setPreviewTitle('Suggested Actions');
+        setPreviewDescription('Ask questions about inventory, suppliers, or orders to see actionable suggestions.');
+        setPreviewActions([]);
+      }
     }
+  };
+
+  // Handle multi-turn conversation flows
+  const handleConversationFlow = (userInput: string, context: { type: string; step: number; data: Record<string, any> }): Message => {
+    if (context.type === 'rfq') {
+      switch (context.step) {
+        case 1: // Asked for quantity
+          const updatedData = { ...context.data, quantity: userInput };
+          setConversationContext({ type: 'rfq', step: 2, data: updatedData });
+          return {
+            id: Date.now().toString(),
+            content: 'What is your delivery timeline?',
+            sender: 'ai',
+            timestamp: new Date(),
+            actions: [
+              { label: 'Urgent (1-2 weeks)', onClick: () => handleQuickPrompt('Urgent (1-2 weeks)') },
+              { label: 'Standard (4-6 weeks)', onClick: () => handleQuickPrompt('Standard (4-6 weeks)') },
+              { label: 'Flexible (8+ weeks)', onClick: () => handleQuickPrompt('Flexible (8+ weeks)') }
+            ]
+          };
+        case 2: // Asked for timeline
+          const timelineData = { ...context.data, timeline: userInput };
+          setConversationContext({ type: 'rfq', step: 3, data: timelineData });
+          return {
+            id: Date.now().toString(),
+            content: 'Would you like to include quality specifications?',
+            sender: 'ai',
+            timestamp: new Date(),
+            actions: [
+              { label: 'Standard GMP specs', onClick: () => handleQuickPrompt('Standard GMP specs') },
+              { label: 'Custom specifications', onClick: () => handleQuickPrompt('Custom specifications') },
+              { label: 'No additional specs', onClick: () => handleQuickPrompt('No additional specs') }
+            ]
+          };
+        case 3: // Asked for quality specs
+          // Complete the RFQ process
+          setConversationContext(null); // End the conversation flow
+          return {
+            id: Date.now().toString(),
+            content: `Great! I've created an RFQ for ${context.data.product} with the following details:\n\nQuantity: ${context.data.quantity}\nTimeline: ${context.data.timeline}\nSpecifications: ${userInput}\n\nThe RFQ has been sent to the top 3 matching suppliers. You'll receive responses within 48 hours.`,
+            sender: 'ai',
+            timestamp: new Date(),
+            actions: [
+              { label: 'View RFQ details', onClick: () => window.location.href = '/rfq/details' },
+              { label: 'Track RFQ status', onClick: () => window.location.href = '/rfq/track' }
+            ]
+          };
+        default:
+          setConversationContext(null);
+          return generateAIResponse(userInput);
+      }
+    }
+    
+    // If we don't recognize the context type, revert to normal responses
+    setConversationContext(null);
+    return generateAIResponse(userInput);
   };
 
   const generateAIResponse = (userInput: string): Message => {
     const lowercaseInput = userInput.toLowerCase();
     
-    if (lowercaseInput.includes('inventory') || lowercaseInput.includes('stock')) {
+    if (lowercaseInput.includes('find supplier') && lowercaseInput.includes('paracetamol') && lowercaseInput.includes('gmp')) {
+      return {
+        id: Date.now().toString(),
+        content: 'Here are 5 suppliers for Paracetamol API with GMP certification:\n\nSupplier A: $500/kg, 10-week lead time.\nSupplier B: $550/kg, 8-week lead time.\nSupplier C: $480/kg, 12-week lead time (FDA approval pending).\nSupplier D: $530/kg, 9-week lead time (ISO certified).\nSupplier E: $575/kg, 7-week lead time (multiple quality certifications).\n\nWould you like to compare them or create an RFQ?',
+        sender: 'ai',
+        timestamp: new Date(),
+        actions: [
+          { 
+            label: 'Compare Suppliers', 
+            onClick: () => handleQuickPrompt('Compare suppliers for Paracetamol API')
+          },
+          { 
+            label: 'Create RFQ', 
+            onClick: () => {
+              // Start the RFQ conversation flow
+              setConversationContext({ 
+                type: 'rfq', 
+                step: 1, 
+                data: { product: 'Paracetamol API' } 
+              });
+              handleQuickPrompt('I want to create an RFQ for Paracetamol API')
+            }
+          },
+          { 
+            label: 'View Supplier Profiles', 
+            onClick: () => handleQuickPrompt('Show me the profiles of these Paracetamol API suppliers')
+          }
+        ]
+      };
+    } else if (lowercaseInput.includes('create') && lowercaseInput.includes('rfq')) {
+      const product = lowercaseInput.includes('paracetamol') ? 'Paracetamol API' : 'the requested product';
+      
+      // Start the RFQ conversation flow
+      setConversationContext({ 
+        type: 'rfq', 
+        step: 1, 
+        data: { product } 
+      });
+      
+      return {
+        id: Date.now().toString(),
+        content: `I'll help you create an RFQ for ${product}. What quantity do you need?`,
+        sender: 'ai',
+        timestamp: new Date(),
+        actions: [
+          { label: '100kg', onClick: () => handleQuickPrompt('100kg') },
+          { label: '250kg', onClick: () => handleQuickPrompt('250kg') },
+          { label: '500kg', onClick: () => handleQuickPrompt('500kg') },
+          { label: 'Custom amount', onClick: () => {} } // This one just lets them type
+        ]
+      };
+    } else if (lowercaseInput.includes('compare') && lowercaseInput.includes('supplier')) {
+      return {
+        id: Date.now().toString(),
+        content: 'Comparison of top Paracetamol API suppliers:\n\n| Supplier | Price | Lead Time | Certifications | Min. Order |\n|----------|-------|-----------|---------------|------------|\n| Supplier A | $500/kg | 10 weeks | GMP, ISO | 100kg |\n| Supplier B | $550/kg | 8 weeks | GMP, FDA | 50kg |\n| Supplier C | $480/kg | 12 weeks | GMP* | 200kg |\n\n*FDA approval pending\n\nSupplier B offers the fastest delivery but at a premium price. Supplier C has the lowest price but longest lead time and pending FDA approval.',
+        sender: 'ai',
+        timestamp: new Date(),
+        actions: [
+          { 
+            label: 'Create RFQ with Supplier A', 
+            onClick: () => {
+              setConversationContext({ 
+                type: 'rfq', 
+                step: 1, 
+                data: { product: 'Paracetamol API', supplier: 'Supplier A' } 
+              });
+              handleQuickPrompt('Create RFQ with Supplier A')
+            }
+          },
+          { 
+            label: 'Create RFQ with Supplier B', 
+            onClick: () => {
+              setConversationContext({ 
+                type: 'rfq', 
+                step: 1, 
+                data: { product: 'Paracetamol API', supplier: 'Supplier B' } 
+              });
+              handleQuickPrompt('Create RFQ with Supplier B')
+            }
+          },
+          { 
+            label: 'View quality reports', 
+            onClick: () => handleQuickPrompt('Show quality reports for these suppliers')
+          }
+        ]
+      };
+    } else if (lowercaseInput.includes('profile') && lowercaseInput.includes('supplier')) {
+      return {
+        id: Date.now().toString(),
+        content: 'Here are the detailed profiles of the recommended suppliers:\n\n**Supplier A (PharmaCorp)**\nLocation: Mumbai, India\nEstablished: 1998\nCertifications: GMP, ISO 9001\nProducts: API, Excipients\nCustomers: 200+ globally\nOn-time delivery rate: 92%\n\n**Supplier B (BioTech Materials)**\nLocation: Frankfurt, Germany\nEstablished: 2005\nCertifications: GMP, FDA, ISO 9001\nProducts: API, Custom synthesis\nCustomers: Major pharma in EU/US\nOn-time delivery rate: 96%\n\n**Supplier C (ChemSource)**\nLocation: Shanghai, China\nEstablished: 2010\nCertifications: GMP (FDA approval pending)\nProducts: APIs, Intermediates\nCustomers: Growing customer base in Asia\nOn-time delivery rate: 88%',
+        sender: 'ai',
+        timestamp: new Date(),
+        actions: [
+          { 
+            label: 'Request samples', 
+            onClick: () => handleQuickPrompt('Request samples from these suppliers')
+          },
+          { 
+            label: 'Create RFQ', 
+            onClick: () => {
+              setConversationContext({ 
+                type: 'rfq', 
+                step: 1, 
+                data: { product: 'Paracetamol API' } 
+              });
+              handleQuickPrompt('Create RFQ for Paracetamol API')
+            }
+          },
+          { 
+            label: 'View all suppliers', 
+            onClick: () => window.location.href = '/suppliers'
+          }
+        ]
+      };
+    } else if (lowercaseInput.includes('inventory') || lowercaseInput.includes('stock')) {
       return {
         id: Date.now().toString(),
         content: 'Here\'s the current inventory status of your critical items:\n\n- Paracetamol API: 90kg (Below reorder point)\n- Microcrystalline Cellulose: 2500kg (Sufficient)\n- API-36B: 220kg (Critical low)',
@@ -311,6 +559,10 @@ export default function ChatInterface() {
           { 
             label: 'View all suppliers', 
             onClick: () => window.location.href = '/suppliers'
+          },
+          { 
+            label: 'Find GMP certified suppliers', 
+            onClick: () => handleQuickPrompt('Find suppliers with GMP certification')
           }
         ]
       };
@@ -351,7 +603,7 @@ export default function ChatInterface() {
     } else {
       return {
         id: Date.now().toString(),
-        content: 'I understand you\'re looking for assistance. Could you please be more specific about what you need help with? I can help with inventory management, supplier information, creating orders, and more.',
+        content: 'I understand you\'re looking for assistance. Could you please be more specific about what you need help with? I can help with inventory management, supplier information, creating orders, finding suppliers, and more.',
         sender: 'ai',
         timestamp: new Date(),
         actions: [
@@ -360,8 +612,12 @@ export default function ChatInterface() {
             onClick: () => handleQuickPrompt('Check inventory status')
           },
           { 
-            label: 'View suppliers', 
-            onClick: () => handleQuickPrompt('Show me top suppliers')
+            label: 'Find suppliers', 
+            onClick: () => handleQuickPrompt('Find suppliers with GMP certification')
+          },
+          { 
+            label: 'Create an RFQ', 
+            onClick: () => handleQuickPrompt('Create an RFQ')
           }
         ]
       };
