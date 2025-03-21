@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import Layout from '@/components/layout/Layout';
 import AlertsSection from '@/components/dashboard/AlertsSection';
 import WorkflowPreview from '@/components/workflow/WorkflowPreview';
-import { CircleAlert, Brain, Package, AlertTriangle, Workflow, Calendar, FileCheck } from 'lucide-react';
+import { CircleAlert, Brain, Link, AlertTriangle, Workflow, Calendar, FileCheck } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 
@@ -76,9 +76,9 @@ const Dashboard = () => {
             <Card className="overflow-hidden border border-gray-200 hover:shadow-md transition-all duration-200">
               <CardContent className="p-4 flex flex-col items-center justify-center text-center gap-2">
                 <div className="h-10 w-10 rounded-full bg-green-50 flex items-center justify-center text-green-500 mt-2">
-                  <Package className="h-5 w-5" />
+                  <Link className="h-5 w-5" />
                 </div>
-                <p className="text-sm font-medium">Add Data</p>
+                <p className="text-sm font-medium">Add Connection</p>
               </CardContent>
             </Card>
             
