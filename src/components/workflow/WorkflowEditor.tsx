@@ -172,7 +172,7 @@ export default function WorkflowEditor() {
   };
 
   return (
-    <div className="h-[600px] border rounded-lg overflow-hidden">
+    <div className="h-full w-full border rounded-lg overflow-hidden">
       <ReactFlow
         nodes={nodes}
         edges={edges}
