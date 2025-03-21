@@ -1,12 +1,14 @@
-
 import { useState, useRef, useEffect } from 'react';
-import { Send, Mic, ArrowRight, Plus, PaperclipIcon } from 'lucide-react';
+import { Send, Mic, ArrowRight, Plus, PaperclipIcon, Grid } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { cn } from '@/lib/utils';
 import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from '@/components/ui/resizable';
 import ActionPreview, { ActionItem } from './ActionPreview';
+import ModuleSelector, { ModuleItem } from './ModuleSelector';
+import { Badge } from '@/components/ui/badge';
+import { toast } from 'sonner';
 
 interface Message {
   id: string;
@@ -46,6 +48,10 @@ export default function ChatInterface() {
   const [previewActions, setPreviewActions] = useState<ActionItem[]>([]);
   const [previewTitle, setPreviewTitle] = useState('Suggested Actions');
   const [previewDescription, setPreviewDescription] = useState('Ask questions about inventory, suppliers, or orders to see actionable suggestions.');
+  
+  // Module selector state
+  const [moduleSelectOpen, setModuleSelectOpen] = useState(false);
+  const [activeModules, setActiveModules] = useState<ModuleItem[]>([]);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -83,6 +89,115 @@ export default function ChatInterface() {
 
   const toggleRecording = () => {
     setIsRecording(!isRecording);
+  };
+
+  const handleSelectModule = (module: ModuleItem) => {
+    // Check if module is already active
+    if (activeModules.some(m => m.id === module.id)) {
+      toast.info(`${module.title} is already active`);
+      setModuleSelectOpen(false);
+      return;
+    }
+    
+    setActiveModules(prev => [...prev, module]);
+    setModuleSelectOpen(false);
+    
+    // Add AI response confirming module activation
+    setTimeout(() => {
+      const welcomeMessage: Message = {
+        id: Date.now().toString(),
+        content: `I've activated the ${module.title} module. You can now ask me about ${module.title.toLowerCase()} related questions.`,
+        sender: 'ai',
+        timestamp: new Date(),
+        actions: [
+          { 
+            label: `Tell me about ${module.title}`, 
+            onClick: () => handleQuickPrompt(`Explain what the ${module.title} module can do`)
+          }
+        ]
+      };
+      setMessages(prev => [...prev, welcomeMessage]);
+      
+      // Update preview actions based on the new module
+      updateModulePreviewActions(module);
+    }, 500);
+    
+    toast.success(`${module.title} module activated`);
+  };
+
+  const updateModulePreviewActions = (module: ModuleItem) => {
+    if (module.id === 'contract-risk') {
+      setPreviewTitle('Smart Contract Risk Management');
+      setPreviewDescription('Analyze and identify risks in smart contracts');
+      setPreviewActions([
+        {
+          id: '1',
+          title: 'Analyze Contract',
+          description: 'Upload and analyze a smart contract for risks',
+          icon: 'fileSearch',
+          actionLabel: 'Upload Contract',
+          onClick: () => handleQuickPrompt('I want to analyze a smart contract for risks'),
+          category: 'Analysis'
+        },
+        {
+          id: '2',
+          title: 'Risk Assessment',
+          description: 'Get a comprehensive risk assessment report',
+          icon: 'shield',
+          actionLabel: 'Get Report',
+          onClick: () => handleQuickPrompt('Generate a risk assessment report for my contracts'),
+          category: 'Reports'
+        },
+        {
+          id: '3',
+          title: 'Security Best Practices',
+          description: 'Learn about smart contract security best practices',
+          icon: 'book',
+          actionLabel: 'View Guidelines',
+          onClick: () => handleQuickPrompt('What are the best practices for smart contract security?'),
+          category: 'Education'
+        }
+      ]);
+    } else if (module.id === 'supplier-assessment') {
+      // Set supplier assessment specific actions
+      setPreviewTitle('Supplier Assessment');
+      setPreviewDescription('Evaluate suppliers based on performance metrics');
+      setPreviewActions([
+        {
+          id: '1',
+          title: 'Evaluate Supplier',
+          description: 'Analyze a supplier\'s performance metrics',
+          icon: 'chart',
+          actionLabel: 'Evaluate',
+          onClick: () => handleQuickPrompt('Evaluate the performance of PharmaCorp supplier'),
+          category: 'Analysis'
+        },
+        {
+          id: '2',
+          title: 'Compare Suppliers',
+          description: 'Compare multiple suppliers side by side',
+          icon: 'list',
+          actionLabel: 'Compare',
+          onClick: () => handleQuickPrompt('Compare PharmaCorp with BioTech Materials'),
+          category: 'Analysis'
+        }
+      ]);
+    } else {
+      // Default actions for other modules
+      setPreviewTitle(`${module.title}`);
+      setPreviewDescription(`${module.description}`);
+      setPreviewActions([
+        {
+          id: '1',
+          title: `Use ${module.title}`,
+          description: `Start using the ${module.title} module`,
+          icon: 'link',
+          actionLabel: 'Start',
+          onClick: () => handleQuickPrompt(`I want to use the ${module.title} module`),
+          category: 'Actions'
+        }
+      ]);
+    }
   };
 
   const updatePreviewActions = (query: string) => {
@@ -263,10 +378,36 @@ export default function ChatInterface() {
     }
   };
 
+  const removeModule = (moduleId: string) => {
+    setActiveModules(prev => prev.filter(m => m.id !== moduleId));
+    toast.info('Module deactivated');
+  };
+
   return (
     <ResizablePanelGroup direction="horizontal" className="h-full">
       <ResizablePanel defaultSize={60} className="h-full">
         <div className="flex flex-col h-full bg-white">
+          {activeModules.length > 0 && (
+            <div className="px-6 py-2 border-b flex items-center gap-2 overflow-x-auto">
+              <span className="text-xs text-gray-500 flex-shrink-0">Active modules:</span>
+              {activeModules.map(module => (
+                <Badge 
+                  key={module.id} 
+                  variant="outline" 
+                  className="flex items-center gap-1 px-2 py-1"
+                >
+                  {module.title}
+                  <button 
+                    className="ml-1 text-gray-400 hover:text-gray-700"
+                    onClick={() => removeModule(module.id)}
+                  >
+                    ×
+                  </button>
+                </Badge>
+              ))}
+            </div>
+          )}
+          
           <div className="flex-1 overflow-y-auto px-6 py-6">
             {messages.map((message) => (
               <div 
@@ -329,8 +470,9 @@ export default function ChatInterface() {
                 size="icon" 
                 variant="ghost" 
                 className="rounded-full"
+                onClick={() => setModuleSelectOpen(true)}
               >
-                <Plus className="h-5 w-5" />
+                <Grid className="h-5 w-5" />
               </Button>
               
               <Button 
@@ -384,6 +526,13 @@ export default function ChatInterface() {
           actions={previewActions}
         />
       </ResizablePanel>
+
+      {/* Module Selector Dialog */}
+      <ModuleSelector 
+        open={moduleSelectOpen} 
+        setOpen={setModuleSelectOpen} 
+        onSelectModule={handleSelectModule} 
+      />
     </ResizablePanelGroup>
   );
 }
