@@ -7,9 +7,10 @@ import { cn } from "@/lib/utils";
 
 interface LayoutProps {
   children: React.ReactNode;
+  fullWidth?: boolean;
 }
 
-const Layout = ({ children }: LayoutProps) => {
+const Layout = ({ children, fullWidth = false }: LayoutProps) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isMounted, setIsMounted] = useState(false);
   const location = useLocation();
@@ -59,8 +60,13 @@ const Layout = ({ children }: LayoutProps) => {
       >
         <Navbar toggleSidebar={toggleSidebar} isSidebarOpen={isSidebarOpen} />
         
-        <main className="flex-1 p-5 md:p-8 animate-fade-in">
-          <div className="mx-auto max-w-7xl">
+        <main className={cn(
+          "flex-1 animate-fade-in",
+          fullWidth ? "p-0" : "p-5 md:p-8"
+        )}>
+          <div className={cn(
+            fullWidth ? "w-full h-full" : "mx-auto max-w-7xl"
+          )}>
             {children}
           </div>
         </main>

@@ -1,10 +1,11 @@
+
 import { useState, useRef, useEffect } from 'react';
-import { Send, Mic, ArrowRight, Plus } from 'lucide-react';
+import { Send, Mic, ArrowRight, Plus, PaperclipIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Card, CardContent } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { cn } from '@/lib/utils';
+import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from '@/components/ui/resizable';
 
 interface Message {
   id: string;
@@ -167,109 +168,134 @@ export default function ChatInterface() {
   };
 
   return (
-    <div className="flex flex-col h-full">
-      <div className="flex-1 overflow-y-auto px-4 py-6 space-y-4">
-        {messages.map((message) => (
-          <div 
-            key={message.id} 
-            className={cn(
-              "flex items-start gap-3 max-w-3xl",
-              message.sender === 'user' ? "ml-auto" : "mr-auto"
-            )}
-          >
-            {message.sender === 'ai' && (
-              <Avatar className="mt-1">
-                <AvatarFallback className="bg-primary text-primary-foreground">AI</AvatarFallback>
-              </Avatar>
-            )}
-            
-            <div className={cn(
-              "px-4 py-3",
-              message.sender === 'user' 
-                ? "bg-primary text-primary-foreground rounded-2xl rounded-tr-none"
-                : "bg-muted rounded-2xl rounded-tl-none"
-            )}>
-              <div className="whitespace-pre-line">{message.content}</div>
-              
-              {message.actions && message.actions.length > 0 && (
-                <div className="flex flex-wrap gap-2 mt-3">
-                  {message.actions.map((action, index) => (
-                    <Button 
-                      key={index} 
-                      size="sm" 
-                      variant={message.sender === 'ai' ? 'default' : 'outline'} 
-                      className={cn(
-                        "text-xs rounded-full",
-                        message.sender === 'ai' 
-                          ? "bg-background text-foreground hover:bg-accent"
-                          : "bg-primary-foreground text-primary hover:bg-primary-foreground/90"
-                      )}
-                      onClick={action.onClick}
-                    >
-                      {action.label}
-                      <ArrowRight className="ml-1 h-3 w-3" />
-                    </Button>
-                  ))}
+    <ResizablePanelGroup direction="horizontal" className="h-full">
+      <ResizablePanel defaultSize={75} className="h-full">
+        <div className="flex flex-col h-full bg-white">
+          <div className="flex-1 overflow-y-auto px-6 py-6">
+            {messages.map((message) => (
+              <div 
+                key={message.id} 
+                className={cn(
+                  "mb-6 max-w-3xl",
+                  message.sender === 'user' ? "ml-auto" : ""
+                )}
+              >
+                <div className="flex items-start gap-4">
+                  {message.sender === 'ai' && (
+                    <Avatar className="mt-0.5 h-8 w-8 border">
+                      <AvatarFallback className="bg-primary text-primary-foreground text-xs">AI</AvatarFallback>
+                    </Avatar>
+                  )}
+                  
+                  <div className="flex-1">
+                    <div className={cn(
+                      "prose prose-sm px-4 py-3 rounded-2xl",
+                      message.sender === 'user' 
+                        ? "bg-primary text-primary-foreground ml-auto"
+                        : "bg-gray-100 text-gray-900"
+                    )}>
+                      <div className="whitespace-pre-line">{message.content}</div>
+                    </div>
+                    
+                    {message.actions && message.actions.length > 0 && (
+                      <div className="flex flex-wrap gap-2 mt-3">
+                        {message.actions.map((action, index) => (
+                          <Button 
+                            key={index} 
+                            size="sm" 
+                            variant="outline" 
+                            className="text-xs rounded-full bg-white hover:bg-gray-50"
+                            onClick={action.onClick}
+                          >
+                            {action.label}
+                            <ArrowRight className="ml-1 h-3 w-3" />
+                          </Button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                  
+                  {message.sender === 'user' && (
+                    <Avatar className="mt-0.5 h-8 w-8 border">
+                      <AvatarFallback>JD</AvatarFallback>
+                    </Avatar>
+                  )}
                 </div>
-              )}
-              
-              <div className="text-xs opacity-70 mt-1">
-                {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
               </div>
-            </div>
-            
-            {message.sender === 'user' && (
-              <Avatar className="mt-1">
-                <AvatarFallback>JD</AvatarFallback>
-              </Avatar>
-            )}
+            ))}
+            <div ref={messagesEndRef} />
           </div>
-        ))}
-        <div ref={messagesEndRef} />
-      </div>
+          
+          <div className="border-t p-4">
+            <form onSubmit={handleSubmit} className="flex items-center p-2 gap-2 bg-white border rounded-full">
+              <Button 
+                type="button" 
+                size="icon" 
+                variant="ghost" 
+                className="rounded-full"
+              >
+                <Plus className="h-5 w-5" />
+              </Button>
+              
+              <Button 
+                type="button" 
+                size="icon" 
+                variant="ghost" 
+                className="rounded-full"
+              >
+                <PaperclipIcon className="h-5 w-5" />
+              </Button>
+              
+              <Input 
+                value={input} 
+                onChange={(e) => setInput(e.target.value)} 
+                placeholder="Tell us to..." 
+                className="flex-1 border-none focus-visible:ring-0 focus-visible:ring-offset-0"
+              />
+              
+              <Button 
+                type="button" 
+                size="icon" 
+                variant="ghost" 
+                className={cn(
+                  "rounded-full",
+                  isRecording && "bg-red-100 text-red-500"
+                )}
+                onClick={toggleRecording}
+              >
+                <Mic className="h-5 w-5" />
+              </Button>
+              
+              <Button 
+                type="submit" 
+                size="icon" 
+                disabled={!input.trim()}
+                className="rounded-full"
+              >
+                <Send className="h-5 w-5" />
+              </Button>
+            </form>
+          </div>
+        </div>
+      </ResizablePanel>
       
-      <Card className="mx-4 mb-4 mt-2 border-opacity-50 rounded-2xl">
-        <form onSubmit={handleSubmit} className="flex items-center p-2 gap-2">
-          <Button 
-            type="button" 
-            size="icon" 
-            variant="ghost" 
-            className="rounded-full"
-            onClick={() => {}}
-          >
-            <Plus className="h-5 w-5" />
-          </Button>
+      <ResizableHandle withHandle />
+      
+      <ResizablePanel defaultSize={25} className="h-full">
+        <div className="h-full bg-white border-l p-4">
+          <div className="mb-4">
+            <h3 className="text-sm font-medium text-gray-900">Identify any gaps</h3>
+          </div>
           
-          <Input 
-            value={input} 
-            onChange={(e) => setInput(e.target.value)} 
-            placeholder="Type your message..." 
-            className="flex-1 border-none focus-visible:ring-0 focus-visible:ring-offset-0 rounded-full"
-          />
-          
-          <Button 
-            type="button" 
-            size="icon" 
-            variant="ghost" 
-            className={cn(
-              "rounded-full",
-              isRecording && "bg-red-100 text-red-500"
-            )}
-            onClick={toggleRecording}
-          >
-            <Mic className="h-5 w-5" />
-          </Button>
-          
-          <Button 
-            type="submit" 
-            size="icon" 
-            disabled={!input.trim()}
-            className="rounded-full"
-          >
-            <Send className="h-5 w-5" />
-          </Button>
-        </form>
-      </Card>
-    </div>
+          <div className="space-y-4 text-sm text-gray-600">
+            <p>What specific methods can be used to gather information during the client briefing?</p>
+            <p>How can I effectively manage client expectations throughout the design process?</p>
+            <p>What should I do if the client's feedback doesn't align with my design vision?</p>
+            <p>How can I speed up my procurement processes?</p>
+            <p>What are best practices for supplier negotiations?</p>
+          </div>
+        </div>
+      </ResizablePanel>
+    </ResizablePanelGroup>
   );
 }
