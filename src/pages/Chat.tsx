@@ -22,8 +22,8 @@ const Chat = () => {
   const [activeTab, setActiveTab] = useState('chat');
 
   return (
-    <Layout fullWidth>
-      <div className="flex flex-col h-[calc(100vh-64px)]">
+    <Layout fullWidth hideNavbar>
+      <div className="flex flex-col h-[calc(100vh-0px)]">
         <div className="flex justify-end items-center px-6 py-3 border-b">
           <div className="flex items-center gap-2">
             <Button variant="ghost" size="icon" className="relative rounded-full text-gray-500 hover:bg-gray-100 hover:text-gray-900">
@@ -130,4 +130,3 @@ const Chat = () => {
 };
 
 export default Chat;
-
