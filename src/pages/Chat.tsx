@@ -119,7 +119,7 @@ const Chat = () => {
               <RecentConversations />
             </TabsContent>
             
-            <TabsContent value="suggestions" className="h-full m-0 p-0">
+            <TabsContent value="suggestions" className="h-full m-0 p-0 -mt-[48px]">
               <WorkflowSuggestions />
             </TabsContent>
           </Tabs>
@@ -130,3 +130,4 @@ const Chat = () => {
 };
 
 export default Chat;
+
