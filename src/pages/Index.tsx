@@ -1,17 +1,23 @@
 
-import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Layout from '@/components/layout/Layout';
-import MetricsCard from '@/components/dashboard/MetricsCard';
 import AlertsSection from '@/components/dashboard/AlertsSection';
 import ChatInterface from '@/components/chat/ChatInterface';
 import WorkflowPreview from '@/components/workflow/WorkflowPreview';
-import { CircleAlert, Brain, Package, AlertTriangle, Workflow } from 'lucide-react';
+import { CircleAlert, Brain, Package, AlertTriangle, Workflow, Calendar, FileCheck } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 
 const Dashboard = () => {
   const navigate = useNavigate();
+  
+  // Get current date
+  const today = new Date();
+  const formattedDate = today.toLocaleDateString('en-US', { 
+    month: 'long', 
+    day: 'numeric', 
+    year: 'numeric'
+  });
   
   // Mock data for alerts
   const alerts = [
@@ -40,55 +46,128 @@ const Dashboard = () => {
 
   return (
     <Layout>
-      <div className="space-y-6 pb-6">
+      <div className="space-y-8 pb-6">
+        {/* Welcome header */}
+        <div className="space-y-1">
+          <p className="text-gray-500 text-sm">{formattedDate}</p>
+          <h1 className="text-3xl font-semibold text-gray-900">Welcome back, John!</h1>
+        </div>
+        
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="lg:col-span-2 space-y-6">
+            {/* Quick Actions */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <Card className="overflow-hidden border border-gray-200 hover:shadow-md transition-all duration-200">
+                <CardContent className="p-4 flex flex-col items-center justify-center text-center gap-2">
+                  <div className="h-10 w-10 rounded-full bg-blue-50 flex items-center justify-center text-blue-500 mt-2">
+                    <Brain className="h-5 w-5" />
+                  </div>
+                  <p className="text-sm font-medium">New Chat</p>
+                </CardContent>
+              </Card>
+              
+              <Card className="overflow-hidden border border-gray-200 hover:shadow-md transition-all duration-200">
+                <CardContent className="p-4 flex flex-col items-center justify-center text-center gap-2">
+                  <div className="h-10 w-10 rounded-full bg-purple-50 flex items-center justify-center text-purple-500 mt-2">
+                    <Workflow className="h-5 w-5" />
+                  </div>
+                  <p className="text-sm font-medium">New Workflow</p>
+                </CardContent>
+              </Card>
+              
+              <Card className="overflow-hidden border border-gray-200 hover:shadow-md transition-all duration-200">
+                <CardContent className="p-4 flex flex-col items-center justify-center text-center gap-2">
+                  <div className="h-10 w-10 rounded-full bg-green-50 flex items-center justify-center text-green-500 mt-2">
+                    <Package className="h-5 w-5" />
+                  </div>
+                  <p className="text-sm font-medium">Add Data</p>
+                </CardContent>
+              </Card>
+              
+              <Card className="overflow-hidden border border-gray-200 hover:shadow-md transition-all duration-200">
+                <CardContent className="p-4 flex flex-col items-center justify-center text-center gap-2">
+                  <div className="h-10 w-10 rounded-full bg-amber-50 flex items-center justify-center text-amber-500 mt-2">
+                    <Calendar className="h-5 w-5" />
+                  </div>
+                  <p className="text-sm font-medium">Schedule</p>
+                </CardContent>
+              </Card>
+            </div>
+            
             {/* Critical Metrics */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <Card className="bg-red-50 dark:bg-red-900/20 border-red-100 dark:border-red-800/30">
-                <CardContent className="p-4 flex items-center justify-between">
+              <Card className="border border-gray-200">
+                <CardContent className="p-5 flex items-center justify-between">
                   <div>
-                    <p className="text-xs font-medium text-red-800 dark:text-red-300">Low Stock Items</p>
-                    <h3 className="text-2xl font-bold text-red-900 dark:text-red-200">3</h3>
+                    <p className="text-xs font-medium text-gray-500 mb-1">Low Stock Items</p>
+                    <h3 className="text-2xl font-bold text-gray-900">3</h3>
                   </div>
-                  <AlertTriangle className="h-8 w-8 text-red-500" />
+                  <div className="h-10 w-10 rounded-full bg-red-50 flex items-center justify-center text-red-500">
+                    <AlertTriangle className="h-5 w-5" />
+                  </div>
                 </CardContent>
               </Card>
               
-              <Card className="bg-amber-50 dark:bg-amber-900/20 border-amber-100 dark:border-amber-800/30">
-                <CardContent className="p-4 flex items-center justify-between">
+              <Card className="border border-gray-200">
+                <CardContent className="p-5 flex items-center justify-between">
                   <div>
-                    <p className="text-xs font-medium text-amber-800 dark:text-amber-300">Pending Approvals</p>
-                    <h3 className="text-2xl font-bold text-amber-900 dark:text-amber-200">5</h3>
+                    <p className="text-xs font-medium text-gray-500 mb-1">Pending Approvals</p>
+                    <h3 className="text-2xl font-bold text-gray-900">5</h3>
                   </div>
-                  <CircleAlert className="h-8 w-8 text-amber-500" />
+                  <div className="h-10 w-10 rounded-full bg-amber-50 flex items-center justify-center text-amber-500">
+                    <CircleAlert className="h-5 w-5" />
+                  </div>
                 </CardContent>
               </Card>
               
-              <Card className="bg-blue-50 dark:bg-blue-900/20 border-blue-100 dark:border-blue-800/30">
-                <CardContent className="p-4 flex items-center justify-between">
+              <Card className="border border-gray-200">
+                <CardContent className="p-5 flex items-center justify-between">
                   <div>
-                    <p className="text-xs font-medium text-blue-800 dark:text-blue-300">Active Workflows</p>
-                    <h3 className="text-2xl font-bold text-blue-900 dark:text-blue-200">2</h3>
+                    <p className="text-xs font-medium text-gray-500 mb-1">Active Workflows</p>
+                    <h3 className="text-2xl font-bold text-gray-900">2</h3>
                   </div>
-                  <Workflow className="h-8 w-8 text-blue-500" />
+                  <div className="h-10 w-10 rounded-full bg-blue-50 flex items-center justify-center text-blue-500">
+                    <Workflow className="h-5 w-5" />
+                  </div>
                 </CardContent>
               </Card>
             </div>
             
             {/* Active Workflow */}
-            <WorkflowPreview compact={true} />
+            <Card className="border border-gray-200">
+              <CardHeader className="p-5 pb-0">
+                <CardTitle className="text-lg">Active Workflow</CardTitle>
+                <CardDescription>Your current procurement workflow</CardDescription>
+              </CardHeader>
+              <CardContent className="p-5">
+                <WorkflowPreview compact={true} />
+              </CardContent>
+            </Card>
             
             {/* Alerts Section */}
-            <AlertsSection alerts={alerts} />
+            <Card className="border border-gray-200">
+              <CardHeader className="p-5 pb-0 flex flex-row items-center justify-between">
+                <div>
+                  <CardTitle className="text-lg">Recent Alerts</CardTitle>
+                  <CardDescription>Important notifications that require attention</CardDescription>
+                </div>
+                <Button variant="outline" size="sm" className="gap-1">
+                  <FileCheck className="h-4 w-4" />
+                  Mark all as read
+                </Button>
+              </CardHeader>
+              <CardContent className="p-5">
+                <AlertsSection alerts={alerts} />
+              </CardContent>
+            </Card>
           </div>
           
           {/* Chat Interface Column */}
-          <Card className="h-[calc(100vh-160px)]">
-            <CardHeader className="p-4 border-b flex items-center gap-2">
+          <Card className="h-[calc(100vh-220px)] border border-gray-200">
+            <CardHeader className="p-4 border-b border-gray-100 flex items-center gap-2">
               <Brain className="h-5 w-5 text-primary" />
               <div>
-                <CardTitle className="text-lg">AI Assistant</CardTitle>
+                <CardTitle className="text-base">AI Assistant</CardTitle>
                 <CardDescription>Ask anything about your procurement</CardDescription>
               </div>
             </CardHeader>
@@ -96,43 +175,6 @@ const Dashboard = () => {
               <ChatInterface />
             </CardContent>
           </Card>
-        </div>
-        
-        {/* Quick Actions */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <Button 
-            className="h-auto py-4 flex flex-col items-center justify-center gap-2" 
-            onClick={() => navigate('/chat')}
-          >
-            <Brain className="h-6 w-6" />
-            <span>Open Full Chat</span>
-          </Button>
-          
-          <Button 
-            className="h-auto py-4 flex flex-col items-center justify-center gap-2" 
-            onClick={() => navigate('/workflows')}
-          >
-            <Workflow className="h-6 w-6" />
-            <span>Manage Workflows</span>
-          </Button>
-          
-          <Button 
-            className="h-auto py-4 flex flex-col items-center justify-center gap-2" 
-            variant="outline"
-            onClick={() => navigate('/inventory')}
-          >
-            <Package className="h-6 w-6" />
-            <span>View Inventory</span>
-          </Button>
-          
-          <Button 
-            className="h-auto py-4 flex flex-col items-center justify-center gap-2" 
-            variant="outline"
-            onClick={() => navigate('/suppliers')}
-          >
-            <CircleAlert className="h-6 w-6" />
-            <span>Address Alerts</span>
-          </Button>
         </div>
       </div>
     </Layout>

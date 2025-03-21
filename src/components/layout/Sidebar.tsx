@@ -59,13 +59,13 @@ const Sidebar = ({ isOpen, onToggle }: SidebarProps) => {
   return (
     <div
       className={cn(
-        "fixed inset-y-0 left-0 z-50 flex flex-col border-r bg-card transition-all duration-300 ease-in-out-expo",
+        "fixed inset-y-0 left-0 z-50 flex flex-col border-r bg-white transition-all duration-300 ease-in-out-expo shadow-sm",
         isOpen ? "w-64" : "w-[70px]",
         isMounted ? "translate-x-0" : "-translate-x-full"
       )}
     >
       <div className={cn(
-        "flex h-16 items-center justify-between border-b px-4",
+        "flex h-16 items-center justify-between border-b border-gray-100 px-4",
         isOpen ? "px-6" : "px-2"
       )}>
         <Link to="/" className="flex items-center gap-2 py-4">
@@ -90,15 +90,15 @@ const Sidebar = ({ isOpen, onToggle }: SidebarProps) => {
           variant="ghost" 
           size="icon" 
           onClick={onToggle}
-          className={cn("transition-opacity", isOpen ? "opacity-100" : "opacity-0 md:opacity-100")}
+          className={cn("transition-opacity rounded-full", isOpen ? "opacity-100" : "opacity-0 md:opacity-100")}
         >
           {isOpen ? <ChevronLeft className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
         </Button>
       </div>
       
-      <ScrollArea className="flex-1 pt-1">
+      <ScrollArea className="flex-1 pt-3">
         {/* Priority nav items */}
-        <nav className="grid gap-1 px-2 py-4">
+        <nav className="grid gap-1 px-3 py-2">
           {priorityItems.map((item, index) => {
             const isActive = location.pathname === item.path;
             
@@ -107,15 +107,15 @@ const Sidebar = ({ isOpen, onToggle }: SidebarProps) => {
                 key={item.path}
                 to={item.path}
                 className={cn(
-                  "group flex items-center gap-3 rounded-md px-3 py-2.5 transition-all",
+                  "group flex items-center gap-3 rounded-xl px-3 py-2.5 transition-all",
                   isActive 
-                    ? "bg-primary text-primary-foreground" 
-                    : "text-foreground/70 hover:bg-accent hover:text-accent-foreground",
+                    ? "bg-primary/10 text-primary" 
+                    : "text-gray-500 hover:bg-gray-100 hover:text-gray-900",
                   !isOpen && "justify-center py-2.5"
                 )}
                 style={{ animationDelay: `${index * 50}ms` }}
               >
-                <item.icon className={cn("h-5 w-5 shrink-0", isOpen && isActive && "animate-pulse-subtle")} />
+                <item.icon className={cn("h-5 w-5 shrink-0", isActive && "text-primary")} />
                 <span
                   className={cn(
                     "text-sm font-medium transition-all",
@@ -129,10 +129,10 @@ const Sidebar = ({ isOpen, onToggle }: SidebarProps) => {
           })}
         </nav>
         
-        <Separator className={cn("my-2", !isOpen && "mx-2")} />
+        <Separator className={cn("my-2 bg-gray-100", !isOpen && "mx-2")} />
         
         {/* Standard nav items */}
-        <nav className="grid gap-1 px-2 py-2">
+        <nav className="grid gap-1 px-3 py-2">
           {standardItems.map((item, index) => {
             const isActive = location.pathname === item.path;
             
@@ -141,15 +141,15 @@ const Sidebar = ({ isOpen, onToggle }: SidebarProps) => {
                 key={item.path}
                 to={item.path}
                 className={cn(
-                  "group flex items-center gap-3 rounded-md px-3 py-2.5 transition-all",
+                  "group flex items-center gap-3 rounded-xl px-3 py-2.5 transition-all",
                   isActive 
-                    ? "bg-primary text-primary-foreground" 
-                    : "text-foreground/70 hover:bg-accent hover:text-accent-foreground",
+                    ? "bg-primary/10 text-primary" 
+                    : "text-gray-500 hover:bg-gray-100 hover:text-gray-900",
                   !isOpen && "justify-center py-2.5"
                 )}
                 style={{ animationDelay: `${index * 50}ms` }}
               >
-                <item.icon className={cn("h-5 w-5 shrink-0", isOpen && isActive && "animate-pulse-subtle")} />
+                <item.icon className={cn("h-5 w-5 shrink-0", isActive && "text-primary")} />
                 <span
                   className={cn(
                     "text-sm font-medium transition-all",
@@ -163,18 +163,18 @@ const Sidebar = ({ isOpen, onToggle }: SidebarProps) => {
           })}
         </nav>
         
-        <Separator className={cn("my-2", !isOpen && "mx-2")} />
+        <Separator className={cn("my-2 bg-gray-100", !isOpen && "mx-2")} />
         
-        <div className="px-2 py-2">
+        <div className="px-3 py-2">
           <Link
             to="/settings"
             className={cn(
-              "flex items-center gap-3 rounded-md px-3 py-2.5 text-foreground/70 transition-all hover:bg-accent hover:text-accent-foreground",
+              "flex items-center gap-3 rounded-xl px-3 py-2.5 text-gray-500 transition-all hover:bg-gray-100 hover:text-gray-900",
               !isOpen && "justify-center py-2.5",
-              location.pathname === "/settings" && "bg-primary text-primary-foreground"
+              location.pathname === "/settings" && "bg-primary/10 text-primary"
             )}
           >
-            <Settings className="h-5 w-5 shrink-0" />
+            <Settings className={cn("h-5 w-5 shrink-0", location.pathname === "/settings" && "text-primary")} />
             <span
               className={cn(
                 "text-sm font-medium transition-all",
@@ -188,12 +188,12 @@ const Sidebar = ({ isOpen, onToggle }: SidebarProps) => {
       </ScrollArea>
       
       <div className={cn(
-        "border-t p-4",
+        "border-t border-gray-100 p-4",
         !isOpen && "p-2"
       )}>
         <div
           className={cn(
-            "flex items-center gap-3 rounded-md bg-accent p-2.5 text-xs text-accent-foreground",
+            "flex items-center gap-3 rounded-xl bg-gray-50 p-2.5 text-xs text-gray-600",
             !isOpen && "justify-center"
           )}
         >
