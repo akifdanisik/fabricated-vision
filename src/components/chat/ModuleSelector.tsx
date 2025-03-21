@@ -3,7 +3,17 @@ import React from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
-import { FileWarning, Brain, Flask, Code, Database, Shield, Package, Search, Sparkles } from 'lucide-react';
+import { 
+  AlertTriangle, 
+  Brain, 
+  Beaker, 
+  Code, 
+  Database, 
+  ShieldAlert, 
+  Package, 
+  Search, 
+  Sparkles 
+} from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 export interface ModuleItem {
@@ -53,7 +63,7 @@ const availableModules: ModuleItem[] = [
     id: 'compliance-checker',
     title: 'Compliance Checker',
     description: 'Verify compliance with regulations',
-    icon: 'fileWarning',
+    icon: 'alertTriangle',
     category: 'security'
   },
   {
@@ -67,7 +77,7 @@ const availableModules: ModuleItem[] = [
     id: 'ai-lab',
     title: 'AI Laboratory',
     description: 'Experiment with AI models and algorithms',
-    icon: 'flask',
+    icon: 'beaker',
     category: 'development'
   },
   {
@@ -81,13 +91,13 @@ const availableModules: ModuleItem[] = [
 
 const getIconComponent = (iconName: string) => {
   switch(iconName) {
-    case 'shield': return <Shield className="h-6 w-6" />;
+    case 'shield': return <ShieldAlert className="h-6 w-6" />;
     case 'database': return <Database className="h-6 w-6" />;
     case 'package': return <Package className="h-6 w-6" />;
     case 'code': return <Code className="h-6 w-6" />;
-    case 'fileWarning': return <FileWarning className="h-6 w-6" />;
+    case 'alertTriangle': return <AlertTriangle className="h-6 w-6" />;
     case 'search': return <Search className="h-6 w-6" />;
-    case 'flask': return <Flask className="h-6 w-6" />;
+    case 'beaker': return <Beaker className="h-6 w-6" />;
     case 'sparkles': return <Sparkles className="h-6 w-6" />;
     default: return <Brain className="h-6 w-6" />;
   }
@@ -185,3 +195,4 @@ export const ModuleSelector = ({ open, setOpen, onSelectModule }: ModuleSelector
 };
 
 export default ModuleSelector;
+

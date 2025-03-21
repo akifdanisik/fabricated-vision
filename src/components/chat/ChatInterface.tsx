@@ -44,12 +44,10 @@ export default function ChatInterface() {
   const [isRecording, setIsRecording] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  // Actions for the preview panel
   const [previewActions, setPreviewActions] = useState<ActionItem[]>([]);
   const [previewTitle, setPreviewTitle] = useState('Suggested Actions');
   const [previewDescription, setPreviewDescription] = useState('Ask questions about inventory, suppliers, or orders to see actionable suggestions.');
-  
-  // Module selector state
+
   const [moduleSelectOpen, setModuleSelectOpen] = useState(false);
   const [activeModules, setActiveModules] = useState<ModuleItem[]>([]);
 
@@ -75,7 +73,6 @@ export default function ChatInterface() {
       const aiResponse = generateAIResponse(input);
       setMessages(prev => [...prev, aiResponse]);
       
-      // Update preview actions based on the user's query
       updatePreviewActions(input.toLowerCase());
     }, 1000);
   };
@@ -92,7 +89,6 @@ export default function ChatInterface() {
   };
 
   const handleSelectModule = (module: ModuleItem) => {
-    // Check if module is already active
     if (activeModules.some(m => m.id === module.id)) {
       toast.info(`${module.title} is already active`);
       setModuleSelectOpen(false);
@@ -102,7 +98,6 @@ export default function ChatInterface() {
     setActiveModules(prev => [...prev, module]);
     setModuleSelectOpen(false);
     
-    // Add AI response confirming module activation
     setTimeout(() => {
       const welcomeMessage: Message = {
         id: Date.now().toString(),
@@ -118,7 +113,6 @@ export default function ChatInterface() {
       };
       setMessages(prev => [...prev, welcomeMessage]);
       
-      // Update preview actions based on the new module
       updateModulePreviewActions(module);
     }, 500);
     
@@ -159,7 +153,6 @@ export default function ChatInterface() {
         }
       ]);
     } else if (module.id === 'supplier-assessment') {
-      // Set supplier assessment specific actions
       setPreviewTitle('Supplier Assessment');
       setPreviewDescription('Evaluate suppliers based on performance metrics');
       setPreviewActions([
@@ -183,7 +176,6 @@ export default function ChatInterface() {
         }
       ]);
     } else {
-      // Default actions for other modules
       setPreviewTitle(`${module.title}`);
       setPreviewDescription(`${module.description}`);
       setPreviewActions([
@@ -280,7 +272,6 @@ export default function ChatInterface() {
         }
       ]);
     } else {
-      // Default actions
       setPreviewTitle('Suggested Actions');
       setPreviewDescription('Ask questions about inventory, suppliers, or orders to see actionable suggestions.');
       setPreviewActions([]);
@@ -527,7 +518,6 @@ export default function ChatInterface() {
         />
       </ResizablePanel>
 
-      {/* Module Selector Dialog */}
       <ModuleSelector 
         open={moduleSelectOpen} 
         setOpen={setModuleSelectOpen} 

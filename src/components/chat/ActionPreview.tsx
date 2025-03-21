@@ -2,14 +2,14 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { ArrowRight, BarChart3, BoxIcon, ClipboardList, Package } from 'lucide-react';
+import { ArrowRight, BarChart3, Box, ClipboardList, Package, FileSearch, Shield, BookOpen, Link2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 export type ActionItem = {
   id: string;
   title: string;
   description: string;
-  icon: 'chart' | 'list' | 'package' | 'box';
+  icon: 'chart' | 'list' | 'package' | 'box' | 'fileSearch' | 'shield' | 'book' | 'link';
   actionLabel: string;
   onClick: () => void;
   category?: string;
@@ -31,9 +31,17 @@ export const getActionIcon = (iconName: ActionItem['icon']) => {
     case 'package':
       return <Package className="h-5 w-5" />;
     case 'box':
-      return <BoxIcon className="h-5 w-5" />;
+      return <Box className="h-5 w-5" />;
+    case 'fileSearch':
+      return <FileSearch className="h-5 w-5" />;
+    case 'shield':
+      return <Shield className="h-5 w-5" />;
+    case 'book':
+      return <BookOpen className="h-5 w-5" />;
+    case 'link':
+      return <Link2 className="h-5 w-5" />;
     default:
-      return <BoxIcon className="h-5 w-5" />;
+      return <Box className="h-5 w-5" />;
   }
 };
 
@@ -108,3 +116,4 @@ const ActionPreview: React.FC<ActionPreviewProps> = ({
 };
 
 export default ActionPreview;
+
