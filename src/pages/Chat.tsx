@@ -76,37 +76,6 @@ const Chat = () => {
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
-          
-          <div className="hidden">
-            <Tabs defaultValue="chat" value={activeTab} className="w-auto">
-              <TabsList className="bg-white border rounded-full p-1 shadow-sm">
-                <TabsTrigger 
-                  value="chat" 
-                  onClick={() => setActiveTab('chat')}
-                  className="rounded-full px-4 text-sm data-[state=active]:bg-primary data-[state=active]:text-white"
-                >
-                  <MessageSquare className="h-4 w-4 mr-2" />
-                  Chat
-                </TabsTrigger>
-                <TabsTrigger 
-                  value="suggestions" 
-                  onClick={() => setActiveTab('suggestions')}
-                  className="rounded-full px-4 text-sm data-[state=active]:bg-accent data-[state=active]:text-white"
-                >
-                  <Lightbulb className="h-4 w-4 mr-2" />
-                  Suggestions
-                </TabsTrigger>
-                <TabsTrigger 
-                  value="conversations" 
-                  onClick={() => setActiveTab('conversations')}
-                  className="rounded-full px-4 text-sm data-[state=active]:bg-primary-dark data-[state=active]:text-white"
-                >
-                  <Check className="h-4 w-4 mr-2" />
-                  Completed
-                </TabsTrigger>
-              </TabsList>
-            </Tabs>
-          </div>
         </div>
         
         <div className="flex-1 overflow-hidden">
