@@ -10,7 +10,9 @@ import {
   BarChart3, 
   Settings, 
   ChevronRight, 
-  ChevronLeft
+  ChevronLeft,
+  MessageSquare,
+  Workflow
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -32,6 +34,7 @@ const navItems: NavItem[] = [
   { title: "Dashboard", icon: LayoutDashboard, path: "/" },
   { title: "Inventory", icon: Box, path: "/inventory" },
   { title: "Suppliers", icon: Users, path: "/suppliers" },
+  { title: "Workflows", icon: Workflow, path: "/workflows" },
   { title: "Contracts", icon: FileText, path: "/contracts" },
   { title: "Compliance", icon: ShieldCheck, path: "/compliance" },
   { title: "Reports", icon: BarChart3, path: "/reports" },

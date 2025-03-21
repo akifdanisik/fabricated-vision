@@ -10,6 +10,7 @@ import Suppliers from "./pages/Suppliers";
 import Contracts from "./pages/Contracts";
 import Compliance from "./pages/Compliance";
 import Reports from "./pages/Reports";
+import Workflows from "./pages/Workflows";
 import NotFound from "./pages/NotFound";
 import { useEffect } from "react";
 
@@ -39,6 +40,7 @@ const App = () => {
             <Route path="/contracts" element={<Contracts />} />
             <Route path="/compliance" element={<Compliance />} />
             <Route path="/reports" element={<Reports />} />
+            <Route path="/workflows" element={<Workflows />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
