@@ -71,7 +71,7 @@ export default function RecentOrdersChart({ data, className }: RecentOrdersChart
                 fill="var(--primary)" 
                 radius={[4, 4, 0, 0]}
                 animationDuration={1500}
-                animationEasing="ease-out-expo"
+                animationEasing="ease-out"
               />
             </BarChart>
           </ResponsiveContainer>
