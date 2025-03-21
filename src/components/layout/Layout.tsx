@@ -8,10 +8,9 @@ import { cn } from "@/lib/utils";
 interface LayoutProps {
   children: React.ReactNode;
   fullWidth?: boolean;
-  hideNavbar?: boolean;
 }
 
-const Layout = ({ children, fullWidth = false, hideNavbar = false }: LayoutProps) => {
+const Layout = ({ children, fullWidth = false }: LayoutProps) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isMounted, setIsMounted] = useState(false);
   const location = useLocation();
@@ -59,7 +58,7 @@ const Layout = ({ children, fullWidth = false, hideNavbar = false }: LayoutProps
           isMounted ? "opacity-100" : "opacity-0"
         )}
       >
-        {!hideNavbar && <Navbar toggleSidebar={toggleSidebar} isSidebarOpen={isSidebarOpen} />}
+        <Navbar toggleSidebar={toggleSidebar} isSidebarOpen={isSidebarOpen} />
         
         <main className={cn(
           "flex-1 animate-fade-in",
