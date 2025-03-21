@@ -56,35 +56,35 @@ const ActionPreview: React.FC<ActionPreviewProps> = ({
   const categories = Object.keys(actionsByCategory);
 
   return (
-    <div className={cn("flex flex-col h-full overflow-auto p-4 bg-white", className)}>
+    <div className={cn("flex flex-col h-full overflow-auto p-4 bg-accent/5", className)}>
       <div className="mb-6">
-        <h2 className="text-base font-semibold text-neutral-800">{title}</h2>
-        {description && <p className="text-sm text-neutral-700 mt-1">{description}</p>}
+        <h2 className="text-xl font-medium text-primary">{title}</h2>
+        {description && <p className="text-sm text-gray-500 mt-1">{description}</p>}
       </div>
 
       {categories.map((category) => (
         <div key={category} className="mb-6">
-          <h3 className="text-sm font-semibold text-neutral-800 mb-3">{category}</h3>
+          <h3 className="text-sm font-medium text-gray-600 mb-3">{category}</h3>
           <div className="grid gap-3">
             {actionsByCategory[category].map((action) => (
               <Card 
                 key={action.id} 
-                className="bg-white hover:bg-neutral-50 transition-colors border-neutral-300 shadow-md"
+                className="bg-white hover:bg-primary-light/20 transition-colors border-primary-light/30"
               >
                 <CardHeader className="p-4 pb-2 flex flex-row items-start gap-3">
-                  <div className="p-2 rounded-md bg-neutral-200 text-neutral-800">
+                  <div className="p-2 rounded-md bg-primary-light/50 text-primary">
                     {getActionIcon(action.icon)}
                   </div>
                   <div className="flex-1">
-                    <CardTitle className="text-base font-semibold text-neutral-800">{action.title}</CardTitle>
-                    <CardDescription className="text-sm mt-1 text-neutral-600 font-medium">{action.description}</CardDescription>
+                    <CardTitle className="text-base">{action.title}</CardTitle>
+                    <CardDescription className="text-sm mt-1">{action.description}</CardDescription>
                   </div>
                 </CardHeader>
                 <CardFooter className="px-4 py-2 justify-end">
                   <Button 
                     variant="ghost" 
                     size="sm" 
-                    className="text-neutral-800 hover:text-neutral-900 hover:bg-neutral-200 font-medium" 
+                    className="text-primary hover:text-primary hover:bg-primary-light/30" 
                     onClick={action.onClick}
                   >
                     {action.actionLabel}
@@ -98,9 +98,9 @@ const ActionPreview: React.FC<ActionPreviewProps> = ({
       ))}
 
       {actions.length === 0 && (
-        <div className="flex flex-col items-center justify-center h-full text-center p-6 bg-neutral-100 rounded-lg border border-neutral-300 shadow-sm">
-          <Package className="h-12 w-12 mb-4 text-neutral-500" />
-          <p className="text-sm font-medium text-neutral-700 max-w-xs">Your preview will appear here</p>
+        <div className="flex flex-col items-center justify-center h-full text-gray-400 text-center p-6">
+          <Package className="h-12 w-12 mb-4 opacity-30" />
+          <p className="text-sm max-w-xs">Ask about inventory levels, suppliers, or orders to see actionable suggestions here.</p>
         </div>
       )}
     </div>
