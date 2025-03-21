@@ -43,9 +43,7 @@ const Navbar = ({
       <div className="flex items-center gap-2">
         
         
-        <h1 className="text-xl font-semibold tracking-tight text-gray-900 animate-fade-in">
-          {pageTitle}
-        </h1>
+        
       </div>
       
       <div className="flex items-center gap-4 md:gap-6">
