@@ -53,17 +53,19 @@ const Chat = () => {
         </div>
         
         <div className="flex-1 overflow-hidden">
-          <TabsContent value="chat" className="h-full m-0 p-0">
-            <ChatInterface />
-          </TabsContent>
-          
-          <TabsContent value="conversations" className="h-full m-0 p-0">
-            <RecentConversations />
-          </TabsContent>
-          
-          <TabsContent value="suggestions" className="h-full m-0 p-0">
-            <WorkflowSuggestions />
-          </TabsContent>
+          <Tabs defaultValue="chat" value={activeTab} className="h-full">
+            <TabsContent value="chat" className="h-full m-0 p-0">
+              <ChatInterface />
+            </TabsContent>
+            
+            <TabsContent value="conversations" className="h-full m-0 p-0">
+              <RecentConversations />
+            </TabsContent>
+            
+            <TabsContent value="suggestions" className="h-full m-0 p-0">
+              <WorkflowSuggestions />
+            </TabsContent>
+          </Tabs>
         </div>
       </div>
     </Layout>
