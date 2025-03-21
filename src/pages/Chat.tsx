@@ -15,15 +15,33 @@ const Chat = () => {
       <div className="flex flex-col h-[calc(100vh-140px)]">
         <Tabs defaultValue="chat" className="flex flex-col h-full">
           <div className="flex justify-between items-center mb-4">
-            <TabsList>
-              <TabsTrigger value="chat" onClick={() => setActiveTab('chat')}>Chat</TabsTrigger>
-              <TabsTrigger value="conversations" onClick={() => setActiveTab('conversations')}>Recent Conversations</TabsTrigger>
-              <TabsTrigger value="suggestions" onClick={() => setActiveTab('suggestions')}>Workflow Suggestions</TabsTrigger>
+            <TabsList className="rounded-full p-1">
+              <TabsTrigger 
+                value="chat" 
+                onClick={() => setActiveTab('chat')}
+                className="rounded-full px-4"
+              >
+                Chat
+              </TabsTrigger>
+              <TabsTrigger 
+                value="conversations" 
+                onClick={() => setActiveTab('conversations')}
+                className="rounded-full px-4"
+              >
+                Recent Conversations
+              </TabsTrigger>
+              <TabsTrigger 
+                value="suggestions" 
+                onClick={() => setActiveTab('suggestions')}
+                className="rounded-full px-4"
+              >
+                Workflow Suggestions
+              </TabsTrigger>
             </TabsList>
           </div>
           
           <TabsContent value="chat" className="flex-1 h-full">
-            <Card className="h-full overflow-hidden">
+            <Card className="h-full overflow-hidden rounded-2xl shadow-sm border-opacity-50">
               <CardHeader className="p-4 border-b">
                 <CardTitle className="text-xl">AI Procurement Assistant</CardTitle>
                 <CardDescription>
@@ -37,11 +55,19 @@ const Chat = () => {
           </TabsContent>
           
           <TabsContent value="conversations" className="flex-1 h-full">
-            <RecentConversations />
+            <Card className="h-full overflow-hidden rounded-2xl shadow-sm border-opacity-50">
+              <CardContent className="p-0 h-full">
+                <RecentConversations />
+              </CardContent>
+            </Card>
           </TabsContent>
           
           <TabsContent value="suggestions" className="flex-1 h-full">
-            <WorkflowSuggestions />
+            <Card className="h-full overflow-hidden rounded-2xl shadow-sm border-opacity-50">
+              <CardContent className="p-0 h-full">
+                <WorkflowSuggestions />
+              </CardContent>
+            </Card>
           </TabsContent>
         </Tabs>
       </div>

@@ -1,10 +1,8 @@
-
 import { useState, useRef, useEffect } from 'react';
 import { Send, Mic, ArrowRight, Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
+import { Card, CardContent } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { cn } from '@/lib/utils';
 
@@ -42,7 +40,6 @@ export default function ChatInterface() {
   const [isRecording, setIsRecording] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  // Scroll to bottom when messages change
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
@@ -51,7 +48,6 @@ export default function ChatInterface() {
     e.preventDefault();
     if (!input.trim()) return;
 
-    // Add user message
     const userMessage: Message = {
       id: Date.now().toString(),
       content: input,
@@ -62,7 +58,6 @@ export default function ChatInterface() {
     setMessages(prev => [...prev, userMessage]);
     setInput('');
 
-    // Simulate AI response after a short delay
     setTimeout(() => {
       const aiResponse = generateAIResponse(input);
       setMessages(prev => [...prev, aiResponse]);
@@ -78,10 +73,8 @@ export default function ChatInterface() {
 
   const toggleRecording = () => {
     setIsRecording(!isRecording);
-    // Here you would implement actual voice recording functionality
   };
 
-  // Generate a response based on the user's input
   const generateAIResponse = (userInput: string): Message => {
     const lowercaseInput = userInput.toLowerCase();
     
@@ -191,10 +184,10 @@ export default function ChatInterface() {
             )}
             
             <div className={cn(
-              "rounded-xl px-4 py-3",
+              "px-4 py-3",
               message.sender === 'user' 
-                ? "bg-primary text-primary-foreground rounded-tr-none"
-                : "bg-muted rounded-tl-none"
+                ? "bg-primary text-primary-foreground rounded-2xl rounded-tr-none"
+                : "bg-muted rounded-2xl rounded-tl-none"
             )}>
               <div className="whitespace-pre-line">{message.content}</div>
               
@@ -206,7 +199,7 @@ export default function ChatInterface() {
                       size="sm" 
                       variant={message.sender === 'ai' ? 'default' : 'outline'} 
                       className={cn(
-                        "text-xs",
+                        "text-xs rounded-full",
                         message.sender === 'ai' 
                           ? "bg-background text-foreground hover:bg-accent"
                           : "bg-primary-foreground text-primary hover:bg-primary-foreground/90"
@@ -235,7 +228,7 @@ export default function ChatInterface() {
         <div ref={messagesEndRef} />
       </div>
       
-      <Card className="mx-4 mb-4 mt-2">
+      <Card className="mx-4 mb-4 mt-2 border-opacity-50 rounded-2xl">
         <form onSubmit={handleSubmit} className="flex items-center p-2 gap-2">
           <Button 
             type="button" 
@@ -251,7 +244,7 @@ export default function ChatInterface() {
             value={input} 
             onChange={(e) => setInput(e.target.value)} 
             placeholder="Type your message..." 
-            className="flex-1 border-none focus-visible:ring-0 focus-visible:ring-offset-0"
+            className="flex-1 border-none focus-visible:ring-0 focus-visible:ring-offset-0 rounded-full"
           />
           
           <Button 
