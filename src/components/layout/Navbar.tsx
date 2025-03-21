@@ -15,10 +15,10 @@ interface NavbarProps {
   isSidebarOpen: boolean;
 }
 
-const Navbar = ({
+const Navbar: React.FC<NavbarProps> = ({
   toggleSidebar,
   isSidebarOpen
-}: NavbarProps) => {
+}) => {
   const location = useLocation();
   const [scrolled, setScrolled] = useState(false);
   const [pageTitle, setPageTitle] = useState('Dashboard');
