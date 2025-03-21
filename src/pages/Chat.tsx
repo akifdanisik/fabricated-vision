@@ -14,10 +14,13 @@ const Chat = () => {
   return (
     <Layout fullWidth>
       <div className="flex flex-col h-[calc(100vh-64px)]">
-        <div className="flex justify-between items-center px-6 py-4 border-b bg-accent-light">
+        <div className="flex justify-between items-center px-6 py-3 border-b">
           <div className="flex items-center space-x-2">
-            <h1 className="text-xl font-medium text-gray-900">AI Procurement Assistant</h1>
-            <Badge variant="secondary" className="bg-primary-light hover:bg-primary-light text-primary">100 Overall score</Badge>
+            <h1 className="text-xl font-medium">
+              <span className="text-gray-800">Procurement</span>
+              <span className="text-primary ml-1">Advanced</span>
+              <span className="ml-1">▼</span>
+            </h1>
           </div>
           
           <div className="flex">

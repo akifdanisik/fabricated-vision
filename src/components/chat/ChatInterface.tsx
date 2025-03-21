@@ -1,3 +1,4 @@
+
 import { useState, useRef, useEffect } from 'react';
 import { Send, Mic, ArrowRight, Plus, PaperclipIcon, Grid } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -7,6 +8,7 @@ import { cn } from '@/lib/utils';
 import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from '@/components/ui/resizable';
 import ActionPreview, { ActionItem } from './ActionPreview';
 import ModuleSelector, { ModuleItem } from './ModuleSelector';
+import WelcomeScreen from './WelcomeScreen';
 import { Badge } from '@/components/ui/badge';
 import { toast } from 'sonner';
 
@@ -22,27 +24,11 @@ interface Message {
 }
 
 export default function ChatInterface() {
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      id: '1',
-      content: 'Hello! I\'m your procurement assistant. How can I help you today?',
-      sender: 'ai',
-      timestamp: new Date(),
-      actions: [
-        { 
-          label: 'Check inventory', 
-          onClick: () => handleQuickPrompt('Check inventory status of critical items')
-        },
-        { 
-          label: 'View suppliers', 
-          onClick: () => handleQuickPrompt('Show me top suppliers')
-        },
-      ]
-    }
-  ]);
+  const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [isRecording, setIsRecording] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const [showWelcomeScreen, setShowWelcomeScreen] = useState(true);
 
   const [previewActions, setPreviewActions] = useState<ActionItem[]>([]);
   const [previewTitle, setPreviewTitle] = useState('Suggested Actions');
@@ -58,6 +44,11 @@ export default function ChatInterface() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!input.trim()) return;
+
+    // Hide welcome screen on first message
+    if (showWelcomeScreen) {
+      setShowWelcomeScreen(false);
+    }
 
     const userMessage: Message = {
       id: Date.now().toString(),
@@ -88,35 +79,43 @@ export default function ChatInterface() {
     setIsRecording(!isRecording);
   };
 
-  const handleSelectModule = (module: ModuleItem) => {
-    if (activeModules.some(m => m.id === module.id)) {
-      toast.info(`${module.title} is already active`);
+  const handleSelectModule = (moduleId: string) => {
+    const moduleItem = availableModules.find(m => m.id === moduleId);
+    
+    if (!moduleItem) return;
+    
+    if (showWelcomeScreen) {
+      setShowWelcomeScreen(false);
+    }
+    
+    if (activeModules.some(m => m.id === moduleId)) {
+      toast.info(`${moduleItem.title} is already active`);
       setModuleSelectOpen(false);
       return;
     }
     
-    setActiveModules(prev => [...prev, module]);
+    setActiveModules(prev => [...prev, moduleItem]);
     setModuleSelectOpen(false);
     
     setTimeout(() => {
       const welcomeMessage: Message = {
         id: Date.now().toString(),
-        content: `I've activated the ${module.title} module. You can now ask me about ${module.title.toLowerCase()} related questions.`,
+        content: `I've activated the ${moduleItem.title} module. You can now ask me about ${moduleItem.title.toLowerCase()} related questions.`,
         sender: 'ai',
         timestamp: new Date(),
         actions: [
           { 
-            label: `Tell me about ${module.title}`, 
-            onClick: () => handleQuickPrompt(`Explain what the ${module.title} module can do`)
+            label: `Tell me about ${moduleItem.title}`, 
+            onClick: () => handleQuickPrompt(`Explain what the ${moduleItem.title} module can do`)
           }
         ]
       };
       setMessages(prev => [...prev, welcomeMessage]);
       
-      updateModulePreviewActions(module);
+      updateModulePreviewActions(moduleItem);
     }, 500);
     
-    toast.success(`${module.title} module activated`);
+    toast.success(`${moduleItem.title} module activated`);
   };
 
   const updateModulePreviewActions = (module: ModuleItem) => {
@@ -374,6 +373,66 @@ export default function ChatInterface() {
     toast.info('Module deactivated');
   };
 
+  // Define availableModules here to use in handleSelectModule
+  const availableModules: ModuleItem[] = [
+    {
+      id: 'contract-risk',
+      title: 'Smart Contract Risk Management',
+      description: 'Analyze and identify risks in smart contracts',
+      icon: 'shield',
+      category: 'security'
+    },
+    {
+      id: 'data-analysis',
+      title: 'Market Data Analysis',
+      description: 'Analyze market data and trends for procurement',
+      icon: 'database',
+      category: 'data'
+    },
+    {
+      id: 'supplier-assessment',
+      title: 'Supplier Assessment',
+      description: 'Evaluate suppliers based on performance metrics',
+      icon: 'package',
+      category: 'analysis'
+    },
+    {
+      id: 'code-generator',
+      title: 'Code Generator',
+      description: 'Generate code snippets for integration',
+      icon: 'code',
+      category: 'development'
+    },
+    {
+      id: 'compliance-checker',
+      title: 'Compliance Checker',
+      description: 'Verify compliance with regulations',
+      icon: 'alertTriangle',
+      category: 'security'
+    },
+    {
+      id: 'research-assistant',
+      title: 'Research Assistant',
+      description: 'Search and summarize relevant information',
+      icon: 'search',
+      category: 'analysis'
+    },
+    {
+      id: 'ai-lab',
+      title: 'AI Laboratory',
+      description: 'Experiment with AI models and algorithms',
+      icon: 'beaker',
+      category: 'development'
+    },
+    {
+      id: 'insight-engine',
+      title: 'Insight Engine',
+      description: 'Generate insights from your procurement data',
+      icon: 'sparkles',
+      category: 'data'
+    }
+  ];
+
   return (
     <ResizablePanelGroup direction="horizontal" className="h-full">
       <ResizablePanel defaultSize={60} className="h-full">
@@ -400,58 +459,64 @@ export default function ChatInterface() {
           )}
           
           <div className="flex-1 overflow-y-auto px-6 py-6">
-            {messages.map((message) => (
-              <div 
-                key={message.id} 
-                className={cn(
-                  "mb-6 max-w-3xl",
-                  message.sender === 'user' ? "ml-auto" : ""
-                )}
-              >
-                <div className="flex items-start gap-4">
-                  {message.sender === 'ai' && (
-                    <Avatar className="mt-0.5 h-8 w-8 border">
-                      <AvatarFallback className="bg-primary text-primary-foreground text-xs">AI</AvatarFallback>
-                    </Avatar>
-                  )}
-                  
-                  <div className="flex-1">
-                    <div className={cn(
-                      "prose prose-sm px-4 py-3 rounded-2xl",
-                      message.sender === 'user' 
-                        ? "bg-primary text-primary-foreground ml-auto"
-                        : "bg-accent-light text-gray-900"
-                    )}>
-                      <div className="whitespace-pre-line">{message.content}</div>
-                    </div>
-                    
-                    {message.actions && message.actions.length > 0 && (
-                      <div className="flex flex-wrap gap-2 mt-3">
-                        {message.actions.map((action, index) => (
-                          <Button 
-                            key={index} 
-                            size="sm" 
-                            variant="outline" 
-                            className="text-xs rounded-full bg-white hover:bg-gray-50"
-                            onClick={action.onClick}
-                          >
-                            {action.label}
-                            <ArrowRight className="ml-1 h-3 w-3" />
-                          </Button>
-                        ))}
-                      </div>
+            {showWelcomeScreen ? (
+              <WelcomeScreen onModuleSelect={handleSelectModule} userName="Sam" />
+            ) : (
+              <>
+                {messages.map((message) => (
+                  <div 
+                    key={message.id} 
+                    className={cn(
+                      "mb-6 max-w-3xl",
+                      message.sender === 'user' ? "ml-auto" : ""
                     )}
+                  >
+                    <div className="flex items-start gap-4">
+                      {message.sender === 'ai' && (
+                        <Avatar className="mt-0.5 h-8 w-8 border">
+                          <AvatarFallback className="bg-primary text-primary-foreground text-xs">AI</AvatarFallback>
+                        </Avatar>
+                      )}
+                      
+                      <div className="flex-1">
+                        <div className={cn(
+                          "prose prose-sm px-4 py-3 rounded-2xl",
+                          message.sender === 'user' 
+                            ? "bg-primary text-primary-foreground ml-auto"
+                            : "bg-accent-light text-gray-900"
+                        )}>
+                          <div className="whitespace-pre-line">{message.content}</div>
+                        </div>
+                        
+                        {message.actions && message.actions.length > 0 && (
+                          <div className="flex flex-wrap gap-2 mt-3">
+                            {message.actions.map((action, index) => (
+                              <Button 
+                                key={index} 
+                                size="sm" 
+                                variant="outline" 
+                                className="text-xs rounded-full bg-white hover:bg-gray-50"
+                                onClick={action.onClick}
+                              >
+                                {action.label}
+                                <ArrowRight className="ml-1 h-3 w-3" />
+                              </Button>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                      
+                      {message.sender === 'user' && (
+                        <Avatar className="mt-0.5 h-8 w-8 border">
+                          <AvatarFallback>S</AvatarFallback>
+                        </Avatar>
+                      )}
+                    </div>
                   </div>
-                  
-                  {message.sender === 'user' && (
-                    <Avatar className="mt-0.5 h-8 w-8 border">
-                      <AvatarFallback>JD</AvatarFallback>
-                    </Avatar>
-                  )}
-                </div>
-              </div>
-            ))}
-            <div ref={messagesEndRef} />
+                ))}
+                <div ref={messagesEndRef} />
+              </>
+            )}
           </div>
           
           <div className="border-t p-4">
@@ -478,7 +543,7 @@ export default function ChatInterface() {
               <Input 
                 value={input} 
                 onChange={(e) => setInput(e.target.value)} 
-                placeholder="Tell us to..." 
+                placeholder="Enter a prompt here" 
                 className="flex-1 border-none focus-visible:ring-0 focus-visible:ring-offset-0"
               />
               
@@ -521,7 +586,7 @@ export default function ChatInterface() {
       <ModuleSelector 
         open={moduleSelectOpen} 
         setOpen={setModuleSelectOpen} 
-        onSelectModule={handleSelectModule} 
+        onSelectModule={(module) => handleSelectModule(module.id)} 
       />
     </ResizablePanelGroup>
   );
