@@ -9,8 +9,8 @@ import WorkflowSuggestions from '@/components/workflow/WorkflowSuggestions';
 const Chat = () => {
   const [activeTab, setActiveTab] = useState('chat');
   return (
-    <Layout fullWidth>
-      <div className="flex flex-col h-[calc(100vh-64px)]">
+    <Layout fullWidth hideNavbar>
+      <div className="flex flex-col h-[calc(100vh-0px)]">
         <div className="flex-1 overflow-hidden">
           <Tabs value={activeTab} className="h-full">
             <TabsContent value="chat" className="h-full m-0 p-0">
