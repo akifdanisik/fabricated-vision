@@ -6,7 +6,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import RecentConversations from '@/components/chat/RecentConversations';
 import WorkflowSuggestions from '@/components/workflow/WorkflowSuggestions';
 import { Badge } from '@/components/ui/badge';
-import { Bell, Check, Lightbulb, MessageSquare, Settings, User } from 'lucide-react';
+import { Bell, Check, Settings, User } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { 
