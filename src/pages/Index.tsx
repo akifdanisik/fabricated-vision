@@ -1,39 +1,17 @@
 
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Layout from '@/components/layout/Layout';
 import MetricsCard from '@/components/dashboard/MetricsCard';
 import AlertsSection from '@/components/dashboard/AlertsSection';
-import ActivitySection from '@/components/dashboard/ActivitySection';
-import RecentOrdersChart from '@/components/dashboard/RecentOrdersChart';
 import ChatInterface from '@/components/chat/ChatInterface';
-import { CircleAlert, DollarSign, Package, TrendingDown, Users } from 'lucide-react';
+import WorkflowPreview from '@/components/workflow/WorkflowPreview';
+import { CircleAlert, Brain, Package, AlertTriangle, Workflow } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 const Dashboard = () => {
-  const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState('dashboard');
-  
-  useEffect(() => {
-    // Simulate loading
-    const timer = setTimeout(() => {
-      setLoading(false);
-    }, 1000);
-    
-    return () => clearTimeout(timer);
-  }, []);
-  
-  // Mock data for recent orders chart
-  const recentOrdersData = [
-    { name: 'Mon', value: 14000 },
-    { name: 'Tue', value: 18000 },
-    { name: 'Wed', value: 16000 },
-    { name: 'Thu', value: 22000 },
-    { name: 'Fri', value: 30000 },
-    { name: 'Sat', value: 22000 },
-    { name: 'Sun', value: 24000 },
-  ];
+  const navigate = useNavigate();
   
   // Mock data for alerts
   const alerts = [
@@ -59,156 +37,103 @@ const Dashboard = () => {
       time: '1 day ago',
     },
   ];
-  
-  // Mock data for activities
-  const activities = [
-    {
-      id: '1',
-      type: 'order' as const,
-      title: 'New order placed',
-      description: 'Order #12345 for API-24X was placed.',
-      time: '15 minutes ago',
-      user: {
-        name: 'John Doe',
-        initials: 'JD',
-      },
-    },
-    {
-      id: '2',
-      type: 'approval' as const,
-      title: 'RFQ approved',
-      description: 'RFQ for excipient supplies was approved.',
-      time: '3 hours ago',
-      user: {
-        name: 'Sarah Smith',
-        initials: 'SS',
-      },
-    },
-    {
-      id: '3',
-      type: 'supplier' as const,
-      title: 'New supplier added',
-      description: 'BioTech Materials was added as a supplier.',
-      time: '1 day ago',
-      user: {
-        name: 'Mark Johnson',
-        initials: 'MJ',
-      },
-    },
-    {
-      id: '4',
-      type: 'inventory' as const,
-      title: 'Inventory updated',
-      description: 'Received 1000 units of packaging materials.',
-      time: '2 days ago',
-      user: {
-        name: 'Lisa Chen',
-        initials: 'LC',
-      },
-    },
-  ];
 
   return (
     <Layout>
       <div className="space-y-6 pb-6">
-        <Tabs defaultValue="dashboard" className="w-full">
-          <TabsList className="mb-4">
-            <TabsTrigger value="dashboard" onClick={() => setActiveTab('dashboard')}>Dashboard</TabsTrigger>
-            <TabsTrigger value="chat" onClick={() => setActiveTab('chat')}>AI Assistant</TabsTrigger>
-          </TabsList>
-          
-          <TabsContent value="dashboard" className="space-y-6">
-            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-              <MetricsCard
-                title="Total Spend"
-                value={1250000}
-                prefix="$"
-                icon={DollarSign}
-                description="Monthly Expenditure"
-                trend={5.7}
-                trendDirection="up"
-                trendLabel="vs last month"
-                loading={loading}
-              />
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="lg:col-span-2 space-y-6">
+            {/* Critical Metrics */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <Card className="bg-red-50 dark:bg-red-900/20 border-red-100 dark:border-red-800/30">
+                <CardContent className="p-4 flex items-center justify-between">
+                  <div>
+                    <p className="text-xs font-medium text-red-800 dark:text-red-300">Low Stock Items</p>
+                    <h3 className="text-2xl font-bold text-red-900 dark:text-red-200">3</h3>
+                  </div>
+                  <AlertTriangle className="h-8 w-8 text-red-500" />
+                </CardContent>
+              </Card>
               
-              <MetricsCard
-                title="Cost Savings"
-                value={325000}
-                prefix="$"
-                suffix=" YTD"
-                icon={TrendingDown}
-                trend={12.5}
-                trendDirection="up"
-                loading={loading}
-              />
+              <Card className="bg-amber-50 dark:bg-amber-900/20 border-amber-100 dark:border-amber-800/30">
+                <CardContent className="p-4 flex items-center justify-between">
+                  <div>
+                    <p className="text-xs font-medium text-amber-800 dark:text-amber-300">Pending Approvals</p>
+                    <h3 className="text-2xl font-bold text-amber-900 dark:text-amber-200">5</h3>
+                  </div>
+                  <CircleAlert className="h-8 w-8 text-amber-500" />
+                </CardContent>
+              </Card>
               
-              <MetricsCard
-                title="Active Suppliers"
-                value={48}
-                icon={Users}
-                trend={2}
-                trendDirection="up"
-                trendLabel="new this month"
-                loading={loading}
-              />
-              
-              <MetricsCard
-                title="Inventory Items"
-                value={246}
-                icon={Package}
-                trend={-3}
-                trendDirection="down"
-                trendLabel="low stock items"
-                loading={loading}
-              />
-            </div>
-            
-            <div className="grid gap-4 md:grid-cols-7">
-              <RecentOrdersChart data={recentOrdersData} className="md:col-span-4" />
-              
-              <Card className="md:col-span-3 overflow-hidden">
-                <CardHeader className="flex flex-row items-center justify-between bg-muted/50 p-4">
-                  <CardTitle className="text-md">Quick Actions</CardTitle>
-                </CardHeader>
-                <CardContent className="p-4 space-y-3">
-                  <Button className="w-full justify-start gap-2 text-left">
-                    <Package className="h-4 w-4" />
-                    <span>Create new RFQ</span>
-                  </Button>
-                  
-                  <Button className="w-full justify-start gap-2 text-left">
-                    <Users className="h-4 w-4" />
-                    <span>Add new supplier</span>
-                  </Button>
-                  
-                  <Button className="w-full justify-start gap-2 text-left">
-                    <CircleAlert className="h-4 w-4" />
-                    <span>View all alerts</span>
-                  </Button>
+              <Card className="bg-blue-50 dark:bg-blue-900/20 border-blue-100 dark:border-blue-800/30">
+                <CardContent className="p-4 flex items-center justify-between">
+                  <div>
+                    <p className="text-xs font-medium text-blue-800 dark:text-blue-300">Active Workflows</p>
+                    <h3 className="text-2xl font-bold text-blue-900 dark:text-blue-200">2</h3>
+                  </div>
+                  <Workflow className="h-8 w-8 text-blue-500" />
                 </CardContent>
               </Card>
             </div>
             
-            <div className="grid gap-4 md:grid-cols-2">
-              <AlertsSection alerts={alerts} />
-              <ActivitySection activities={activities} />
-            </div>
-          </TabsContent>
+            {/* Active Workflow */}
+            <WorkflowPreview compact={true} />
+            
+            {/* Alerts Section */}
+            <AlertsSection alerts={alerts} />
+          </div>
           
-          <TabsContent value="chat" className="h-[calc(100vh-180px)]">
-            <Card className="h-full overflow-hidden">
-              <CardHeader className="p-4 border-b">
-                <CardTitle className="text-xl">AI Procurement Assistant</CardTitle>
-                <CardDescription>
-                  Ask questions or give commands to manage your procurement processes
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="p-0 h-[calc(100%-80px)]">
-                <ChatInterface />
-              </CardContent>
-            </Card>
-          </TabsContent>
-        </Tabs>
+          {/* Chat Interface Column */}
+          <Card className="h-[calc(100vh-160px)]">
+            <CardHeader className="p-4 border-b flex items-center gap-2">
+              <Brain className="h-5 w-5 text-primary" />
+              <div>
+                <CardTitle className="text-lg">AI Assistant</CardTitle>
+                <CardDescription>Ask anything about your procurement</CardDescription>
+              </div>
+            </CardHeader>
+            <CardContent className="p-0 h-[calc(100%-80px)]">
+              <ChatInterface />
+            </CardContent>
+          </Card>
+        </div>
+        
+        {/* Quick Actions */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <Button 
+            className="h-auto py-4 flex flex-col items-center justify-center gap-2" 
+            onClick={() => navigate('/chat')}
+          >
+            <Brain className="h-6 w-6" />
+            <span>Open Full Chat</span>
+          </Button>
+          
+          <Button 
+            className="h-auto py-4 flex flex-col items-center justify-center gap-2" 
+            onClick={() => navigate('/workflows')}
+          >
+            <Workflow className="h-6 w-6" />
+            <span>Manage Workflows</span>
+          </Button>
+          
+          <Button 
+            className="h-auto py-4 flex flex-col items-center justify-center gap-2" 
+            variant="outline"
+            onClick={() => navigate('/inventory')}
+          >
+            <Package className="h-6 w-6" />
+            <span>View Inventory</span>
+          </Button>
+          
+          <Button 
+            className="h-auto py-4 flex flex-col items-center justify-center gap-2" 
+            variant="outline"
+            onClick={() => navigate('/suppliers')}
+          >
+            <CircleAlert className="h-6 w-6" />
+            <span>Address Alerts</span>
+          </Button>
+        </div>
       </div>
     </Layout>
   );

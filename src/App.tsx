@@ -11,6 +11,7 @@ import Contracts from "./pages/Contracts";
 import Compliance from "./pages/Compliance";
 import Reports from "./pages/Reports";
 import Workflows from "./pages/Workflows";
+import Chat from "./pages/Chat";
 import NotFound from "./pages/NotFound";
 import { useEffect } from "react";
 
@@ -35,6 +36,7 @@ const App = () => {
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Dashboard />} />
+            <Route path="/chat" element={<Chat />} />
             <Route path="/inventory" element={<Inventory />} />
             <Route path="/suppliers" element={<Suppliers />} />
             <Route path="/contracts" element={<Contracts />} />

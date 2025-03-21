@@ -12,7 +12,8 @@ import {
   ChevronRight, 
   ChevronLeft,
   MessageSquare,
-  Workflow
+  Workflow,
+  Brain
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -28,13 +29,15 @@ interface NavItem {
   title: string;
   icon: any;
   path: string;
+  priority?: boolean;
 }
 
 const navItems: NavItem[] = [
   { title: "Dashboard", icon: LayoutDashboard, path: "/" },
+  { title: "Chat", icon: MessageSquare, path: "/chat", priority: true },
+  { title: "Workflows", icon: Workflow, path: "/workflows", priority: true },
   { title: "Inventory", icon: Box, path: "/inventory" },
   { title: "Suppliers", icon: Users, path: "/suppliers" },
-  { title: "Workflows", icon: Workflow, path: "/workflows" },
   { title: "Contracts", icon: FileText, path: "/contracts" },
   { title: "Compliance", icon: ShieldCheck, path: "/compliance" },
   { title: "Reports", icon: BarChart3, path: "/reports" },
@@ -48,6 +51,10 @@ const Sidebar = ({ isOpen, onToggle }: SidebarProps) => {
   useEffect(() => {
     setIsMounted(true);
   }, []);
+
+  // Separate priority nav items
+  const priorityItems = navItems.filter(item => item.priority);
+  const standardItems = navItems.filter(item => !item.priority);
 
   return (
     <div
@@ -86,8 +93,43 @@ const Sidebar = ({ isOpen, onToggle }: SidebarProps) => {
       </div>
       
       <ScrollArea className="flex-1 pt-1">
+        {/* Priority nav items */}
         <nav className="grid gap-1 px-2 py-4">
-          {navItems.map((item, index) => {
+          {priorityItems.map((item, index) => {
+            const isActive = location.pathname === item.path;
+            
+            return (
+              <Link
+                key={item.path}
+                to={item.path}
+                className={cn(
+                  "group flex items-center gap-3 rounded-md px-3 py-2.5 transition-all",
+                  isActive 
+                    ? "bg-primary text-primary-foreground" 
+                    : "text-foreground/70 hover:bg-accent hover:text-accent-foreground",
+                  !isOpen && "justify-center py-2.5"
+                )}
+                style={{ animationDelay: `${index * 50}ms` }}
+              >
+                <item.icon className={cn("h-5 w-5 shrink-0", isOpen && isActive && "animate-pulse-subtle")} />
+                <span
+                  className={cn(
+                    "text-sm font-medium transition-all",
+                    isOpen ? "opacity-100" : "w-0 opacity-0"
+                  )}
+                >
+                  {item.title}
+                </span>
+              </Link>
+            );
+          })}
+        </nav>
+        
+        <Separator className={cn("my-2", !isOpen && "mx-2")} />
+        
+        {/* Standard nav items */}
+        <nav className="grid gap-1 px-2 py-2">
+          {standardItems.map((item, index) => {
             const isActive = location.pathname === item.path;
             
             return (
@@ -152,12 +194,12 @@ const Sidebar = ({ isOpen, onToggle }: SidebarProps) => {
           )}
         >
           {isOpen ? (
-            <div className="text-center w-full">
+            <div className="text-center w-full flex items-center justify-center gap-2">
+              <Brain className="h-4 w-4 text-primary" />
               <p className="text-xs font-medium">Fabricated AI</p>
-              <p className="text-xs text-muted-foreground">v1.0.0</p>
             </div>
           ) : (
-            <span className="text-xs font-medium">v1.0</span>
+            <Brain className="h-4 w-4 text-primary" />
           )}
         </div>
       </div>
