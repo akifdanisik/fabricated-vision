@@ -69,8 +69,12 @@ const Sidebar = ({ isOpen, onToggle }: SidebarProps) => {
         isOpen ? "px-6" : "px-2"
       )}>
         <Link to="/" className="flex items-center gap-2 py-4">
-          <div className="flex h-8 w-8 items-center justify-center rounded-md bg-primary">
-            <span className="text-lg font-bold text-primary-foreground">F</span>
+          <div className="flex h-8 w-8 items-center justify-center">
+            <img 
+              src="/lovable-uploads/0956f925-373d-40e5-a6ce-8d986514ff7f.png" 
+              alt="Fabricated Logo" 
+              className="h-8 w-auto"
+            />
           </div>
           <span 
             className={cn(
