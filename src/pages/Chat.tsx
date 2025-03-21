@@ -14,15 +14,15 @@ const Chat = () => {
   return (
     <Layout fullWidth>
       <div className="flex flex-col h-[calc(100vh-64px)]">
-        <div className="flex justify-between items-center px-6 py-4 border-b">
+        <div className="flex justify-between items-center px-6 py-4 border-b bg-accent-light">
           <div className="flex items-center space-x-2">
             <h1 className="text-xl font-medium text-gray-900">AI Procurement Assistant</h1>
-            <Badge variant="secondary" className="bg-gray-100 hover:bg-gray-100 text-gray-500">100 Overall score</Badge>
+            <Badge variant="secondary" className="bg-primary-light hover:bg-primary-light text-primary">100 Overall score</Badge>
           </div>
           
           <div className="flex">
             <Tabs defaultValue="chat" className="w-auto">
-              <TabsList className="bg-white border rounded-full p-1">
+              <TabsList className="bg-white border rounded-full p-1 shadow-sm">
                 <TabsTrigger 
                   value="chat" 
                   onClick={() => setActiveTab('chat')}
@@ -34,7 +34,7 @@ const Chat = () => {
                 <TabsTrigger 
                   value="suggestions" 
                   onClick={() => setActiveTab('suggestions')}
-                  className="rounded-full px-4 text-sm data-[state=active]:bg-primary data-[state=active]:text-white"
+                  className="rounded-full px-4 text-sm data-[state=active]:bg-accent data-[state=active]:text-white"
                 >
                   <Lightbulb className="h-4 w-4 mr-2" />
                   Suggestions
@@ -42,7 +42,7 @@ const Chat = () => {
                 <TabsTrigger 
                   value="conversations" 
                   onClick={() => setActiveTab('conversations')}
-                  className="rounded-full px-4 text-sm data-[state=active]:bg-primary data-[state=active]:text-white"
+                  className="rounded-full px-4 text-sm data-[state=active]:bg-primary-dark data-[state=active]:text-white"
                 >
                   <Check className="h-4 w-4 mr-2" />
                   Completed

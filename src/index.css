@@ -1,4 +1,3 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -14,17 +13,20 @@
     --popover: 0 0% 100%;
     --popover-foreground: 222 47% 11%;
 
-    --primary: 210 100% 50%;
+    --primary: 220 90% 56%;
     --primary-foreground: 210 40% 98%;
+    --primary-light: 220 90% 96%;
+    --primary-dark: 220 90% 46%;
 
-    --secondary: 210 40% 96%;
+    --secondary: 220 14% 94%;
     --secondary-foreground: 222 47% 11%;
 
     --muted: 210 40% 96%;
     --muted-foreground: 215 16% 47%;
 
-    --accent: 210 60% 95%;
-    --accent-foreground: 222 47% 11%;
+    --accent: 263 85% 60%;
+    --accent-foreground: 210 40% 98%;
+    --accent-light: 263 85% 95%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 210 40% 98%;
