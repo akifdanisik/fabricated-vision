@@ -21,7 +21,7 @@ const Chat = () => {
           </div>
           
           <div className="flex">
-            <Tabs defaultValue="chat" className="w-auto">
+            <Tabs defaultValue="chat" value={activeTab} className="w-auto">
               <TabsList className="bg-white border rounded-full p-1 shadow-sm">
                 <TabsTrigger 
                   value="chat" 
@@ -53,7 +53,7 @@ const Chat = () => {
         </div>
         
         <div className="flex-1 overflow-hidden">
-          <Tabs defaultValue="chat" value={activeTab} className="h-full">
+          <Tabs value={activeTab} className="h-full">
             <TabsContent value="chat" className="h-full m-0 p-0">
               <ChatInterface />
             </TabsContent>

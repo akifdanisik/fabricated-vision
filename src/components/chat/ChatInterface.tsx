@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { cn } from '@/lib/utils';
 import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from '@/components/ui/resizable';
+import ActionPreview, { ActionItem } from './ActionPreview';
 
 interface Message {
   id: string;
@@ -41,6 +42,11 @@ export default function ChatInterface() {
   const [isRecording, setIsRecording] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
+  // Actions for the preview panel
+  const [previewActions, setPreviewActions] = useState<ActionItem[]>([]);
+  const [previewTitle, setPreviewTitle] = useState('Suggested Actions');
+  const [previewDescription, setPreviewDescription] = useState('Ask questions about inventory, suppliers, or orders to see actionable suggestions.');
+
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
@@ -62,6 +68,9 @@ export default function ChatInterface() {
     setTimeout(() => {
       const aiResponse = generateAIResponse(input);
       setMessages(prev => [...prev, aiResponse]);
+      
+      // Update preview actions based on the user's query
+      updatePreviewActions(input.toLowerCase());
     }, 1000);
   };
 
@@ -74,6 +83,93 @@ export default function ChatInterface() {
 
   const toggleRecording = () => {
     setIsRecording(!isRecording);
+  };
+
+  const updatePreviewActions = (query: string) => {
+    if (query.includes('inventory') || query.includes('stock')) {
+      setPreviewTitle('Inventory Management');
+      setPreviewDescription('Take action on your inventory levels');
+      setPreviewActions([
+        {
+          id: '1',
+          title: 'Create Purchase Order',
+          description: 'Create a new purchase order for low stock items',
+          icon: 'package',
+          actionLabel: 'Create Order',
+          onClick: () => window.location.href = '/inventory/new-order',
+          category: 'Orders'
+        },
+        {
+          id: '2',
+          title: 'Inventory Analysis',
+          description: 'View detailed analysis of current inventory levels',
+          icon: 'chart',
+          actionLabel: 'View Analysis',
+          onClick: () => window.location.href = '/reports/inventory',
+          category: 'Reports'
+        },
+        {
+          id: '3',
+          title: 'Set Reorder Points',
+          description: 'Configure automatic reorder points for critical items',
+          icon: 'list',
+          actionLabel: 'Configure',
+          onClick: () => window.location.href = '/inventory/settings',
+          category: 'Settings'
+        }
+      ]);
+    } else if (query.includes('supplier') || query.includes('vendor')) {
+      setPreviewTitle('Supplier Management');
+      setPreviewDescription('Manage your supplier relationships');
+      setPreviewActions([
+        {
+          id: '1',
+          title: 'Supplier Performance',
+          description: 'View performance metrics for all suppliers',
+          icon: 'chart',
+          actionLabel: 'View Performance',
+          onClick: () => window.location.href = '/suppliers/performance',
+          category: 'Analytics'
+        },
+        {
+          id: '2',
+          title: 'Add New Supplier',
+          description: 'Register a new supplier in the system',
+          icon: 'list',
+          actionLabel: 'Add Supplier',
+          onClick: () => window.location.href = '/suppliers/new',
+          category: 'Actions'
+        }
+      ]);
+    } else if (query.includes('order') || query.includes('purchase')) {
+      setPreviewTitle('Order Management');
+      setPreviewDescription('Manage and create purchase orders');
+      setPreviewActions([
+        {
+          id: '1',
+          title: 'Create Purchase Order',
+          description: 'Create a new purchase order',
+          icon: 'package',
+          actionLabel: 'Create Order',
+          onClick: () => window.location.href = '/inventory/new-order',
+          category: 'Actions'
+        },
+        {
+          id: '2',
+          title: 'View Recent Orders',
+          description: 'See all recent purchase orders',
+          icon: 'list',
+          actionLabel: 'View Orders',
+          onClick: () => window.location.href = '/inventory/orders',
+          category: 'Reports'
+        }
+      ]);
+    } else {
+      // Default actions
+      setPreviewTitle('Suggested Actions');
+      setPreviewDescription('Ask questions about inventory, suppliers, or orders to see actionable suggestions.');
+      setPreviewActions([]);
+    }
   };
 
   const generateAIResponse = (userInput: string): Message => {
@@ -169,7 +265,7 @@ export default function ChatInterface() {
 
   return (
     <ResizablePanelGroup direction="horizontal" className="h-full">
-      <ResizablePanel defaultSize={75} className="h-full">
+      <ResizablePanel defaultSize={60} className="h-full">
         <div className="flex flex-col h-full bg-white">
           <div className="flex-1 overflow-y-auto px-6 py-6">
             {messages.map((message) => (
@@ -192,7 +288,7 @@ export default function ChatInterface() {
                       "prose prose-sm px-4 py-3 rounded-2xl",
                       message.sender === 'user' 
                         ? "bg-primary text-primary-foreground ml-auto"
-                        : "bg-gray-100 text-gray-900"
+                        : "bg-accent-light text-gray-900"
                     )}>
                       <div className="whitespace-pre-line">{message.content}</div>
                     </div>
@@ -281,20 +377,12 @@ export default function ChatInterface() {
       
       <ResizableHandle withHandle />
       
-      <ResizablePanel defaultSize={25} className="h-full">
-        <div className="h-full bg-white border-l p-4">
-          <div className="mb-4">
-            <h3 className="text-sm font-medium text-gray-900">Identify any gaps</h3>
-          </div>
-          
-          <div className="space-y-4 text-sm text-gray-600">
-            <p>What specific methods can be used to gather information during the client briefing?</p>
-            <p>How can I effectively manage client expectations throughout the design process?</p>
-            <p>What should I do if the client's feedback doesn't align with my design vision?</p>
-            <p>How can I speed up my procurement processes?</p>
-            <p>What are best practices for supplier negotiations?</p>
-          </div>
-        </div>
+      <ResizablePanel defaultSize={40} className="h-full">
+        <ActionPreview 
+          title={previewTitle}
+          description={previewDescription}
+          actions={previewActions}
+        />
       </ResizablePanel>
     </ResizablePanelGroup>
   );
