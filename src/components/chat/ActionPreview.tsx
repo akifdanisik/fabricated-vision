@@ -64,7 +64,7 @@ const ActionPreview: React.FC<ActionPreviewProps> = ({
   const categories = Object.keys(actionsByCategory);
 
   return (
-    <div className={cn("flex flex-col h-full overflow-auto p-4 bg-white", className)}>
+    <div className={cn("flex flex-col h-full overflow-auto p-4 bg-gray-50", className)}>
       <div className="mb-6">
         <h2 className="text-xl font-medium text-primary">{title}</h2>
         {description && <p className="text-sm text-gray-500 mt-1">{description}</p>}
@@ -106,7 +106,7 @@ const ActionPreview: React.FC<ActionPreviewProps> = ({
       ))}
 
       {actions.length === 0 && (
-        <div className="flex flex-col items-center justify-center h-full text-gray-400 text-center p-6">
+        <div className="flex flex-col items-center justify-center h-full text-gray-400 text-center p-6 bg-gray-50">
           <img 
             src="/lovable-uploads/8909c790-d73e-4ca4-99fb-106aa9109740.png" 
             alt="Fabricated Logo" 
