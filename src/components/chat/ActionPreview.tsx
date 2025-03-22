@@ -62,7 +62,7 @@ const ActionPreview: React.FC<ActionPreviewProps> = ({
   const categories = Object.keys(actionsByCategory);
 
   return (
-    <div className={cn("flex flex-col h-full overflow-auto p-4 bg-accent-pale/20", className)}>
+    <div className={cn("flex flex-col h-full overflow-auto p-4 bg-[#F1F0FB]", className)}>
       <div className="mb-6">
         <h2 className="text-xl font-medium text-primary-dark">{title}</h2>
         {description && <p className="text-sm text-accent-medium mt-1">{description}</p>}
