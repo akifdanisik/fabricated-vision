@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
@@ -51,7 +50,6 @@ const ActionPreview: React.FC<ActionPreviewProps> = ({
   actions,
   className 
 }) => {
-  // Group actions by category if provided
   const actionsByCategory = actions.reduce((acc, action) => {
     const category = action.category || 'Actions';
     if (!acc[category]) {
