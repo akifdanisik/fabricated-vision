@@ -5,6 +5,7 @@ import WorkflowPreview from '@/components/workflow/WorkflowPreview';
 import { CircleAlert, Brain, Link, AlertTriangle, Workflow, Calendar, FileCheck } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+
 const Dashboard = () => {
   const navigate = useNavigate();
 
@@ -157,4 +158,5 @@ const Dashboard = () => {
       </div>
     </Layout>;
 };
+
 export default Dashboard;

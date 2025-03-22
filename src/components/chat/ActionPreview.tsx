@@ -108,7 +108,7 @@ const ActionPreview: React.FC<ActionPreviewProps> = ({
       {actions.length === 0 && (
         <div className="flex flex-col items-center justify-center h-full text-gray-400 text-center p-6">
           <img 
-            src="/lovable-uploads/0f378f40-c5be-494e-a251-1513b467af1d.png" 
+            src="/lovable-uploads/8909c790-d73e-4ca4-99fb-106aa9109740.png" 
             alt="Fabricated Logo" 
             className="h-15 w-auto mb-4 opacity-30" 
           />

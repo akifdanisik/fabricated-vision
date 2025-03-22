@@ -69,13 +69,13 @@ const Sidebar = ({ isOpen, onToggle }: SidebarProps) => {
         <Link to="/" className="flex items-center gap-2 py-4">
           {isOpen ? (
             <img 
-              src="/lovable-uploads/0f378f40-c5be-494e-a251-1513b467af1d.png" 
+              src="/lovable-uploads/8909c790-d73e-4ca4-99fb-106aa9109740.png" 
               alt="Fabricated Logo" 
               className="h-13 w-auto" 
             />
           ) : (
             <div className="flex h-11 w-11 items-center justify-center">
-              <span className="text-2xl font-serif font-bold">F</span>
+              <span className="text-2xl font-serif font-bold text-blue-600">F</span>
             </div>
           )}
         </Link>
