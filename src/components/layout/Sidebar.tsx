@@ -13,7 +13,8 @@ import {
   ChevronLeft,
   MessageSquare,
   Workflow,
-  Brain
+  Brain,
+  Package
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -36,6 +37,7 @@ const navItems: NavItem[] = [
   { title: "Dashboard", icon: LayoutDashboard, path: "/" },
   { title: "Chat", icon: MessageSquare, path: "/chat", priority: true },
   { title: "Workflows", icon: Workflow, path: "/workflows", priority: true },
+  { title: "Live Deals", icon: Package, path: "/live-deals", priority: true },
   { title: "Inventory", icon: Box, path: "/inventory" },
   { title: "Suppliers", icon: Users, path: "/suppliers" },
   { title: "Contracts", icon: FileText, path: "/contracts" },
