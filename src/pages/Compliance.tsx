@@ -10,6 +10,16 @@ import { ShieldCheck, FileText, ClipboardCheck, Tag } from 'lucide-react';
 import { Category } from '@/components/categories/CategoryBadge';
 import CategoryFilter from '@/components/categories/CategoryFilter';
 
+// Define interfaces to fix the type errors
+interface ComplianceComponentProps {
+  selectedCategories: Category[];
+}
+
+// Wrap the components with HOCs that accept the required props
+const EnhancedComplianceOverview = (props: ComplianceComponentProps) => <ComplianceOverview {...props} />;
+const EnhancedDocumentManagement = (props: ComplianceComponentProps) => <DocumentManagement {...props} />;
+const EnhancedAuditReadiness = (props: ComplianceComponentProps) => <AuditReadiness {...props} />;
+
 const Compliance = () => {
   const [selectedCategories, setSelectedCategories] = useState<Category[]>([]);
 
@@ -52,15 +62,15 @@ const Compliance = () => {
               </TabsList>
               
               <TabsContent value="overview" className="space-y-6">
-                <ComplianceOverview selectedCategories={selectedCategories} />
+                <EnhancedComplianceOverview selectedCategories={selectedCategories} />
               </TabsContent>
               
               <TabsContent value="documents" className="space-y-6">
-                <DocumentManagement selectedCategories={selectedCategories} />
+                <EnhancedDocumentManagement selectedCategories={selectedCategories} />
               </TabsContent>
               
               <TabsContent value="audit" className="space-y-6">
-                <AuditReadiness selectedCategories={selectedCategories} />
+                <EnhancedAuditReadiness selectedCategories={selectedCategories} />
               </TabsContent>
             </Tabs>
           </CardContent>

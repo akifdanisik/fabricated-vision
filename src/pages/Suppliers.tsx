@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import Layout from '@/components/layout/Layout';
 import SuppliersTable, { Supplier } from '@/components/suppliers/SuppliersTable';
@@ -7,13 +6,13 @@ import SupplierEvaluation from '@/components/suppliers/SupplierEvaluation';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Category, predefinedCategories } from '@/components/categories/CategoryBadge';
+import CategoryBadge from '@/components/categories/CategoryBadge';
 
 const Suppliers = () => {
   const [loading, setLoading] = useState(true);
   const [selectedSupplier, setSelectedSupplier] = useState<Supplier | null>(null);
   const [activeTab, setActiveTab] = useState('list');
   
-  // Mock suppliers data with categories
   const suppliersData: Supplier[] = [
     {
       id: '1',
@@ -141,7 +140,6 @@ const Suppliers = () => {
   ];
   
   useEffect(() => {
-    // Simulate loading
     const timer = setTimeout(() => {
       setLoading(false);
     }, 1000);
