@@ -1,4 +1,3 @@
-
 import { useNavigate } from 'react-router-dom';
 import Layout from '@/components/layout/Layout';
 import AlertsSection from '@/components/dashboard/AlertsSection';
@@ -6,53 +5,42 @@ import WorkflowPreview from '@/components/workflow/WorkflowPreview';
 import { CircleAlert, Brain, Link, AlertTriangle, Workflow, Calendar, FileCheck } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-
 const Dashboard = () => {
   const navigate = useNavigate();
-  
+
   // Get current date
   const today = new Date();
-  const formattedDate = today.toLocaleDateString('en-US', { 
-    month: 'long', 
-    day: 'numeric', 
+  const formattedDate = today.toLocaleDateString('en-US', {
+    month: 'long',
+    day: 'numeric',
     year: 'numeric'
   });
-  
-  // Mock data for alerts
-  const alerts = [
-    {
-      id: '1',
-      type: 'critical' as const,
-      title: 'Low stock alert',
-      description: 'API-24X is below the critical threshold.',
-      time: '10 minutes ago',
-    },
-    {
-      id: '2',
-      type: 'warning' as const,
-      title: 'Supplier risk increased',
-      description: 'MedSource Inc. risk level changed to medium.',
-      time: '2 hours ago',
-    },
-    {
-      id: '3',
-      type: 'info' as const,
-      title: 'GMP certification expiring',
-      description: 'PharmaCorp GMP certification expires in 30 days.',
-      time: '1 day ago',
-    },
-  ];
 
-  return (
-    <Layout>
+  // Mock data for alerts
+  const alerts = [{
+    id: '1',
+    type: 'critical' as const,
+    title: 'Low stock alert',
+    description: 'API-24X is below the critical threshold.',
+    time: '10 minutes ago'
+  }, {
+    id: '2',
+    type: 'warning' as const,
+    title: 'Supplier risk increased',
+    description: 'MedSource Inc. risk level changed to medium.',
+    time: '2 hours ago'
+  }, {
+    id: '3',
+    type: 'info' as const,
+    title: 'GMP certification expiring',
+    description: 'PharmaCorp GMP certification expires in 30 days.',
+    time: '1 day ago'
+  }];
+  return <Layout>
       <div className="space-y-8 pb-6">
         {/* Welcome header with logo */}
         <div className="flex flex-col items-start space-y-4">
-          <img 
-            src="/lovable-uploads/0f378f40-c5be-494e-a251-1513b467af1d.png" 
-            alt="Fabricated Logo" 
-            className="h-15 w-auto mb-2 hidden md:block" 
-          />
+          
           <div>
             <p className="text-gray-500 text-sm">{formattedDate}</p>
             <h1 className="text-3xl font-semibold text-gray-900">Welcome back, John!</h1>
@@ -167,8 +155,6 @@ const Dashboard = () => {
           </Card>
         </div>
       </div>
-    </Layout>
-  );
+    </Layout>;
 };
-
 export default Dashboard;
