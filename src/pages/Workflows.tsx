@@ -1,33 +1,25 @@
-
 import Layout from '@/components/layout/Layout';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import WorkflowPreview from '@/components/workflow/WorkflowPreview';
 import WorkflowEditor from '@/components/workflow/WorkflowEditor';
-import WorkflowSuggestions from '@/components/workflow/WorkflowSuggestions';
 import { Button } from '@/components/ui/button';
-import { Plus, Play, Pause, FileIcon, Copy, Settings, AlarmClock, AlertCircle } from 'lucide-react';
+import { Plus, Play, Pause, FileIcon, Copy } from 'lucide-react';
 import { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Badge } from '@/components/ui/badge';
-
 const Workflows = () => {
-  const [activeTab, setActiveTab] = useState('editor');
-
-  return (
-    <Layout fullWidth={activeTab === 'editor'}>
+  const [activeTab, setActiveTab] = useState('templates');
+  return <Layout fullWidth={activeTab === 'editor'}>
       <div className={`${activeTab === 'editor' ? '' : 'space-y-6'}`}>
         <div className={`flex items-center justify-between ${activeTab === 'editor' ? 'bg-background px-6 py-4 border-b' : ''}`}>
           <h1 className="text-2xl font-semibold">Workflow Orchestrator</h1>
           <div className="flex gap-4">
-            {activeTab === 'editor' && (
-              <Tabs value={activeTab} onValueChange={setActiveTab} className="hidden sm:block">
+            {activeTab === 'editor' && <Tabs value={activeTab} onValueChange={setActiveTab} className="hidden sm:block">
                 <TabsList>
                   <TabsTrigger value="templates">Templates</TabsTrigger>
                   <TabsTrigger value="active">Active Workflows</TabsTrigger>
                   <TabsTrigger value="editor">Editor</TabsTrigger>
                 </TabsList>
-              </Tabs>
-            )}
+              </Tabs>}
             <Button>
               <Plus className="mr-2 h-4 w-4" />
               Create Workflow
@@ -35,8 +27,7 @@ const Workflows = () => {
           </div>
         </div>
         
-        {activeTab !== 'editor' && (
-          <Tabs defaultValue="templates" value={activeTab} onValueChange={setActiveTab}>
+        {activeTab !== 'editor' && <Tabs defaultValue="templates" value={activeTab} onValueChange={setActiveTab}>
             <TabsList className="mb-4">
               <TabsTrigger value="templates">Templates</TabsTrigger>
               <TabsTrigger value="active">Active Workflows</TabsTrigger>
@@ -48,7 +39,7 @@ const Workflows = () => {
                 <Card>
                   <CardHeader className="pb-2">
                     <CardTitle className="text-lg">Workflow Templates</CardTitle>
-                    <CardDescription>Pre-built workflows to get started quickly</CardDescription>
+                    
                   </CardHeader>
                   <CardContent className="space-y-2">
                     <Button variant="outline" className="w-full justify-start">
@@ -70,7 +61,33 @@ const Workflows = () => {
                   </CardContent>
                 </Card>
                 
-                <WorkflowSuggestions />
+                <Card>
+                  <CardHeader className="pb-2">
+                    <CardTitle className="text-lg">Popular Workflows</CardTitle>
+                    <CardDescription>Most frequently used by your team</CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="flex items-center justify-between p-3 border rounded-lg">
+                      <div>
+                        <p className="font-medium">API Reorder Process</p>
+                        <p className="text-sm text-muted-foreground">Last used 2 days ago</p>
+                      </div>
+                      <Button size="icon" variant="ghost">
+                        <Copy className="h-4 w-4" />
+                      </Button>
+                    </div>
+                    
+                    <div className="flex items-center justify-between p-3 border rounded-lg">
+                      <div>
+                        <p className="font-medium">Supplier Qualification</p>
+                        <p className="text-sm text-muted-foreground">Last used 5 days ago</p>
+                      </div>
+                      <Button size="icon" variant="ghost">
+                        <Copy className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
                 
                 <Card>
                   <CardHeader className="pb-2">
@@ -110,66 +127,24 @@ const Workflows = () => {
                     <CardDescription>Currently running workflows</CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-4">
-                    <div className="border rounded-lg overflow-hidden">
-                      <div className="p-3 flex items-center justify-between bg-blue-50 border-b">
-                        <div className="flex items-center gap-2">
-                          <Play className="h-4 w-4 text-blue-600" />
-                          <p className="font-medium">API-24X Replenishment</p>
-                        </div>
-                        <Badge variant="outline" className="bg-blue-100 text-blue-700">Running</Badge>
+                    <div className="flex items-center justify-between p-3 border rounded-lg">
+                      <div>
+                        <p className="font-medium">API-24X Replenishment</p>
+                        <p className="text-sm text-muted-foreground">Started 2 hours ago</p>
                       </div>
-                      <div className="p-3">
-                        <div className="flex justify-between mb-2">
-                          <span className="text-xs text-muted-foreground">Started 2 hours ago</span>
-                          <span className="text-xs font-medium text-blue-600">Step 2 of 4</span>
-                        </div>
-                        <div className="flex items-center gap-2 mb-2">
-                          <div className="h-2 flex-1 bg-gray-100 rounded-full overflow-hidden">
-                            <div className="h-full bg-blue-500 rounded-full" style={{ width: '50%' }}></div>
-                          </div>
-                        </div>
-                        <div className="flex justify-between">
-                          <Button size="sm" variant="outline">
-                            <Pause className="h-3 w-3 mr-1" /> Pause
-                          </Button>
-                          <Button size="sm" variant="outline">
-                            <Settings className="h-3 w-3 mr-1" /> Manage
-                          </Button>
-                        </div>
-                      </div>
+                      <Button size="icon" variant="ghost">
+                        <Pause className="h-4 w-4" />
+                      </Button>
                     </div>
                     
-                    <div className="border rounded-lg overflow-hidden">
-                      <div className="p-3 flex items-center justify-between bg-amber-50 border-b">
-                        <div className="flex items-center gap-2">
-                          <AlarmClock className="h-4 w-4 text-amber-600" />
-                          <p className="font-medium">MedSource Inc. Onboarding</p>
-                        </div>
-                        <Badge variant="outline" className="bg-amber-100 text-amber-700">Waiting</Badge>
+                    <div className="flex items-center justify-between p-3 border rounded-lg">
+                      <div>
+                        <p className="font-medium">MedSource Inc. Onboarding</p>
+                        <p className="text-sm text-muted-foreground">Started 1 day ago</p>
                       </div>
-                      <div className="p-3">
-                        <div className="flex justify-between mb-2">
-                          <span className="text-xs text-muted-foreground">Started 1 day ago</span>
-                          <span className="text-xs font-medium text-amber-600">Step 3 of 5</span>
-                        </div>
-                        <div className="flex items-center gap-2 mb-2">
-                          <div className="h-2 flex-1 bg-gray-100 rounded-full overflow-hidden">
-                            <div className="h-full bg-amber-500 rounded-full" style={{ width: '60%' }}></div>
-                          </div>
-                        </div>
-                        <div className="mb-2 flex items-start gap-2 text-sm">
-                          <AlertCircle className="h-4 w-4 text-amber-500 mt-0.5" />
-                          <span className="text-muted-foreground">Waiting for approval from Compliance team</span>
-                        </div>
-                        <div className="flex justify-between">
-                          <Button size="sm" variant="outline">
-                            <Pause className="h-3 w-3 mr-1" /> Pause
-                          </Button>
-                          <Button size="sm" variant="outline">
-                            <Settings className="h-3 w-3 mr-1" /> Manage
-                          </Button>
-                        </div>
-                      </div>
+                      <Button size="icon" variant="ghost">
+                        <Pause className="h-4 w-4" />
+                      </Button>
                     </div>
                   </CardContent>
                 </Card>
@@ -177,17 +152,12 @@ const Workflows = () => {
                 <WorkflowPreview />
               </div>
             </TabsContent>
-          </Tabs>
-        )}
+          </Tabs>}
         
-        {activeTab === 'editor' && (
-          <div className="h-[calc(100vh-110px)]">
+        {activeTab === 'editor' && <div className="h-[calc(100vh-110px)]">
             <WorkflowEditor />
-          </div>
-        )}
+          </div>}
       </div>
-    </Layout>
-  );
+    </Layout>;
 };
-
 export default Workflows;
