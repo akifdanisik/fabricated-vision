@@ -10,12 +10,16 @@ import ModuleSelector, { ModuleItem } from './ModuleSelector';
 import WelcomeScreen from './WelcomeScreen';
 import { Badge } from '@/components/ui/badge';
 import { toast } from 'sonner';
+import CategoryActions from './CategoryActions';
+import ModuleRenderer from './ModuleRenderer';
 
 interface Message {
   id: string;
   content: string;
   sender: 'user' | 'ai';
   timestamp: Date;
+  moduleType?: string;
+  moduleData?: any;
   actions?: {
     label: string;
     onClick: () => void;
@@ -72,8 +76,15 @@ export default function ChatInterface() {
         const aiResponse = handleConversationFlow(input, conversationContext);
         setMessages(prev => [...prev, aiResponse]);
       } else {
-        const aiResponse = generateAIResponse(input);
-        setMessages(prev => [...prev, aiResponse]);
+        // Handle module requests
+        const lowerCaseInput = input.toLowerCase();
+        if (lowerCaseInput.includes('show') || lowerCaseInput.includes('display') || lowerCaseInput.includes('get')) {
+          const moduleResponse = handleModuleRequest(input);
+          setMessages(prev => [...prev, moduleResponse]);
+        } else {
+          const aiResponse = generateAIResponse(input);
+          setMessages(prev => [...prev, aiResponse]);
+        }
       }
       
       updatePreviewActions(input.toLowerCase());
@@ -355,7 +366,6 @@ export default function ChatInterface() {
     }
   };
 
-  // Handle multi-turn conversation flows
   const handleConversationFlow = (userInput: string, context: { type: string; step: number; data: Record<string, any> }): Message => {
     if (context.type === 'rfq') {
       switch (context.step) {
@@ -629,7 +639,131 @@ export default function ChatInterface() {
     toast.info('Module deactivated');
   };
 
-  // Define availableModules here to use in handleSelectModule
+  const handleModuleRequest = (userInput: string): Message => {
+    const lowercaseInput = userInput.toLowerCase();
+    
+    // Compliance module
+    if (lowercaseInput.includes('compliance') || lowercaseInput.includes('audit')) {
+      return {
+        id: Date.now().toString(),
+        content: "Here's the compliance overview you requested:",
+        sender: 'ai',
+        timestamp: new Date(),
+        moduleType: 'compliance',
+        moduleData: {
+          categoryFilter: true
+        },
+        actions: [
+          { 
+            label: 'View Document Management', 
+            onClick: () => handleQuickPrompt('Show me document management')
+          },
+          { 
+            label: 'See Audit Readiness', 
+            onClick: () => handleQuickPrompt('Display audit readiness status')
+          }
+        ]
+      };
+    }
+    
+    // Spend metrics / Reports module
+    if (lowercaseInput.includes('spend') || lowercaseInput.includes('metrics') || lowercaseInput.includes('analytics') || lowercaseInput.includes('reports')) {
+      return {
+        id: Date.now().toString(),
+        content: "Here are the spend analytics you requested:",
+        sender: 'ai',
+        timestamp: new Date(),
+        moduleType: 'reports',
+        moduleData: {
+          tab: lowercaseInput.includes('categor') ? 'categories' : 
+               lowercaseInput.includes('saving') ? 'savings' : 'spend'
+        },
+        actions: [
+          { 
+            label: 'View by Category', 
+            onClick: () => handleQuickPrompt('Show spend by categories')
+          },
+          { 
+            label: 'Check Cost Savings', 
+            onClick: () => handleQuickPrompt('Display cost savings')
+          }
+        ]
+      };
+    }
+    
+    // Supplier module
+    if (lowercaseInput.includes('supplier') || lowercaseInput.includes('vendor')) {
+      return {
+        id: Date.now().toString(),
+        content: "Here are the supplier details you requested:",
+        sender: 'ai',
+        timestamp: new Date(),
+        moduleType: 'suppliers',
+        moduleData: {
+          filteredByGMP: lowercaseInput.includes('gmp'),
+          categoryFilter: lowercaseInput.includes('categor')
+        },
+        actions: [
+          { 
+            label: 'View Supplier Performance', 
+            onClick: () => handleQuickPrompt('Show supplier performance metrics')
+          },
+          { 
+            label: 'Add New Supplier', 
+            onClick: () => handleQuickPrompt('I want to add a new supplier')
+          }
+        ]
+      };
+    }
+    
+    // Inventory module
+    if (lowercaseInput.includes('inventory') || lowercaseInput.includes('stock')) {
+      return {
+        id: Date.now().toString(),
+        content: "Here's the inventory information you requested:",
+        sender: 'ai',
+        timestamp: new Date(),
+        moduleType: 'inventory',
+        moduleData: {},
+        actions: [
+          { 
+            label: 'Create Purchase Order', 
+            onClick: () => handleQuickPrompt('Create a new purchase order')
+          },
+          { 
+            label: 'View Low Stock Items', 
+            onClick: () => handleQuickPrompt('Show items with low stock')
+          }
+        ]
+      };
+    }
+    
+    // Category management
+    if (lowercaseInput.includes('categor') && (lowercaseInput.includes('manage') || lowercaseInput.includes('view'))) {
+      return {
+        id: Date.now().toString(),
+        content: "Here's the category management interface:",
+        sender: 'ai',
+        timestamp: new Date(),
+        moduleType: 'categories',
+        moduleData: {},
+        actions: [
+          { 
+            label: 'Add New Category', 
+            onClick: () => handleQuickPrompt('Add a new procurement category')
+          },
+          { 
+            label: 'View Category Spend', 
+            onClick: () => handleQuickPrompt('Show spending by category')
+          }
+        ]
+      };
+    }
+    
+    // Default fallback
+    return generateAIResponse(userInput);
+  };
+
   const availableModules: ModuleItem[] = [
     {
       id: 'contract-risk',
@@ -744,6 +878,15 @@ export default function ChatInterface() {
                           <div className="whitespace-pre-line">{message.content}</div>
                         </div>
                         
+                        {message.moduleType && (
+                          <div className="mt-4 rounded-xl overflow-hidden border border-accent-pale/50">
+                            <ModuleRenderer 
+                              type={message.moduleType} 
+                              data={message.moduleData || {}} 
+                            />
+                          </div>
+                        )}
+                        
                         {message.actions && message.actions.length > 0 && (
                           <div className="flex flex-wrap gap-2 mt-3">
                             {message.actions.map((action, index) => (
@@ -832,11 +975,15 @@ export default function ChatInterface() {
       <ResizableHandle withHandle />
       
       <ResizablePanel defaultSize={40} className="h-full">
-        <ActionPreview 
-          title={previewTitle}
-          description={previewDescription}
-          actions={previewActions}
-        />
+        {previewTitle.toLowerCase().includes('categor') ? (
+          <CategoryActions category={previewTitle.includes('Category') ? previewTitle.split(' ')[0] : undefined} />
+        ) : (
+          <ActionPreview 
+            title={previewTitle}
+            description={previewDescription}
+            actions={previewActions}
+          />
+        )}
       </ResizablePanel>
 
       <ModuleSelector 

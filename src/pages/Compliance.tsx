@@ -6,19 +6,24 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import ComplianceOverview from '@/components/compliance/ComplianceOverview';
 import DocumentManagement from '@/components/compliance/DocumentManagement';
 import AuditReadiness from '@/components/compliance/AuditReadiness';
-import { ShieldCheck, FileText, ClipboardCheck, Tag } from 'lucide-react';
+import { ShieldCheck, FileText, ClipboardCheck } from 'lucide-react';
 import { Category } from '@/components/categories/CategoryBadge';
 import CategoryFilter from '@/components/categories/CategoryFilter';
 
-// Define interfaces to fix the type errors
+// Define interfaces for the component props
 interface ComplianceComponentProps {
   selectedCategories: Category[];
 }
 
-// Wrap the components with HOCs that accept the required props
-const EnhancedComplianceOverview = (props: ComplianceComponentProps) => <ComplianceOverview {...props} />;
-const EnhancedDocumentManagement = (props: ComplianceComponentProps) => <DocumentManagement {...props} />;
-const EnhancedAuditReadiness = (props: ComplianceComponentProps) => <AuditReadiness {...props} />;
+// Create proper wrapper components with correct typing
+const EnhancedComplianceOverview: React.FC<ComplianceComponentProps> = (props) => 
+  <ComplianceOverview {...props} />;
+
+const EnhancedDocumentManagement: React.FC<ComplianceComponentProps> = (props) => 
+  <DocumentManagement {...props} />;
+
+const EnhancedAuditReadiness: React.FC<ComplianceComponentProps> = (props) => 
+  <AuditReadiness {...props} />;
 
 const Compliance = () => {
   const [selectedCategories, setSelectedCategories] = useState<Category[]>([]);
