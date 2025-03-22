@@ -63,7 +63,7 @@ export default function SuppliersTable({
   onSelectSupplier 
 }: SuppliersTableProps) {
   const [searchQuery, setSearchQuery] = useState('');
-  const [categoryFilter, setCategoryFilter] = useState('');
+  const [categoryFilter, setCategoryFilter] = useState('all');
   
   const filteredSuppliers = suppliers.filter(supplier => {
     const matchesSearch = 
@@ -72,7 +72,7 @@ export default function SuppliersTable({
       supplier.contact.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       supplier.location.toLowerCase().includes(searchQuery.toLowerCase());
     
-    const matchesCategory = categoryFilter === '' || supplier.category === categoryFilter;
+    const matchesCategory = categoryFilter === 'all' || supplier.category === categoryFilter;
     
     return matchesSearch && matchesCategory;
   });
@@ -118,7 +118,7 @@ export default function SuppliersTable({
               <SelectValue placeholder="Filter by category" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">All Categories</SelectItem>
+              <SelectItem value="all">All Categories</SelectItem>
               {categories.map(category => (
                 <SelectItem key={category} value={category}>{category}</SelectItem>
               ))}
