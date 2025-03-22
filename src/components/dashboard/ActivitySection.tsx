@@ -28,51 +28,51 @@ export default function ActivitySection({ activities, className }: ActivitySecti
   const getActivityIcon = (type: ActivityItem['type']) => {
     switch (type) {
       case 'order':
-        return <Package className="h-4 w-4 text-blue-500" />;
+        return <Package className="h-4 w-4 text-primary" />;
       case 'approval':
-        return <FileCheck className="h-4 w-4 text-green-500" />;
+        return <FileCheck className="h-4 w-4 text-accent" />;
       case 'supplier':
-        return <Users className="h-4 w-4 text-purple-500" />;
+        return <Users className="h-4 w-4 text-accent-medium" />;
       case 'inventory':
-        return <TrendingUp className="h-4 w-4 text-amber-500" />;
+        return <TrendingUp className="h-4 w-4 text-primary-dark" />;
       default:
         return <Activity className="h-4 w-4" />;
     }
   };
 
   return (
-    <Card className={cn('overflow-hidden', className)}>
-      <CardHeader className="flex flex-row items-center justify-between bg-muted/50 p-4">
+    <Card className={cn('overflow-hidden shadow-md bg-gradient-to-br from-white to-accent-pale/30 border-accent-pale', className)}>
+      <CardHeader className="flex flex-row items-center justify-between bg-accent-pale/50 p-4 border-b border-accent-pale">
         <CardTitle className="text-md flex items-center gap-2">
-          <Activity className="h-5 w-5 text-muted-foreground" />
-          <span>Recent Activity</span>
+          <Activity className="h-5 w-5 text-primary" />
+          <span className="text-primary-dark">Recent Activity</span>
         </CardTitle>
-        <Button variant="ghost" size="sm" className="gap-1 text-xs">
+        <Button variant="ghost" size="sm" className="gap-1 text-xs text-primary">
           View all <ChevronRight className="h-3 w-3" />
         </Button>
       </CardHeader>
       <CardContent className="p-0">
-        <div className="divide-y">
+        <div className="divide-y divide-accent-pale/50">
           {activities.map((activity) => (
             <div 
               key={activity.id} 
-              className="flex items-start gap-3 p-4 transition-colors hover:bg-muted/20"
+              className="flex items-start gap-3 p-4 transition-colors hover:bg-accent-pale/20"
             >
               <div className="pt-1">{getActivityIcon(activity.type)}</div>
               <div className="space-y-1 flex-grow">
                 <div className="flex items-center justify-between">
-                  <p className="font-medium">{activity.title}</p>
-                  <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                  <p className="font-medium text-primary-dark">{activity.title}</p>
+                  <div className="flex items-center gap-1 text-xs text-primary-dark/70">
                     <Clock className="h-3 w-3" />
                     <span>{activity.time}</span>
                   </div>
                 </div>
-                <p className="text-sm text-muted-foreground">{activity.description}</p>
+                <p className="text-sm text-primary-dark/80">{activity.description}</p>
               </div>
               {activity.user && (
-                <Avatar className="h-8 w-8">
+                <Avatar className="h-8 w-8 border-2 border-accent-pale">
                   <AvatarImage src={activity.user.avatar} alt={activity.user.name} />
-                  <AvatarFallback>{activity.user.initials}</AvatarFallback>
+                  <AvatarFallback className="bg-primary text-primary-foreground">{activity.user.initials}</AvatarFallback>
                 </Avatar>
               )}
             </div>
