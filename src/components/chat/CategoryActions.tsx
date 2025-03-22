@@ -6,7 +6,7 @@ import { Package, Tag, FileText, ShieldCheck, BarChart3 } from 'lucide-react';
 
 interface CategoryActionsProps {
   category?: string;
-  onSelect?: (prompt: string) => void; // Added this property
+  onSelect?: (prompt: string) => void;
 }
 
 const CategoryActions = ({ category, onSelect }: CategoryActionsProps) => {
@@ -85,21 +85,13 @@ const CategoryActions = ({ category, onSelect }: CategoryActionsProps) => {
       actionLabel: 'Go to Workflows',
       onClick: () => onSelect ? onSelect('Manage workflows') : navigate('/workflows'),
       category: 'Workflows'
-    },
-    {
-      id: 'category-management',
-      title: 'Manage Categories',
-      description: 'View and manage all procurement categories',
-      icon: 'box',
-      actionLabel: 'Go to Categories',
-      onClick: () => onSelect ? onSelect('Manage categories') : navigate('/categories'),
-      category: 'Management'
     }
+    // Removed the category-management action
   ];
 
   return (
     <ActionPreview
-      title={selectedCategory ? `${selectedCategory.name} Category` : "Category Management"}
+      title={selectedCategory ? `${selectedCategory.name} Category` : "Category Actions"}
       description={selectedCategory ? `Actions for ${selectedCategory.name} category` : "Manage procurement by categories"}
       actions={actions}
     />
