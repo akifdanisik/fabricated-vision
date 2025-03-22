@@ -78,7 +78,7 @@ const Sidebar = ({ isOpen, onToggle }: SidebarProps) => {
               <img 
                 src="/lovable-uploads/8909c790-d73e-4ca4-99fb-106aa9109740.png" 
                 alt="Fabricated Logo" 
-                className="h-8 w-auto max-w-[40px] object-contain" 
+                className="h-10 w-auto max-w-[50px] object-contain" 
               />
             </div>
           )}
