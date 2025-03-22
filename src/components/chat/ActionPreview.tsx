@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
@@ -50,6 +51,7 @@ const ActionPreview: React.FC<ActionPreviewProps> = ({
   actions,
   className 
 }) => {
+  // Group actions by category if provided
   const actionsByCategory = actions.reduce((acc, action) => {
     const category = action.category || 'Actions';
     if (!acc[category]) {
@@ -62,7 +64,7 @@ const ActionPreview: React.FC<ActionPreviewProps> = ({
   const categories = Object.keys(actionsByCategory);
 
   return (
-    <div className={cn("flex flex-col h-full overflow-auto p-4 bg-white", className)}>
+    <div className={cn("flex flex-col h-full overflow-auto p-4 bg-accent/5", className)}>
       <div className="mb-6">
         <h2 className="text-xl font-medium text-primary">{title}</h2>
         {description && <p className="text-sm text-gray-500 mt-1">{description}</p>}
@@ -114,3 +116,4 @@ const ActionPreview: React.FC<ActionPreviewProps> = ({
 };
 
 export default ActionPreview;
+
