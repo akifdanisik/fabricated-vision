@@ -46,10 +46,17 @@ const Dashboard = () => {
   return (
     <Layout>
       <div className="space-y-8 pb-6">
-        {/* Welcome header */}
-        <div className="space-y-1">
-          <p className="text-gray-500 text-sm">{formattedDate}</p>
-          <h1 className="text-3xl font-semibold text-gray-900">Welcome back, John!</h1>
+        {/* Welcome header with logo */}
+        <div className="flex flex-col items-start space-y-4">
+          <img 
+            src="/lovable-uploads/0f378f40-c5be-494e-a251-1513b467af1d.png" 
+            alt="Fabricated Logo" 
+            className="h-10 w-auto mb-2 hidden md:block" 
+          />
+          <div>
+            <p className="text-gray-500 text-sm">{formattedDate}</p>
+            <h1 className="text-3xl font-semibold text-gray-900">Welcome back, John!</h1>
+          </div>
         </div>
         
         <div className="space-y-6">

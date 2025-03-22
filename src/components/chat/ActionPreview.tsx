@@ -64,7 +64,7 @@ const ActionPreview: React.FC<ActionPreviewProps> = ({
   const categories = Object.keys(actionsByCategory);
 
   return (
-    <div className={cn("flex flex-col h-full overflow-auto p-4 bg-accent/5", className)}>
+    <div className={cn("flex flex-col h-full overflow-auto p-4 bg-white", className)}>
       <div className="mb-6">
         <h2 className="text-xl font-medium text-primary">{title}</h2>
         {description && <p className="text-sm text-gray-500 mt-1">{description}</p>}
@@ -107,7 +107,11 @@ const ActionPreview: React.FC<ActionPreviewProps> = ({
 
       {actions.length === 0 && (
         <div className="flex flex-col items-center justify-center h-full text-gray-400 text-center p-6">
-          <Package className="h-12 w-12 mb-4 opacity-30" />
+          <img 
+            src="/lovable-uploads/0f378f40-c5be-494e-a251-1513b467af1d.png" 
+            alt="Fabricated Logo" 
+            className="h-8 w-auto mb-4 opacity-30" 
+          />
           <p className="text-sm max-w-xs">Ask about inventory levels, suppliers, or orders to see actionable suggestions here.</p>
         </div>
       )}
@@ -116,4 +120,3 @@ const ActionPreview: React.FC<ActionPreviewProps> = ({
 };
 
 export default ActionPreview;
-
