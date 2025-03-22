@@ -693,20 +693,28 @@ export default function ChatInterface() {
     
     // Supplier module
     if (lowercaseInput.includes('supplier') || lowercaseInput.includes('vendor')) {
+      const showGmpCertified = lowercaseInput.includes('gmp') || lowercaseInput.includes('certification');
+      
       return {
         id: Date.now().toString(),
-        content: "Here are the supplier details you requested:",
+        content: showGmpCertified 
+          ? "Here are the suppliers with GMP certification:"
+          : "Here are the supplier details you requested:",
         sender: 'ai',
         timestamp: new Date(),
         moduleType: 'suppliers',
         moduleData: {
-          filteredByGMP: lowercaseInput.includes('gmp'),
+          filteredByGMP: showGmpCertified,
           categoryFilter: lowercaseInput.includes('categor')
         },
         actions: [
           { 
             label: 'View Supplier Performance', 
             onClick: () => handleQuickPrompt('Show supplier performance metrics')
+          },
+          { 
+            label: showGmpCertified ? 'Compare GMP Suppliers' : 'Filter by GMP Certification', 
+            onClick: () => handleQuickPrompt(showGmpCertified ? 'Compare GMP certified suppliers' : 'Show suppliers with GMP certification')
           },
           { 
             label: 'Add New Supplier', 
@@ -857,140 +865,4 @@ export default function ChatInterface() {
                   <div 
                     key={message.id} 
                     className={cn(
-                      "mb-6 max-w-3xl",
-                      message.sender === 'user' ? "ml-auto" : ""
-                    )}
-                  >
-                    <div className="flex items-start gap-4">
-                      {message.sender === 'ai' && (
-                        <Avatar className="mt-0.5 h-8 w-8 border">
-                          <AvatarFallback className="bg-primary text-primary-foreground text-xs">AI</AvatarFallback>
-                        </Avatar>
-                      )}
-                      
-                      <div className="flex-1">
-                        <div className={cn(
-                          "prose prose-sm px-4 py-3 rounded-2xl",
-                          message.sender === 'user' 
-                            ? "bg-primary text-primary-foreground ml-auto"
-                            : "bg-accent-light text-gray-900"
-                        )}>
-                          <div className="whitespace-pre-line">{message.content}</div>
-                        </div>
-                        
-                        {message.moduleType && (
-                          <div className="mt-4 rounded-xl overflow-hidden border border-accent-pale/50">
-                            <ModuleRenderer 
-                              type={message.moduleType} 
-                              data={message.moduleData || {}} 
-                            />
-                          </div>
-                        )}
-                        
-                        {message.actions && message.actions.length > 0 && (
-                          <div className="flex flex-wrap gap-2 mt-3">
-                            {message.actions.map((action, index) => (
-                              <Button 
-                                key={index} 
-                                size="sm" 
-                                variant="outline" 
-                                className="text-xs rounded-full bg-white hover:bg-gray-50"
-                                onClick={action.onClick}
-                              >
-                                {action.label}
-                                <ArrowRight className="ml-1 h-3 w-3" />
-                              </Button>
-                            ))}
-                          </div>
-                        )}
-                      </div>
-                      
-                      {message.sender === 'user' && (
-                        <Avatar className="mt-0.5 h-8 w-8 border">
-                          <AvatarFallback>S</AvatarFallback>
-                        </Avatar>
-                      )}
-                    </div>
-                  </div>
-                ))}
-                <div ref={messagesEndRef} />
-              </>
-            )}
-          </div>
-          
-          <div className="border-t p-4">
-            <form onSubmit={handleSubmit} className="flex items-center p-2 gap-2 bg-white border rounded-full">
-              <Button 
-                type="button" 
-                size="icon" 
-                variant="ghost" 
-                className="rounded-full"
-                onClick={() => setModuleSelectOpen(true)}
-              >
-                <Grid className="h-5 w-5" />
-              </Button>
-              
-              <Button 
-                type="button" 
-                size="icon" 
-                variant="ghost" 
-                className="rounded-full"
-              >
-                <PaperclipIcon className="h-5 w-5" />
-              </Button>
-              
-              <Input 
-                value={input} 
-                onChange={(e) => setInput(e.target.value)} 
-                placeholder="Enter a prompt here" 
-                className="flex-1 border-none focus-visible:ring-0 focus-visible:ring-offset-0"
-              />
-              
-              <Button 
-                type="button" 
-                size="icon" 
-                variant="ghost" 
-                className={cn(
-                  "rounded-full",
-                  isRecording && "bg-red-100 text-red-500"
-                )}
-                onClick={toggleRecording}
-              >
-                <Mic className="h-5 w-5" />
-              </Button>
-              
-              <Button 
-                type="submit" 
-                size="icon" 
-                disabled={!input.trim()}
-                className="rounded-full"
-              >
-                <Send className="h-5 w-5" />
-              </Button>
-            </form>
-          </div>
-        </div>
-      </ResizablePanel>
-      
-      <ResizableHandle withHandle />
-      
-      <ResizablePanel defaultSize={40} className="h-full">
-        {previewTitle.toLowerCase().includes('categor') ? (
-          <CategoryActions category={previewTitle.includes('Category') ? previewTitle.split(' ')[0] : undefined} />
-        ) : (
-          <ActionPreview 
-            title={previewTitle}
-            description={previewDescription}
-            actions={previewActions}
-          />
-        )}
-      </ResizablePanel>
-
-      <ModuleSelector 
-        open={moduleSelectOpen} 
-        setOpen={setModuleSelectOpen} 
-        onSelectModule={(module) => handleSelectModule(module.id)} 
-      />
-    </ResizablePanelGroup>
-  );
-}
+                      "mb-6 max-w-3xl

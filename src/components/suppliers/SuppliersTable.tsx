@@ -53,21 +53,112 @@ export interface Supplier {
   location: string;
   logo?: string;
   initials: string;
+  certifications?: string[]; // Added for certifications like GMP
 }
 
 interface SuppliersTableProps {
   suppliers: Supplier[];
   className?: string;
   onSelectSupplier?: (supplier: Supplier) => void;
+  compact?: boolean;
+  filterByGMP?: boolean;
+  filterByCategories?: Category[];
 }
 
+// Sample supplier data for testing
+const sampleSuppliers: Supplier[] = [
+  {
+    id: "1",
+    name: "PharmaCorp",
+    category: "APIs",
+    categories: [{ id: "apis", name: "APIs", color: "blue" }],
+    performance: 95,
+    riskLevel: "low",
+    items: 42,
+    contact: {
+      name: "John Smith",
+      email: "john@pharmacorp.com"
+    },
+    location: "Mumbai, India",
+    initials: "PC",
+    certifications: ["GMP", "ISO 9001"]
+  },
+  {
+    id: "2",
+    name: "BioTech Materials",
+    category: "Excipients",
+    categories: [{ id: "excipients", name: "Excipients", color: "green" }],
+    performance: 92,
+    riskLevel: "low",
+    items: 28,
+    contact: {
+      name: "Maria Weber",
+      email: "maria@biotech.com"
+    },
+    location: "Frankfurt, Germany",
+    initials: "BT",
+    certifications: ["GMP", "FDA", "ISO 9001"]
+  },
+  {
+    id: "3",
+    name: "ChemSource",
+    category: "APIs",
+    categories: [{ id: "apis", name: "APIs", color: "blue" }],
+    performance: 88,
+    riskLevel: "medium",
+    items: 35,
+    contact: {
+      name: "Li Chen",
+      email: "chen@chemsource.com"
+    },
+    location: "Shanghai, China",
+    initials: "CS",
+    certifications: ["ISO 9001"]
+  },
+  {
+    id: "4",
+    name: "MedSource Inc.",
+    category: "Equipment",
+    categories: [{ id: "equipment", name: "Equipment", color: "purple" }],
+    performance: 89,
+    riskLevel: "medium",
+    items: 19,
+    contact: {
+      name: "Robert Davis",
+      email: "robert@medsource.com"
+    },
+    location: "Boston, USA",
+    initials: "MS",
+    certifications: ["GMP", "ISO 9001"]
+  },
+  {
+    id: "5",
+    name: "GlobalPharma",
+    category: "Packaging",
+    categories: [{ id: "packaging", name: "Packaging", color: "orange" }],
+    performance: 86,
+    riskLevel: "medium",
+    items: 31,
+    contact: {
+      name: "Sarah Johnson",
+      email: "sarah@globalpharma.com"
+    },
+    location: "London, UK",
+    initials: "GP",
+    certifications: ["ISO 9001", "ISO 14001"]
+  }
+];
+
 export default function SuppliersTable({ 
-  suppliers, 
+  suppliers = sampleSuppliers, 
   className,
-  onSelectSupplier 
+  onSelectSupplier,
+  compact = false,
+  filterByGMP = false,
+  filterByCategories = []
 }: SuppliersTableProps) {
   const [searchQuery, setSearchQuery] = useState('');
-  const [categoryFilter, setCategoryFilter] = useState<Category[]>([]);
+  const [categoryFilter, setCategoryFilter] = useState<Category[]>(filterByCategories);
   
   const filteredSuppliers = suppliers.filter(supplier => {
     const matchesSearch = 
@@ -76,11 +167,18 @@ export default function SuppliersTable({
       supplier.contact.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       supplier.location.toLowerCase().includes(searchQuery.toLowerCase());
     
-    const matchesCategory = categoryFilter.length === 0 || 
-      (supplier.categories?.some(cat => categoryFilter.some(fc => fc.id === cat.id)) || 
-       categoryFilter.some(cat => cat.name === supplier.category || cat.id === supplier.category));
+    const matchesCategory = (categoryFilter.length === 0 && !filterByCategories.length) || 
+      (supplier.categories?.some(cat => 
+        [...categoryFilter, ...filterByCategories].some(fc => fc.id === cat.id)
+      ) || 
+      [...categoryFilter, ...filterByCategories].some(cat => 
+        cat.name === supplier.category || cat.id === supplier.category
+      ));
     
-    return matchesSearch && matchesCategory;
+    const matchesGMP = !filterByGMP || 
+      (supplier.certifications && supplier.certifications.includes("GMP"));
+    
+    return matchesSearch && matchesCategory && matchesGMP;
   });
   
   const getRiskBadge = (risk: Supplier['riskLevel']) => {
@@ -108,39 +206,45 @@ export default function SuppliersTable({
 
   return (
     <div className={cn('space-y-4', className)}>
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div className="relative w-full max-w-md">
-          <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-          <Input
-            type="search"
-            placeholder="Search suppliers..."
-            className="pl-8 w-full"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
+      {!compact && (
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div className="relative w-full max-w-md">
+            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+            <Input
+              type="search"
+              placeholder="Search suppliers..."
+              className="pl-8 w-full"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+          </div>
+          
+          <div className="flex flex-wrap items-center gap-2">
+            <CategoryFilter 
+              onFilterChange={handleCategoryFilterChange} 
+              showLabel={false} 
+              initialCategories={filterByCategories}
+            />
+            
+            <Button variant="outline" size="sm" className="h-9 gap-1">
+              <RefreshCw className="h-4 w-4" />
+              <span>Refresh</span>
+            </Button>
+            
+            <Button variant="outline" size="sm" className="h-9 gap-1">
+              <Download className="h-4 w-4" />
+              <span>Export</span>
+            </Button>
+            
+            <Button size="sm" className="h-9 gap-1">
+              <Plus className="h-4 w-4" />
+              <span>Add Supplier</span>
+            </Button>
+          </div>
         </div>
-        
-        <div className="flex flex-wrap items-center gap-2">
-          <CategoryFilter onFilterChange={handleCategoryFilterChange} showLabel={false} />
-          
-          <Button variant="outline" size="sm" className="h-9 gap-1">
-            <RefreshCw className="h-4 w-4" />
-            <span>Refresh</span>
-          </Button>
-          
-          <Button variant="outline" size="sm" className="h-9 gap-1">
-            <Download className="h-4 w-4" />
-            <span>Export</span>
-          </Button>
-          
-          <Button size="sm" className="h-9 gap-1">
-            <Plus className="h-4 w-4" />
-            <span>Add Supplier</span>
-          </Button>
-        </div>
-      </div>
+      )}
       
-      <div className="rounded-lg border shadow-sm">
+      <div className={cn("rounded-lg border shadow-sm", compact && "border-none shadow-none")}>
         <Table>
           <TableHeader>
             <TableRow>
@@ -151,14 +255,15 @@ export default function SuppliersTable({
               <TableHead>Items</TableHead>
               <TableHead>Contact</TableHead>
               <TableHead>Location</TableHead>
+              {!compact && <TableHead>Certifications</TableHead>}
               <TableHead className="w-14"></TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {filteredSuppliers.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={8} className="h-32 text-center">
-                  No suppliers found.
+                <TableCell colSpan={compact ? 8 : 9} className="h-32 text-center">
+                  {filterByGMP ? "No GMP certified suppliers found." : "No suppliers found."}
                 </TableCell>
               </TableRow>
             ) : (
@@ -213,6 +318,26 @@ export default function SuppliersTable({
                     </div>
                   </TableCell>
                   <TableCell>{supplier.location}</TableCell>
+                  {!compact && (
+                    <TableCell>
+                      <div className="flex flex-wrap gap-1">
+                        {supplier.certifications?.map((cert, index) => (
+                          <Badge 
+                            key={index} 
+                            variant="outline" 
+                            className={cn(
+                              cert === "GMP" && "bg-green-50 text-green-700 border-green-200",
+                              cert === "FDA" && "bg-blue-50 text-blue-700 border-blue-200",
+                              cert === "ISO 9001" && "bg-purple-50 text-purple-700 border-purple-200",
+                              cert === "ISO 14001" && "bg-amber-50 text-amber-700 border-amber-200"
+                            )}
+                          >
+                            {cert}
+                          </Badge>
+                        ))}
+                      </div>
+                    </TableCell>
+                  )}
                   <TableCell onClick={(e) => e.stopPropagation()}>
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>

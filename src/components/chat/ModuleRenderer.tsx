@@ -12,7 +12,7 @@ import { BarChart, Bar, LineChart, Line, PieChart, Pie, Cell, ResponsiveContaine
 import { Progress } from '@/components/ui/progress';
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
 import InventoryTable from '@/components/inventory/InventoryTable';
-import SuppliersTable from '@/components/suppliers/SuppliersTable';
+import SuppliersTable, { Supplier } from '@/components/suppliers/SuppliersTable';
 import CategoryManager from '@/components/categories/CategoryManager';
 
 interface ModuleRendererProps {
@@ -22,33 +22,8 @@ interface ModuleRendererProps {
 
 // Define interfaces for component props
 interface ComplianceComponentProps {
-  selectedCategories: Category[];
+  selectedCategories?: Category[];
 }
-
-// Define interfaces for tables
-interface InventoryTableProps {
-  compact?: boolean;
-}
-
-interface SuppliersTableProps {
-  compact?: boolean;
-  filterByGMP?: boolean;
-  filterByCategories?: Category[];
-}
-
-interface CategoryManagerProps {
-  compact?: boolean;
-}
-
-// Create properly typed HOCs for compliance components
-const EnhancedComplianceOverview = ({ selectedCategories }: ComplianceComponentProps) => 
-  <ComplianceOverview selectedCategories={selectedCategories} />;
-
-const EnhancedDocumentManagement = ({ selectedCategories }: ComplianceComponentProps) => 
-  <DocumentManagement selectedCategories={selectedCategories} />;
-
-const EnhancedAuditReadiness = ({ selectedCategories }: ComplianceComponentProps) => 
-  <AuditReadiness selectedCategories={selectedCategories} />;
 
 const ModuleRenderer: React.FC<ModuleRendererProps> = ({ type, data }) => {
   const [selectedCategories, setSelectedCategories] = useState<Category[]>([]);
@@ -246,7 +221,9 @@ const ModuleRenderer: React.FC<ModuleRendererProps> = ({ type, data }) => {
       return (
         <Card className="border-0 shadow-none">
           <CardHeader className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 p-4">
-            <CardTitle className="text-base">Supplier Management</CardTitle>
+            <CardTitle className="text-base">
+              {data.filteredByGMP ? "GMP Certified Suppliers" : "Supplier Management"}
+            </CardTitle>
             {data.categoryFilter && (
               <CategoryFilter 
                 onFilterChange={handleCategoryFilterChange} 
@@ -257,11 +234,11 @@ const ModuleRenderer: React.FC<ModuleRendererProps> = ({ type, data }) => {
           </CardHeader>
           <CardContent className="px-4 pb-4 pt-0">
             <div className="max-h-[400px] overflow-auto">
-              {React.createElement(SuppliersTable as any, { 
-                compact: true, 
-                filterByGMP: data.filteredByGMP, 
-                filterByCategories: selectedCategories 
-              })}
+              <SuppliersTable 
+                compact={true}
+                filterByGMP={data.filteredByGMP}
+                filterByCategories={selectedCategories}
+              />
             </div>
           </CardContent>
         </Card>
