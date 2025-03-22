@@ -10,19 +10,19 @@ import { ShieldCheck, FileText, ClipboardCheck } from 'lucide-react';
 import { Category } from '@/components/categories/CategoryBadge';
 import CategoryFilter from '@/components/categories/CategoryFilter';
 
-// Define interfaces for the component props
+// Make sure we're properly defining the props for each compliance component
 interface ComplianceComponentProps {
   selectedCategories: Category[];
 }
 
-// Create proper wrapper components with correct typing
-const EnhancedComplianceOverview: React.FC<ComplianceComponentProps> = (props) => 
+// Ensure these components can properly accept the selectedCategories prop
+const EnhancedComplianceOverview = (props: ComplianceComponentProps) => 
   <ComplianceOverview {...props} />;
 
-const EnhancedDocumentManagement: React.FC<ComplianceComponentProps> = (props) => 
+const EnhancedDocumentManagement = (props: ComplianceComponentProps) => 
   <DocumentManagement {...props} />;
 
-const EnhancedAuditReadiness: React.FC<ComplianceComponentProps> = (props) => 
+const EnhancedAuditReadiness = (props: ComplianceComponentProps) => 
   <AuditReadiness {...props} />;
 
 const Compliance = () => {

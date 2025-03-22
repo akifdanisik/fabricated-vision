@@ -21,18 +21,34 @@ interface ModuleRendererProps {
   data: Record<string, any>;
 }
 
-// HOCs for compliance components to fix type errors
+// Define interfaces for component props
 interface ComplianceComponentProps {
   selectedCategories: Category[];
 }
 
-const EnhancedComplianceOverview: React.FC<ComplianceComponentProps> = (props) => 
+// Define interfaces for tables
+interface InventoryTableProps {
+  compact?: boolean;
+}
+
+interface SuppliersTableProps {
+  compact?: boolean;
+  filterByGMP?: boolean;
+  filterByCategories?: Category[];
+}
+
+interface CategoryManagerProps {
+  compact?: boolean;
+}
+
+// Create properly typed HOCs for compliance components
+const EnhancedComplianceOverview = (props: ComplianceComponentProps) => 
   <ComplianceOverview {...props} />;
 
-const EnhancedDocumentManagement: React.FC<ComplianceComponentProps> = (props) => 
+const EnhancedDocumentManagement = (props: ComplianceComponentProps) => 
   <DocumentManagement {...props} />;
 
-const EnhancedAuditReadiness: React.FC<ComplianceComponentProps> = (props) => 
+const EnhancedAuditReadiness = (props: ComplianceComponentProps) => 
   <AuditReadiness {...props} />;
 
 const ModuleRenderer: React.FC<ModuleRendererProps> = ({ type, data }) => {
@@ -221,7 +237,7 @@ const ModuleRenderer: React.FC<ModuleRendererProps> = ({ type, data }) => {
           </CardHeader>
           <CardContent className="px-4 pb-4 pt-0">
             <div className="max-h-[400px] overflow-auto">
-              <InventoryTable compact />
+              <InventoryTable compact={true} />
             </div>
           </CardContent>
         </Card>
@@ -243,7 +259,7 @@ const ModuleRenderer: React.FC<ModuleRendererProps> = ({ type, data }) => {
           <CardContent className="px-4 pb-4 pt-0">
             <div className="max-h-[400px] overflow-auto">
               <SuppliersTable 
-                compact 
+                compact={true} 
                 filterByGMP={data.filteredByGMP} 
                 filterByCategories={selectedCategories}
               />
@@ -259,7 +275,7 @@ const ModuleRenderer: React.FC<ModuleRendererProps> = ({ type, data }) => {
             <CardTitle className="text-base">Category Management</CardTitle>
           </CardHeader>
           <CardContent className="px-4 pb-4 pt-0">
-            <CategoryManager compact />
+            <CategoryManager compact={true} />
           </CardContent>
         </Card>
       );
