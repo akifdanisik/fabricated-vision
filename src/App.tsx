@@ -12,6 +12,7 @@ import Compliance from "./pages/Compliance";
 import Reports from "./pages/Reports";
 import Workflows from "./pages/Workflows";
 import Chat from "./pages/Chat";
+import Categories from "./pages/Categories";
 import LiveDeals from "./pages/LiveDeals";
 import NotFound from "./pages/NotFound";
 import { useEffect } from "react";
@@ -42,6 +43,7 @@ const App = () => {
             <Route path="/suppliers" element={<Suppliers />} />
             <Route path="/contracts" element={<Contracts />} />
             <Route path="/compliance" element={<Compliance />} />
+            <Route path="/categories" element={<Categories />} />
             <Route path="/reports" element={<Reports />} />
             <Route path="/workflows" element={<Workflows />} />
             <Route path="/live-deals" element={<LiveDeals />} />

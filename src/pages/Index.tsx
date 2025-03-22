@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import Layout from '@/components/layout/Layout';
 import AlertsSection from '@/components/dashboard/AlertsSection';
 import WorkflowPreview from '@/components/workflow/WorkflowPreview';
-import { CircleAlert, Brain, Link, AlertTriangle, Workflow, Calendar, FileCheck, ShieldCheck, FileText, ClipboardCheck } from 'lucide-react';
+import { CircleAlert, Brain, Link, AlertTriangle, Workflow, Calendar, FileCheck, ShieldCheck, FileText, ClipboardCheck, Tag } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import MetricsCard from '@/components/dashboard/MetricsCard';
@@ -69,7 +69,7 @@ const Dashboard = () => {
         
         <div className="space-y-6">
           {/* Quick Actions */}
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-6 gap-4">
             <Card className="overflow-hidden border border-gray-200 hover:shadow-md transition-all duration-200 cursor-pointer" onClick={() => handleNavigate('/chat')}>
               <CardContent className="p-4 flex flex-col items-center justify-center text-center gap-2">
                 <div className="h-10 w-10 rounded-full bg-blue-50 flex items-center justify-center text-blue-500 mt-2">
@@ -112,6 +112,15 @@ const Dashboard = () => {
                   <ShieldCheck className="h-5 w-5" />
                 </div>
                 <p className="text-sm font-medium">Compliance</p>
+              </CardContent>
+            </Card>
+            
+            <Card className="overflow-hidden border border-gray-200 hover:shadow-md transition-all duration-200 cursor-pointer" onClick={() => handleNavigate('/categories')}>
+              <CardContent className="p-4 flex flex-col items-center justify-center text-center gap-2">
+                <div className="h-10 w-10 rounded-full bg-rose-50 flex items-center justify-center text-rose-500 mt-2">
+                  <Tag className="h-5 w-5" />
+                </div>
+                <p className="text-sm font-medium">Categories</p>
               </CardContent>
             </Card>
           </div>
@@ -161,7 +170,7 @@ const Dashboard = () => {
           </div>
 
           {/* Second row of metrics */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <MetricsCard 
               title="Expiring Contracts"
               value={3}
@@ -179,6 +188,17 @@ const Dashboard = () => {
               icon={ClipboardCheck}
               className="bg-white border border-gray-200"
               description="Scheduled in next 60 days"
+            />
+            
+            <MetricsCard 
+              title="Category Alerts"
+              value={6}
+              icon={Tag}
+              className="bg-white border border-gray-200"
+              description="Across all categories"
+              trend={2}
+              trendDirection="up"
+              trendLabel="vs last week"
             />
           </div>
           

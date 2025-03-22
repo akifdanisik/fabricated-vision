@@ -27,17 +27,21 @@ import {
   Search, 
   Star,
   FileText,
-  UserCheck 
+  UserCheck,
+  Tag
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Progress } from '@/components/ui/progress';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import CategoryBadge, { Category } from '@/components/categories/CategoryBadge';
+import CategoryFilter from '@/components/categories/CategoryFilter';
 
 export interface Supplier {
   id: string;
   name: string;
   category: string;
+  categories?: Category[]; // Added for multiple categories
   performance: number;
   riskLevel: 'low' | 'medium' | 'high';
   items: number;
@@ -63,7 +67,7 @@ export default function SuppliersTable({
   onSelectSupplier 
 }: SuppliersTableProps) {
   const [searchQuery, setSearchQuery] = useState('');
-  const [categoryFilter, setCategoryFilter] = useState('all');
+  const [categoryFilter, setCategoryFilter] = useState<Category[]>([]);
   
   const filteredSuppliers = suppliers.filter(supplier => {
     const matchesSearch = 
@@ -72,12 +76,12 @@ export default function SuppliersTable({
       supplier.contact.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       supplier.location.toLowerCase().includes(searchQuery.toLowerCase());
     
-    const matchesCategory = categoryFilter === 'all' || supplier.category === categoryFilter;
+    const matchesCategory = categoryFilter.length === 0 || 
+      (supplier.categories?.some(cat => categoryFilter.some(fc => fc.id === cat.id)) || 
+       categoryFilter.some(cat => cat.name === supplier.category || cat.id === supplier.category));
     
     return matchesSearch && matchesCategory;
   });
-  
-  const categories = Array.from(new Set(suppliers.map(s => s.category)));
   
   const getRiskBadge = (risk: Supplier['riskLevel']) => {
     switch (risk) {
@@ -98,6 +102,10 @@ export default function SuppliersTable({
     return 'bg-red-500';
   };
 
+  const handleCategoryFilterChange = (categories: Category[]) => {
+    setCategoryFilter(categories);
+  };
+
   return (
     <div className={cn('space-y-4', className)}>
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
@@ -113,17 +121,7 @@ export default function SuppliersTable({
         </div>
         
         <div className="flex flex-wrap items-center gap-2">
-          <Select value={categoryFilter} onValueChange={setCategoryFilter}>
-            <SelectTrigger className="w-[180px] h-9">
-              <SelectValue placeholder="Filter by category" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All Categories</SelectItem>
-              {categories.map(category => (
-                <SelectItem key={category} value={category}>{category}</SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+          <CategoryFilter onFilterChange={handleCategoryFilterChange} showLabel={false} />
           
           <Button variant="outline" size="sm" className="h-9 gap-1">
             <RefreshCw className="h-4 w-4" />
@@ -179,7 +177,17 @@ export default function SuppliersTable({
                       <span className="font-medium">{supplier.name}</span>
                     </div>
                   </TableCell>
-                  <TableCell>{supplier.category}</TableCell>
+                  <TableCell>
+                    {supplier.categories ? (
+                      <div className="flex flex-wrap gap-1">
+                        {supplier.categories.map((category) => (
+                          <CategoryBadge key={category.id} category={category} />
+                        ))}
+                      </div>
+                    ) : (
+                      <CategoryBadge category={supplier.category} />
+                    )}
+                  </TableCell>
                   <TableCell>
                     <div className="w-32 space-y-1">
                       <div className="flex items-center justify-between">
@@ -224,6 +232,10 @@ export default function SuppliersTable({
                         <DropdownMenuItem>
                           <FileText className="mr-2 h-4 w-4" />
                           View Compliance Docs
+                        </DropdownMenuItem>
+                        <DropdownMenuItem>
+                          <Tag className="mr-2 h-4 w-4" />
+                          Manage Categories
                         </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>

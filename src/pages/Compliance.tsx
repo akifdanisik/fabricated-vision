@@ -1,22 +1,38 @@
 
+import { useState } from "react";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import Layout from '@/components/layout/Layout';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import ComplianceOverview from '@/components/compliance/ComplianceOverview';
 import DocumentManagement from '@/components/compliance/DocumentManagement';
 import AuditReadiness from '@/components/compliance/AuditReadiness';
-import { ShieldCheck, FileText, ClipboardCheck } from 'lucide-react';
+import { ShieldCheck, FileText, ClipboardCheck, Tag } from 'lucide-react';
+import { Category } from '@/components/categories/CategoryBadge';
+import CategoryFilter from '@/components/categories/CategoryFilter';
 
 const Compliance = () => {
+  const [selectedCategories, setSelectedCategories] = useState<Category[]>([]);
+
+  const handleCategoryFilterChange = (categories: Category[]) => {
+    setSelectedCategories(categories);
+  };
+
   return (
     <Layout>
       <div className="space-y-6">
         <Card>
-          <CardHeader>
-            <CardTitle>Compliance and Audit</CardTitle>
-            <CardDescription>
-              Ensure regulatory compliance and prepare for audits.
-            </CardDescription>
+          <CardHeader className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div>
+              <CardTitle>Compliance and Audit</CardTitle>
+              <CardDescription>
+                Ensure regulatory compliance and prepare for audits.
+              </CardDescription>
+            </div>
+            <CategoryFilter 
+              onFilterChange={handleCategoryFilterChange} 
+              showLabel={false}
+              className="flex-shrink-0" 
+            />
           </CardHeader>
           <CardContent>
             <Tabs defaultValue="overview" className="space-y-6">
@@ -36,15 +52,15 @@ const Compliance = () => {
               </TabsList>
               
               <TabsContent value="overview" className="space-y-6">
-                <ComplianceOverview />
+                <ComplianceOverview selectedCategories={selectedCategories} />
               </TabsContent>
               
               <TabsContent value="documents" className="space-y-6">
-                <DocumentManagement />
+                <DocumentManagement selectedCategories={selectedCategories} />
               </TabsContent>
               
               <TabsContent value="audit" className="space-y-6">
-                <AuditReadiness />
+                <AuditReadiness selectedCategories={selectedCategories} />
               </TabsContent>
             </Tabs>
           </CardContent>
