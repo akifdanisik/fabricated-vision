@@ -68,7 +68,7 @@ const Layout = ({ children, fullWidth = false, hideNavbar = false }: LayoutProps
           fullWidth ? "p-0" : "p-5 md:p-8 bg-white"
         )}>
           <div className={cn(
-            fullWidth ? "w-full h-full" : "mx-auto max-w-7xl"
+            fullWidth ? "w-full h-full" : "w-full" // Removed max-w-7xl to allow more width
           )}>
             {children}
           </div>

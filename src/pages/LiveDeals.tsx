@@ -129,14 +129,14 @@ const deals = [
 
 const DealCard = ({ deal }: { deal: typeof deals[0] }) => {
   return (
-    <Card className="mb-6">
-      <CardHeader className="pb-0">
+    <Card className="mb-6 shadow-md">
+      <CardHeader className="pb-2">
         <div className="flex justify-between items-start">
           <div>
             <div className="flex items-center gap-2 mb-1">
               <h4 className="text-sm font-medium text-gray-500">{deal.id} • {deal.date}</h4>
             </div>
-            <CardTitle className="text-xl font-bold mt-2">{deal.title}</CardTitle>
+            <CardTitle className="text-xl font-bold mt-1">{deal.title}</CardTitle>
           </div>
           <Badge 
             className={`px-3 py-1 rounded-full text-xs font-medium ${
@@ -151,8 +151,8 @@ const DealCard = ({ deal }: { deal: typeof deals[0] }) => {
           </Badge>
         </div>
       </CardHeader>
-      <CardContent className="pt-4">
-        <div className="grid grid-cols-3 gap-6 mb-6">
+      <CardContent className="pt-2">
+        <div className="grid grid-cols-3 gap-6 mb-4">
           <div>
             <p className="text-sm text-gray-500 mb-1">Quantity</p>
             <p className="font-medium">{deal.quantity}</p>
@@ -172,91 +172,93 @@ const DealCard = ({ deal }: { deal: typeof deals[0] }) => {
           </div>
         </div>
 
-        <div className="bg-blue-50 p-4 rounded-md mb-4">
-          <div className="flex items-center mb-2">
-            <Zap className="h-4 w-4 text-primary mr-2" />
-            <h3 className="font-semibold text-primary">AI Negotiation Strategy</h3>
-          </div>
-
-          <div className="mb-3">
-            <p className="text-sm text-gray-600 mb-2">Focus Points</p>
-            <div className="flex flex-wrap gap-2">
-              {deal.aiStrategy.focusPoints.map((point, index) => (
-                <span key={index} className="inline-flex items-center rounded-full bg-white px-2.5 py-0.5 text-xs font-medium border border-gray-200">
-                  {point}
-                </span>
-              ))}
+        <div className="grid grid-cols-2 gap-4 mb-4">
+          <div className="bg-blue-50 p-4 rounded-md h-full">
+            <div className="flex items-center mb-2">
+              <Zap className="h-4 w-4 text-primary mr-2" />
+              <h3 className="font-semibold text-primary">AI Negotiation Strategy</h3>
             </div>
-          </div>
 
-          <div className="mb-3">
-            <p className="text-sm text-gray-600 mb-1">Approach</p>
-            <p className="text-sm">{deal.aiStrategy.approach}</p>
-          </div>
-
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <p className="text-sm text-gray-600 mb-1">Target Savings</p>
-              <div className="flex items-center">
-                <BarChart2 className="h-4 w-4 text-primary mr-2" />
-                <span className="text-primary font-medium">{deal.aiStrategy.targetSavings}</span>
+            <div className="mb-3">
+              <p className="text-sm text-gray-600 mb-2">Focus Points</p>
+              <div className="flex flex-wrap gap-2">
+                {deal.aiStrategy.focusPoints.map((point, index) => (
+                  <span key={index} className="inline-flex items-center rounded-full bg-white px-2.5 py-0.5 text-xs font-medium border border-gray-200">
+                    {point}
+                  </span>
+                ))}
               </div>
             </div>
-            <div>
-              <p className="text-sm text-gray-600 mb-1">Estimated Timeframe</p>
-              <div className="flex items-center">
-                <Clock className="h-4 w-4 text-primary mr-2" />
-                <span>{deal.aiStrategy.timeframe}</span>
-              </div>
-            </div>
-          </div>
-        </div>
 
-        <div className="bg-gray-50 p-4 rounded-md">
-          <div className="flex items-center mb-2">
-            <Building2 className="h-4 w-4 text-primary mr-2" />
-            <h3 className="font-semibold text-primary">Deal Structure</h3>
-          </div>
+            <div className="mb-3">
+              <p className="text-sm text-gray-600 mb-1">Approach</p>
+              <p className="text-sm">{deal.aiStrategy.approach}</p>
+            </div>
 
-          <div className="grid grid-cols-2 gap-4 mb-4">
-            <div>
-              <p className="text-sm text-gray-600 mb-1">Total Value</p>
-              <div className="flex items-center">
-                <DollarSign className="h-4 w-4 text-primary mr-1" />
-                <span className="font-semibold">{deal.dealStructure.totalValue}</span>
-              </div>
-            </div>
-            <div>
-              <p className="text-sm text-gray-600 mb-1">Payment Structure</p>
-              <p className="text-sm">{deal.dealStructure.paymentStructure}</p>
-            </div>
-            <div>
-              <p className="text-sm text-gray-600 mb-1">Similar Deals Avg.</p>
-              <p className="text-sm">{deal.dealStructure.similarDealsAvg}</p>
-            </div>
-            <div>
-              <p className="text-sm text-gray-600 mb-1">Potential Savings</p>
-              <p className="text-sm text-green-600 font-medium">{deal.dealStructure.potentialSavings}</p>
-            </div>
-          </div>
-
-          <div className="mb-3">
-            <p className="text-sm text-gray-600 mb-1">Risk Assessment</p>
-            <div className="flex items-center">
-              <AlertCircle className="h-4 w-4 text-primary mr-2" />
-              <span className="text-sm">{deal.dealStructure.riskAssessment}</span>
-            </div>
-          </div>
-
-          <div>
-            <p className="text-sm text-gray-600 mb-2">Quality Verification</p>
-            <div className="space-y-1.5">
-              {deal.dealStructure.qualityVerification.map((item, index) => (
-                <div key={index} className="flex items-start">
-                  <Checkbox id={`check-${deal.id}-${index}`} className="mt-0.5 mr-2" defaultChecked />
-                  <label htmlFor={`check-${deal.id}-${index}`} className="text-sm">{item}</label>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <p className="text-sm text-gray-600 mb-1">Target Savings</p>
+                <div className="flex items-center">
+                  <BarChart2 className="h-4 w-4 text-primary mr-2" />
+                  <span className="text-primary font-medium">{deal.aiStrategy.targetSavings}</span>
                 </div>
-              ))}
+              </div>
+              <div>
+                <p className="text-sm text-gray-600 mb-1">Estimated Timeframe</p>
+                <div className="flex items-center">
+                  <Clock className="h-4 w-4 text-primary mr-2" />
+                  <span>{deal.aiStrategy.timeframe}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-gray-50 p-4 rounded-md h-full">
+            <div className="flex items-center mb-2">
+              <Building2 className="h-4 w-4 text-primary mr-2" />
+              <h3 className="font-semibold text-primary">Deal Structure</h3>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4 mb-4">
+              <div>
+                <p className="text-sm text-gray-600 mb-1">Total Value</p>
+                <div className="flex items-center">
+                  <DollarSign className="h-4 w-4 text-primary mr-1" />
+                  <span className="font-semibold">{deal.dealStructure.totalValue}</span>
+                </div>
+              </div>
+              <div>
+                <p className="text-sm text-gray-600 mb-1">Payment Structure</p>
+                <p className="text-sm">{deal.dealStructure.paymentStructure}</p>
+              </div>
+              <div>
+                <p className="text-sm text-gray-600 mb-1">Similar Deals Avg.</p>
+                <p className="text-sm">{deal.dealStructure.similarDealsAvg}</p>
+              </div>
+              <div>
+                <p className="text-sm text-gray-600 mb-1">Potential Savings</p>
+                <p className="text-sm text-green-600 font-medium">{deal.dealStructure.potentialSavings}</p>
+              </div>
+            </div>
+
+            <div className="mb-3">
+              <p className="text-sm text-gray-600 mb-1">Risk Assessment</p>
+              <div className="flex items-center">
+                <AlertCircle className="h-4 w-4 text-primary mr-2" />
+                <span className="text-sm">{deal.dealStructure.riskAssessment}</span>
+              </div>
+            </div>
+
+            <div>
+              <p className="text-sm text-gray-600 mb-2">Quality Verification</p>
+              <div className="grid grid-cols-2 gap-1">
+                {deal.dealStructure.qualityVerification.map((item, index) => (
+                  <div key={index} className="flex items-start">
+                    <Checkbox id={`check-${deal.id}-${index}`} className="mt-0.5 mr-2" defaultChecked />
+                    <label htmlFor={`check-${deal.id}-${index}`} className="text-sm">{item}</label>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
@@ -294,7 +296,7 @@ const LiveDeals: React.FC = () => {
   
   return (
     <Layout>
-      <div className="space-y-6 max-w-4xl mx-auto">
+      <div className="space-y-6 max-w-6xl mx-auto">
         <div className="flex justify-between items-center">
           <div>
             <h1 className="text-2xl font-bold tracking-tight">Live Deals</h1>
@@ -392,3 +394,4 @@ const LiveDeals: React.FC = () => {
 };
 
 export default LiveDeals;
+
