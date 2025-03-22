@@ -13,10 +13,10 @@
     --popover: 0 0% 100%;
     --popover-foreground: 222 47% 11%;
 
-    --primary: 196 84% 49%; /* Updated to match logo blue (#1EAEDB) */
+    --primary: 265 84% 70%; /* Updated to purple (#9b87f5) */
     --primary-foreground: 210 40% 98%;
-    --primary-light: 196 84% 95%;
-    --primary-dark: 196 84% 39%;
+    --primary-light: 265 84% 95%;
+    --primary-dark: 265 84% 60%;
 
     --secondary: 220 14% 94%;
     --secondary-foreground: 222 47% 11%;
@@ -24,9 +24,9 @@
     --muted: 210 40% 96%;
     --muted-foreground: 215 16% 47%;
 
-    --accent: 199 89% 57%; /* Updated to match logo second blue (#33C3F0) */
+    --accent: 280 89% 65%; /* Updated to secondary purple (#a855f7) */
     --accent-foreground: 210 40% 98%;
-    --accent-light: 199 89% 95%;
+    --accent-light: 280 89% 95%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 210 40% 98%;
@@ -39,12 +39,12 @@
 
     --sidebar-background: 0 0% 100%;
     --sidebar-foreground: 240 5% 26%;
-    --sidebar-primary: 196 84% 49%; /* Updated to match logo blue */
+    --sidebar-primary: 265 84% 70%; /* Updated to primary purple */
     --sidebar-primary-foreground: 0 0% 100%;
     --sidebar-accent: 240 5% 96%;
     --sidebar-accent-foreground: 240 6% 10%;
     --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 196 84% 49%; /* Updated to match logo blue */
+    --sidebar-ring: 265 84% 70%; /* Updated to primary purple */
   }
 
   .dark {
@@ -57,7 +57,7 @@
     --popover: 222 47% 11%;
     --popover-foreground: 210 40% 98%;
 
-    --primary: 196 84% 49%; /* Updated to match logo blue (#1EAEDB) */
+    --primary: 265 84% 70%; /* Updated to purple (#9b87f5) */
     --primary-foreground: 210 40% 98%;
 
     --secondary: 217 33% 18%;
@@ -66,7 +66,7 @@
     --muted: 217 33% 18%;
     --muted-foreground: 215 20% 65%;
 
-    --accent: 199 89% 57%; /* Updated to match logo second blue (#33C3F0) */
+    --accent: 280 89% 65%; /* Updated to secondary purple (#a855f7) */
     --accent-foreground: 210 40% 98%;
 
     --destructive: 0 63% 31%;
@@ -78,64 +78,60 @@
     
     --sidebar-background: 240 6% 10%;
     --sidebar-foreground: 240 5% 96%;
-    --sidebar-primary: 196 84% 49%; /* Updated to match logo blue */
+    --sidebar-primary: 265 84% 70%; /* Updated to primary purple */
     --sidebar-primary-foreground: 0 0% 100%;
     --sidebar-accent: 240 4% 16%;
     --sidebar-accent-foreground: 240 5% 96%;
     --sidebar-border: 240 4% 16%;
-    --sidebar-ring: 196 84% 49%; /* Updated to match logo blue */
+    --sidebar-ring: 265 84% 70%; /* Updated to primary purple */
   }
 }
 
-@layer base {
-  * {
-    @apply border-border;
-  }
-
-  body {
-    @apply bg-background text-foreground;
-    font-feature-settings: "rlig" 1, "calt" 1;
-  }
-
-  h1, h2, h3, h4, h5, h6 {
-    @apply font-medium tracking-tight;
-  }
-
-  h1 {
-    @apply text-3xl;
-  }
-
-  h2 {
-    @apply text-2xl;
-  }
-
-  h3 {
-    @apply text-xl;
-  }
-
-  h4 {
-    @apply text-lg;
-  }
-
-  /* Page transition animations */
-  .page-enter {
-    @apply opacity-0;
-  }
-  
-  .page-enter-active {
-    @apply opacity-100 transition-opacity duration-300;
-  }
-  
-  .page-exit {
-    @apply opacity-100;
-  }
-  
-  .page-exit-active {
-    @apply opacity-0 transition-opacity duration-300;
-  }
+* {
+  @apply border-border;
 }
 
-/* Glassmorphism styling */
+body {
+  @apply bg-background text-foreground;
+  font-feature-settings: "rlig" 1, "calt" 1;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  @apply font-medium tracking-tight;
+}
+
+h1 {
+  @apply text-3xl;
+}
+
+h2 {
+  @apply text-2xl;
+}
+
+h3 {
+  @apply text-xl;
+}
+
+h4 {
+  @apply text-lg;
+}
+
+.page-enter {
+  @apply opacity-0;
+}
+
+.page-enter-active {
+  @apply opacity-100 transition-opacity duration-300;
+}
+
+.page-exit {
+  @apply opacity-100;
+}
+
+.page-exit-active {
+  @apply opacity-0 transition-opacity duration-300;
+}
+
 .glass {
   @apply bg-white/80 dark:bg-black/30 backdrop-blur-md border border-white/20 dark:border-white/10;
 }
@@ -144,7 +140,6 @@
   @apply bg-white/90 dark:bg-black/30 backdrop-blur-md border border-white/20 dark:border-white/10 shadow-glass;
 }
 
-/* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
@@ -162,7 +157,6 @@
   @apply bg-muted-foreground/40;
 }
 
-/* Animations */
 .animate-delay-100 {
   animation-delay: 100ms;
 }
