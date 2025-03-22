@@ -63,16 +63,18 @@ const Sidebar = ({ isOpen, onToggle }: SidebarProps) => {
       )}
     >
       <div className={cn(
-        "flex h-16 items-center justify-center border-b border-gray-100",
-        isOpen ? "px-6" : "px-2"
+        "flex h-16 items-center border-b border-gray-100",
+        isOpen ? "justify-center px-6" : "justify-center px-2"
       )}>
         <Link to="/" className="flex items-center justify-center py-4">
           {isOpen ? (
-            <img 
-              src="/lovable-uploads/42466f5f-6d74-466e-af4c-1fc0de255379.png" 
-              alt="Fabricated Logo" 
-              className="h-12 w-auto" 
-            />
+            <div className="flex items-center justify-center w-full">
+              <img 
+                src="/lovable-uploads/42466f5f-6d74-466e-af4c-1fc0de255379.png" 
+                alt="Fabricated Logo" 
+                className="h-12 w-auto mx-auto" 
+              />
+            </div>
           ) : (
             <div className="flex items-center justify-center">
               <img 
