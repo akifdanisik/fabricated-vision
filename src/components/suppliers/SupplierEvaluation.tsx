@@ -15,7 +15,8 @@ import {
   BarChart3, 
   AlertCircle, 
   CheckCircle2, 
-  ArrowUpRight 
+  ArrowUpRight,
+  RefreshCw
 } from 'lucide-react';
 
 interface SupplierEvaluationProps {
@@ -443,3 +444,4 @@ export default function SupplierEvaluation({ suppliers }: SupplierEvaluationProp
 function RefreshAnalysis({ className, ...props }: React.ComponentProps<typeof RefreshCw>) {
   return <RefreshCw className={className} {...props} />;
 }
+
