@@ -2,10 +2,15 @@
 import { useState, useEffect } from 'react';
 import Layout from '@/components/layout/Layout';
 import SuppliersTable, { Supplier } from '@/components/suppliers/SuppliersTable';
+import SupplierProfile from '@/components/suppliers/SupplierProfile';
+import SupplierEvaluation from '@/components/suppliers/SupplierEvaluation';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 const Suppliers = () => {
   const [loading, setLoading] = useState(true);
+  const [selectedSupplier, setSelectedSupplier] = useState<Supplier | null>(null);
+  const [activeTab, setActiveTab] = useState('list');
   
   // Mock suppliers data
   const suppliersData: Supplier[] = [
@@ -119,6 +124,11 @@ const Suppliers = () => {
     return () => clearTimeout(timer);
   }, []);
 
+  const handleSupplierSelect = (supplier: Supplier) => {
+    setSelectedSupplier(supplier);
+    setActiveTab('profile');
+  };
+
   return (
     <Layout>
       <div className="space-y-6">
@@ -130,7 +140,30 @@ const Suppliers = () => {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <SuppliersTable suppliers={suppliersData} />
+            <Tabs value={activeTab} onValueChange={setActiveTab}>
+              <TabsList className="mb-6">
+                <TabsTrigger value="list">Supplier List</TabsTrigger>
+                <TabsTrigger value="profile" disabled={!selectedSupplier}>Supplier Profile</TabsTrigger>
+                <TabsTrigger value="evaluation">AI Evaluations</TabsTrigger>
+              </TabsList>
+              
+              <TabsContent value="list" className="mt-0">
+                <SuppliersTable 
+                  suppliers={suppliersData} 
+                  onSelectSupplier={handleSupplierSelect}
+                />
+              </TabsContent>
+              
+              <TabsContent value="profile" className="mt-0">
+                {selectedSupplier && (
+                  <SupplierProfile supplier={selectedSupplier} />
+                )}
+              </TabsContent>
+              
+              <TabsContent value="evaluation" className="mt-0">
+                <SupplierEvaluation suppliers={suppliersData} />
+              </TabsContent>
+            </Tabs>
           </CardContent>
         </Card>
       </div>

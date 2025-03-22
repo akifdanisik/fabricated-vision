@@ -25,11 +25,14 @@ import {
   Plus, 
   RefreshCw, 
   Search, 
-  Star 
+  Star,
+  FileText,
+  UserCheck 
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Progress } from '@/components/ui/progress';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 export interface Supplier {
   id: string;
@@ -51,17 +54,30 @@ export interface Supplier {
 interface SuppliersTableProps {
   suppliers: Supplier[];
   className?: string;
+  onSelectSupplier?: (supplier: Supplier) => void;
 }
 
-export default function SuppliersTable({ suppliers, className }: SuppliersTableProps) {
+export default function SuppliersTable({ 
+  suppliers, 
+  className,
+  onSelectSupplier 
+}: SuppliersTableProps) {
   const [searchQuery, setSearchQuery] = useState('');
+  const [categoryFilter, setCategoryFilter] = useState('');
   
-  const filteredSuppliers = suppliers.filter(supplier => 
-    supplier.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    supplier.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    supplier.contact.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    supplier.location.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const filteredSuppliers = suppliers.filter(supplier => {
+    const matchesSearch = 
+      supplier.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      supplier.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      supplier.contact.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      supplier.location.toLowerCase().includes(searchQuery.toLowerCase());
+    
+    const matchesCategory = categoryFilter === '' || supplier.category === categoryFilter;
+    
+    return matchesSearch && matchesCategory;
+  });
+  
+  const categories = Array.from(new Set(suppliers.map(s => s.category)));
   
   const getRiskBadge = (risk: Supplier['riskLevel']) => {
     switch (risk) {
@@ -97,10 +113,17 @@ export default function SuppliersTable({ suppliers, className }: SuppliersTableP
         </div>
         
         <div className="flex flex-wrap items-center gap-2">
-          <Button variant="outline" size="sm" className="h-9 gap-1">
-            <Filter className="h-4 w-4" />
-            <span>Filter</span>
-          </Button>
+          <Select value={categoryFilter} onValueChange={setCategoryFilter}>
+            <SelectTrigger className="w-[180px] h-9">
+              <SelectValue placeholder="Filter by category" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="">All Categories</SelectItem>
+              {categories.map(category => (
+                <SelectItem key={category} value={category}>{category}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
           
           <Button variant="outline" size="sm" className="h-9 gap-1">
             <RefreshCw className="h-4 w-4" />
@@ -142,7 +165,11 @@ export default function SuppliersTable({ suppliers, className }: SuppliersTableP
               </TableRow>
             ) : (
               filteredSuppliers.map((supplier) => (
-                <TableRow key={supplier.id} className="group h-[65px]">
+                <TableRow 
+                  key={supplier.id} 
+                  className="group h-[65px] cursor-pointer hover:bg-gray-50"
+                  onClick={() => onSelectSupplier && onSelectSupplier(supplier)}
+                >
                   <TableCell>
                     <div className="flex items-center gap-3">
                       <Avatar className="h-8 w-8">
@@ -178,7 +205,7 @@ export default function SuppliersTable({ suppliers, className }: SuppliersTableP
                     </div>
                   </TableCell>
                   <TableCell>{supplier.location}</TableCell>
-                  <TableCell>
+                  <TableCell onClick={(e) => e.stopPropagation()}>
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
                         <Button 
@@ -190,9 +217,14 @@ export default function SuppliersTable({ suppliers, className }: SuppliersTableP
                         </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
-                        <DropdownMenuItem>View Profile</DropdownMenuItem>
-                        <DropdownMenuItem>Edit Supplier</DropdownMenuItem>
-                        <DropdownMenuItem>View Orders</DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => onSelectSupplier && onSelectSupplier(supplier)}>
+                          <UserCheck className="mr-2 h-4 w-4" />
+                          View Profile
+                        </DropdownMenuItem>
+                        <DropdownMenuItem>
+                          <FileText className="mr-2 h-4 w-4" />
+                          View Compliance Docs
+                        </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>
                   </TableCell>
