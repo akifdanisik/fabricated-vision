@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { 
@@ -47,12 +46,10 @@ const Sidebar = ({ isOpen, onToggle }: SidebarProps) => {
   const location = useLocation();
   const [isMounted, setIsMounted] = useState(false);
   
-  // For animation purposes
   useEffect(() => {
     setIsMounted(true);
   }, []);
 
-  // Separate priority nav items
   const priorityItems = navItems.filter(item => item.priority);
   const standardItems = navItems.filter(item => !item.priority);
 
@@ -73,10 +70,10 @@ const Sidebar = ({ isOpen, onToggle }: SidebarProps) => {
             <img 
               src="/lovable-uploads/0f378f40-c5be-494e-a251-1513b467af1d.png" 
               alt="Fabricated Logo" 
-              className="h-9 w-auto" 
+              className="h-15 w-auto" 
             />
           ) : (
-            <div className="flex h-10 w-10 items-center justify-center">
+            <div className="flex h-11 w-11 items-center justify-center">
               <span className="text-2xl font-serif font-bold">F</span>
             </div>
           )}
@@ -93,7 +90,6 @@ const Sidebar = ({ isOpen, onToggle }: SidebarProps) => {
       </div>
       
       <ScrollArea className="flex-1 pt-3">
-        {/* Priority nav items */}
         <nav className="grid gap-1 px-3 py-2">
           {priorityItems.map((item, index) => {
             const isActive = location.pathname === item.path;
@@ -127,7 +123,6 @@ const Sidebar = ({ isOpen, onToggle }: SidebarProps) => {
         
         <Separator className={cn("my-2 bg-gray-100", !isOpen && "mx-2")} />
         
-        {/* Standard nav items */}
         <nav className="grid gap-1 px-3 py-2">
           {standardItems.map((item, index) => {
             const isActive = location.pathname === item.path;

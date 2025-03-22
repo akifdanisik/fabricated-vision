@@ -51,7 +51,7 @@ const Dashboard = () => {
           <img 
             src="/lovable-uploads/0f378f40-c5be-494e-a251-1513b467af1d.png" 
             alt="Fabricated Logo" 
-            className="h-14 w-auto mb-2 hidden md:block" 
+            className="h-15 w-auto mb-2 hidden md:block" 
           />
           <div>
             <p className="text-gray-500 text-sm">{formattedDate}</p>
