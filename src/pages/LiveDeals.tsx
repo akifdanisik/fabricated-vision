@@ -129,7 +129,7 @@ const deals = [
 
 const DealCard = ({ deal }: { deal: typeof deals[0] }) => {
   return (
-    <Card className="mb-6 border rounded-xl shadow-md hover:shadow-lg transition-shadow">
+    <Card className="mb-6">
       <CardHeader className="pb-0">
         <div className="flex justify-between items-start">
           <div>
@@ -139,10 +139,10 @@ const DealCard = ({ deal }: { deal: typeof deals[0] }) => {
             <CardTitle className="text-xl font-bold mt-2">{deal.title}</CardTitle>
           </div>
           <Badge 
-            className={`px-3 py-1.5 rounded-full text-xs font-medium ${
-              deal.status === 'new' ? 'bg-blue-100 text-blue-800 border-blue-200' : 
-              deal.status === 'in-negotiation' ? 'bg-amber-100 text-amber-800 border-amber-200' : 
-              'bg-green-100 text-green-800 border-green-200'
+            className={`px-3 py-1 rounded-full text-xs font-medium ${
+              deal.status === 'new' ? 'bg-blue-100 text-blue-800' : 
+              deal.status === 'in-negotiation' ? 'bg-amber-100 text-amber-800' : 
+              'bg-green-100 text-green-800'
             }`}
           >
             {deal.status === 'new' ? 'New' : 
@@ -172,24 +172,24 @@ const DealCard = ({ deal }: { deal: typeof deals[0] }) => {
           </div>
         </div>
 
-        <div className="bg-blue-50 p-5 rounded-lg mb-5">
-          <div className="flex items-center mb-3">
-            <Zap className="h-5 w-5 text-primary mr-2" />
-            <h3 className="font-semibold text-primary-dark">AI Negotiation Strategy</h3>
+        <div className="bg-blue-50 p-4 rounded-md mb-4">
+          <div className="flex items-center mb-2">
+            <Zap className="h-4 w-4 text-primary mr-2" />
+            <h3 className="font-semibold text-primary">AI Negotiation Strategy</h3>
           </div>
 
-          <div className="mb-4">
+          <div className="mb-3">
             <p className="text-sm text-gray-600 mb-2">Focus Points</p>
             <div className="flex flex-wrap gap-2">
               {deal.aiStrategy.focusPoints.map((point, index) => (
-                <span key={index} className="inline-flex items-center rounded-full bg-white px-3 py-1 text-sm border border-blue-100">
+                <span key={index} className="inline-flex items-center rounded-full bg-white px-2.5 py-0.5 text-xs font-medium border border-gray-200">
                   {point}
                 </span>
               ))}
             </div>
           </div>
 
-          <div className="mb-4">
+          <div className="mb-3">
             <p className="text-sm text-gray-600 mb-1">Approach</p>
             <p className="text-sm">{deal.aiStrategy.approach}</p>
           </div>
@@ -199,7 +199,7 @@ const DealCard = ({ deal }: { deal: typeof deals[0] }) => {
               <p className="text-sm text-gray-600 mb-1">Target Savings</p>
               <div className="flex items-center">
                 <BarChart2 className="h-4 w-4 text-primary mr-2" />
-                <span className="text-primary-dark font-medium">{deal.aiStrategy.targetSavings}</span>
+                <span className="text-primary font-medium">{deal.aiStrategy.targetSavings}</span>
               </div>
             </div>
             <div>
@@ -212,13 +212,13 @@ const DealCard = ({ deal }: { deal: typeof deals[0] }) => {
           </div>
         </div>
 
-        <div className="bg-gray-50 p-5 rounded-lg">
-          <div className="flex items-center mb-3">
-            <Building2 className="h-5 w-5 text-primary mr-2" />
-            <h3 className="font-semibold text-primary-dark">Deal Structure</h3>
+        <div className="bg-gray-50 p-4 rounded-md">
+          <div className="flex items-center mb-2">
+            <Building2 className="h-4 w-4 text-primary mr-2" />
+            <h3 className="font-semibold text-primary">Deal Structure</h3>
           </div>
 
-          <div className="grid grid-cols-2 gap-5 mb-5">
+          <div className="grid grid-cols-2 gap-4 mb-4">
             <div>
               <p className="text-sm text-gray-600 mb-1">Total Value</p>
               <div className="flex items-center">
@@ -228,40 +228,32 @@ const DealCard = ({ deal }: { deal: typeof deals[0] }) => {
             </div>
             <div>
               <p className="text-sm text-gray-600 mb-1">Payment Structure</p>
-              <div className="flex items-center">
-                <PieChart className="h-4 w-4 text-primary mr-2" />
-                <span>{deal.dealStructure.paymentStructure}</span>
-              </div>
+              <p className="text-sm">{deal.dealStructure.paymentStructure}</p>
             </div>
             <div>
               <p className="text-sm text-gray-600 mb-1">Similar Deals Avg.</p>
-              <div className="flex items-center">
-                <LineChart className="h-4 w-4 text-primary mr-2" />
-                <span>{deal.dealStructure.similarDealsAvg}</span>
-              </div>
+              <p className="text-sm">{deal.dealStructure.similarDealsAvg}</p>
             </div>
             <div>
               <p className="text-sm text-gray-600 mb-1">Potential Savings</p>
-              <div className="flex items-center">
-                <span className="text-green-600 font-medium">{deal.dealStructure.potentialSavings}</span>
-              </div>
+              <p className="text-sm text-green-600 font-medium">{deal.dealStructure.potentialSavings}</p>
             </div>
           </div>
 
-          <div className="mb-4">
-            <p className="text-sm text-gray-600 mb-2">Risk Assessment</p>
+          <div className="mb-3">
+            <p className="text-sm text-gray-600 mb-1">Risk Assessment</p>
             <div className="flex items-center">
               <AlertCircle className="h-4 w-4 text-primary mr-2" />
-              <span>{deal.dealStructure.riskAssessment}</span>
+              <span className="text-sm">{deal.dealStructure.riskAssessment}</span>
             </div>
           </div>
 
           <div>
             <p className="text-sm text-gray-600 mb-2">Quality Verification</p>
-            <div className="space-y-2">
+            <div className="space-y-1.5">
               {deal.dealStructure.qualityVerification.map((item, index) => (
                 <div key={index} className="flex items-start">
-                  <Checkbox id={`check-${deal.id}-${index}`} className="mt-0.5 mr-2 border-primary" defaultChecked />
+                  <Checkbox id={`check-${deal.id}-${index}`} className="mt-0.5 mr-2" defaultChecked />
                   <label htmlFor={`check-${deal.id}-${index}`} className="text-sm">{item}</label>
                 </div>
               ))}
@@ -269,16 +261,17 @@ const DealCard = ({ deal }: { deal: typeof deals[0] }) => {
           </div>
         </div>
       </CardContent>
-      <CardFooter className="pt-2 border-t flex justify-between">
+      <CardFooter className="pt-2 border-t">
         <div className="flex items-center gap-2">
-          <div className="w-10 h-10 rounded-full bg-primary/10 text-primary flex items-center justify-center overflow-hidden font-medium">
+          <div className="w-8 h-8 rounded-full bg-primary/10 text-primary flex items-center justify-center overflow-hidden font-medium">
             {deal.supplier.charAt(0)}
           </div>
           <span className="font-medium">{deal.supplier}</span>
         </div>
+        <div className="flex-1"></div>
         <div className="flex items-center gap-2">
           <Button variant="outline" size="sm" className="border-primary text-primary hover:bg-primary/5">
-            View
+            View Details
           </Button>
           <Button variant="ghost" size="icon" className="text-gray-400 hover:text-gray-600">
             <Trash2 className="h-4 w-4" />
@@ -301,23 +294,23 @@ const LiveDeals: React.FC = () => {
   
   return (
     <Layout>
-      <div className="space-y-6 max-w-5xl mx-auto">
-        <div className="flex flex-col md:flex-row justify-between md:items-center gap-4">
+      <div className="space-y-6 max-w-4xl mx-auto">
+        <div className="flex justify-between items-center">
           <div>
             <h1 className="text-2xl font-bold tracking-tight">Live Deals</h1>
             <p className="text-gray-500">Manage and track your active procurement deals</p>
           </div>
-          <Button className="self-start md:self-auto bg-primary hover:bg-primary-dark">
+          <Button className="bg-primary hover:bg-primary/90">
             <Plus className="mr-2 h-4 w-4" /> Create New Deal
           </Button>
         </div>
 
         <Tabs defaultValue="new" value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="w-full justify-start mb-6 bg-gray-100 rounded-full">
-            <TabsTrigger value="new" className="flex gap-2 items-center rounded-full text-sm">
+          <TabsList className="w-full justify-start mb-6">
+            <TabsTrigger value="new" className="flex gap-2 items-center">
               <Package className="h-4 w-4" /> New
             </TabsTrigger>
-            <TabsTrigger value="in-negotiation" className="flex gap-2 items-center rounded-full text-sm">
+            <TabsTrigger value="in-negotiation" className="flex gap-2 items-center">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-handshake">
                 <path d="M11 19H5.5a2.5 2.5 0 0 1 0-5H11" />
                 <path d="M13 5h5.5a2.5 2.5 0 0 1 0 5H13" />
@@ -326,7 +319,7 @@ const LiveDeals: React.FC = () => {
               </svg>
               In Negotiation
             </TabsTrigger>
-            <TabsTrigger value="supplier-confirmed" className="flex gap-2 items-center rounded-full text-sm">
+            <TabsTrigger value="supplier-confirmed" className="flex gap-2 items-center">
               <CheckCircle className="h-4 w-4" /> Supplier Confirmed
             </TabsTrigger>
           </TabsList>
@@ -337,14 +330,14 @@ const LiveDeals: React.FC = () => {
                 <DealCard key={deal.id} deal={deal} />
               ))
             ) : (
-              <Card className="border border-dashed bg-gray-50/50">
+              <Card className="border border-dashed bg-gray-50">
                 <CardContent className="flex flex-col items-center justify-center py-12">
                   <Package className="h-12 w-12 text-gray-300 mb-4" />
                   <p className="text-lg font-medium text-gray-600">No new deals</p>
                   <p className="text-gray-500 text-center max-w-md mt-1 mb-6">
                     Create a new deal to start the procurement process
                   </p>
-                  <Button className="bg-primary hover:bg-primary-dark">
+                  <Button className="bg-primary hover:bg-primary/90">
                     <Plus className="mr-2 h-4 w-4" /> Create New Deal
                   </Button>
                 </CardContent>
@@ -358,7 +351,7 @@ const LiveDeals: React.FC = () => {
                 <DealCard key={deal.id} deal={deal} />
               ))
             ) : (
-              <Card className="border border-dashed bg-gray-50/50">
+              <Card className="border border-dashed bg-gray-50">
                 <CardContent className="flex flex-col items-center justify-center py-12">
                   <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-gray-300 mb-4">
                     <path d="M11 19H5.5a2.5 2.5 0 0 1 0-5H11" />
@@ -381,7 +374,7 @@ const LiveDeals: React.FC = () => {
                 <DealCard key={deal.id} deal={deal} />
               ))
             ) : (
-              <Card className="border border-dashed bg-gray-50/50">
+              <Card className="border border-dashed bg-gray-50">
                 <CardContent className="flex flex-col items-center justify-center py-12">
                   <CheckCircle className="h-12 w-12 text-gray-300 mb-4" />
                   <p className="text-lg font-medium text-gray-600">No confirmed deals</p>
