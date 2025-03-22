@@ -1,5 +1,5 @@
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import CategorySelector from "./CategorySelector";
 import CategoryBadge, { Category } from "./CategoryBadge";
 import { X } from "lucide-react";
@@ -10,24 +10,15 @@ interface CategoryFilterProps {
   className?: string;
   showLabel?: boolean;
   showClear?: boolean;
-  initialCategories?: Category[]; // Added initialCategories property
 }
 
 const CategoryFilter = ({ 
   onFilterChange, 
   className,
   showLabel = true,
-  showClear = true,
-  initialCategories = [] // Set default value
+  showClear = true
 }: CategoryFilterProps) => {
-  const [selectedCategories, setSelectedCategories] = useState<Category[]>(initialCategories);
-
-  // Initialize with initial categories
-  useEffect(() => {
-    if (initialCategories.length > 0) {
-      setSelectedCategories(initialCategories);
-    }
-  }, [initialCategories]);
+  const [selectedCategories, setSelectedCategories] = useState<Category[]>([]);
 
   const handleCategoryChange = (newCategories: Category[]) => {
     setSelectedCategories(newCategories);

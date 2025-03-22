@@ -10,20 +10,20 @@ import { ShieldCheck, FileText, ClipboardCheck } from 'lucide-react';
 import { Category } from '@/components/categories/CategoryBadge';
 import CategoryFilter from '@/components/categories/CategoryFilter';
 
-// Make sure we're properly defining the props for each compliance component
+// Define interfaces for the component props
 interface ComplianceComponentProps {
   selectedCategories: Category[];
 }
 
-// Update the component definitions to properly accept props
-const EnhancedComplianceOverview = ({ selectedCategories }: ComplianceComponentProps) => 
-  <ComplianceOverview selectedCategories={selectedCategories} />;
+// Create proper wrapper components with correct typing
+const EnhancedComplianceOverview: React.FC<ComplianceComponentProps> = (props) => 
+  <ComplianceOverview {...props} />;
 
-const EnhancedDocumentManagement = ({ selectedCategories }: ComplianceComponentProps) => 
-  <DocumentManagement selectedCategories={selectedCategories} />;
+const EnhancedDocumentManagement: React.FC<ComplianceComponentProps> = (props) => 
+  <DocumentManagement {...props} />;
 
-const EnhancedAuditReadiness = ({ selectedCategories }: ComplianceComponentProps) => 
-  <AuditReadiness selectedCategories={selectedCategories} />;
+const EnhancedAuditReadiness: React.FC<ComplianceComponentProps> = (props) => 
+  <AuditReadiness {...props} />;
 
 const Compliance = () => {
   const [selectedCategories, setSelectedCategories] = useState<Category[]>([]);
@@ -67,15 +67,15 @@ const Compliance = () => {
               </TabsList>
               
               <TabsContent value="overview" className="space-y-6">
-                <ComplianceOverview selectedCategories={selectedCategories} />
+                <EnhancedComplianceOverview selectedCategories={selectedCategories} />
               </TabsContent>
               
               <TabsContent value="documents" className="space-y-6">
-                <DocumentManagement selectedCategories={selectedCategories} />
+                <EnhancedDocumentManagement selectedCategories={selectedCategories} />
               </TabsContent>
               
               <TabsContent value="audit" className="space-y-6">
-                <AuditReadiness selectedCategories={selectedCategories} />
+                <EnhancedAuditReadiness selectedCategories={selectedCategories} />
               </TabsContent>
             </Tabs>
           </CardContent>

@@ -18,13 +18,8 @@ import {
   Clock
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { Category } from '@/components/categories/CategoryBadge';
 
 // Types
-interface ComplianceOverviewProps {
-  selectedCategories?: Category[];
-}
-
 interface ComplianceStats {
   totalDocuments: number;
   compliantDocuments: number;
@@ -41,7 +36,7 @@ interface ComplianceCategory {
 }
 
 // Component
-const ComplianceOverview = ({ selectedCategories = [] }: ComplianceOverviewProps) => {
+const ComplianceOverview = () => {
   // Sample data
   const stats: ComplianceStats = {
     totalDocuments: 245,

@@ -32,12 +32,6 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
-import { Category } from '@/components/categories/CategoryBadge';
-
-// Props interface
-interface AuditReadinessProps {
-  selectedCategories?: Category[];
-}
 
 // Types
 interface RegulatoryUpdate {
@@ -58,7 +52,7 @@ interface AuditItem {
 }
 
 // Component
-const AuditReadiness = ({ selectedCategories = [] }: AuditReadinessProps) => {
+const AuditReadiness = () => {
   const [activeTab, setActiveTab] = useState("updates");
   
   // Sample regulatory updates

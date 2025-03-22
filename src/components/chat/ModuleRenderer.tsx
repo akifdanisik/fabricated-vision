@@ -13,7 +13,7 @@ import { BarChart, Bar, LineChart, Line, PieChart, Pie, Cell, ResponsiveContaine
 import { Progress } from '@/components/ui/progress';
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
 import InventoryTable from '@/components/inventory/InventoryTable';
-import SuppliersTable, { Supplier } from '@/components/suppliers/SuppliersTable';
+import SuppliersTable from '@/components/suppliers/SuppliersTable';
 import CategoryManager from '@/components/categories/CategoryManager';
 
 interface ModuleRendererProps {
@@ -21,94 +21,19 @@ interface ModuleRendererProps {
   data: Record<string, any>;
 }
 
-// Define interfaces for component props
+// HOCs for compliance components to fix type errors
 interface ComplianceComponentProps {
-  selectedCategories?: Category[];
+  selectedCategories: Category[];
 }
 
-// Sample supplier data for SuppliersTable
-const sampleSuppliers: Supplier[] = [
-  {
-    id: "1",
-    name: "PharmaCorp",
-    category: "APIs",
-    categories: [{ id: "apis", name: "APIs", color: "blue" }],
-    performance: 95,
-    riskLevel: "low",
-    items: 42,
-    contact: {
-      name: "John Smith",
-      email: "john@pharmacorp.com"
-    },
-    location: "Mumbai, India",
-    initials: "PC",
-    certifications: ["GMP", "ISO 9001"]
-  },
-  {
-    id: "2",
-    name: "BioTech Materials",
-    category: "Excipients",
-    categories: [{ id: "excipients", name: "Excipients", color: "green" }],
-    performance: 92,
-    riskLevel: "low",
-    items: 28,
-    contact: {
-      name: "Maria Weber",
-      email: "maria@biotech.com"
-    },
-    location: "Frankfurt, Germany",
-    initials: "BT",
-    certifications: ["GMP", "FDA", "ISO 9001"]
-  },
-  {
-    id: "3",
-    name: "ChemSource",
-    category: "APIs",
-    categories: [{ id: "apis", name: "APIs", color: "blue" }],
-    performance: 88,
-    riskLevel: "medium",
-    items: 35,
-    contact: {
-      name: "Li Chen",
-      email: "chen@chemsource.com"
-    },
-    location: "Shanghai, China",
-    initials: "CS",
-    certifications: ["ISO 9001"]
-  },
-  {
-    id: "4",
-    name: "MedSource Inc.",
-    category: "Equipment",
-    categories: [{ id: "equipment", name: "Equipment", color: "purple" }],
-    performance: 89,
-    riskLevel: "medium",
-    items: 19,
-    contact: {
-      name: "Robert Davis",
-      email: "robert@medsource.com"
-    },
-    location: "Boston, USA",
-    initials: "MS",
-    certifications: ["GMP", "ISO 9001"]
-  },
-  {
-    id: "5",
-    name: "GlobalPharma",
-    category: "Packaging",
-    categories: [{ id: "packaging", name: "Packaging", color: "amber" }], // Changed from orange to amber
-    performance: 86,
-    riskLevel: "medium",
-    items: 31,
-    contact: {
-      name: "Sarah Johnson",
-      email: "sarah@globalpharma.com"
-    },
-    location: "London, UK",
-    initials: "GP",
-    certifications: ["ISO 9001", "ISO 14001"]
-  }
-];
+const EnhancedComplianceOverview: React.FC<ComplianceComponentProps> = (props) => 
+  <ComplianceOverview {...props} />;
+
+const EnhancedDocumentManagement: React.FC<ComplianceComponentProps> = (props) => 
+  <DocumentManagement {...props} />;
+
+const EnhancedAuditReadiness: React.FC<ComplianceComponentProps> = (props) => 
+  <AuditReadiness {...props} />;
 
 const ModuleRenderer: React.FC<ModuleRendererProps> = ({ type, data }) => {
   const [selectedCategories, setSelectedCategories] = useState<Category[]>([]);
@@ -188,15 +113,15 @@ const ModuleRenderer: React.FC<ModuleRendererProps> = ({ type, data }) => {
               </TabsList>
               
               <TabsContent value="overview" className="mt-0">
-                <ComplianceOverview selectedCategories={selectedCategories} />
+                <EnhancedComplianceOverview selectedCategories={selectedCategories} />
               </TabsContent>
               
               <TabsContent value="documents" className="mt-0">
-                <DocumentManagement selectedCategories={selectedCategories} />
+                <EnhancedDocumentManagement selectedCategories={selectedCategories} />
               </TabsContent>
               
               <TabsContent value="audit" className="mt-0">
-                <AuditReadiness selectedCategories={selectedCategories} />
+                <EnhancedAuditReadiness selectedCategories={selectedCategories} />
               </TabsContent>
             </Tabs>
           </CardContent>
@@ -296,7 +221,7 @@ const ModuleRenderer: React.FC<ModuleRendererProps> = ({ type, data }) => {
           </CardHeader>
           <CardContent className="px-4 pb-4 pt-0">
             <div className="max-h-[400px] overflow-auto">
-              {React.createElement(InventoryTable as any, { compact: true })}
+              <InventoryTable compact />
             </div>
           </CardContent>
         </Card>
@@ -306,9 +231,7 @@ const ModuleRenderer: React.FC<ModuleRendererProps> = ({ type, data }) => {
       return (
         <Card className="border-0 shadow-none">
           <CardHeader className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 p-4">
-            <CardTitle className="text-base">
-              {data.filteredByGMP ? "GMP Certified Suppliers" : "Supplier Management"}
-            </CardTitle>
+            <CardTitle className="text-base">Supplier Management</CardTitle>
             {data.categoryFilter && (
               <CategoryFilter 
                 onFilterChange={handleCategoryFilterChange} 
@@ -320,9 +243,8 @@ const ModuleRenderer: React.FC<ModuleRendererProps> = ({ type, data }) => {
           <CardContent className="px-4 pb-4 pt-0">
             <div className="max-h-[400px] overflow-auto">
               <SuppliersTable 
-                compact={true}
-                suppliers={sampleSuppliers} // Added suppliers prop
-                filterByGMP={data.filteredByGMP}
+                compact 
+                filterByGMP={data.filteredByGMP} 
                 filterByCategories={selectedCategories}
               />
             </div>
@@ -337,7 +259,7 @@ const ModuleRenderer: React.FC<ModuleRendererProps> = ({ type, data }) => {
             <CardTitle className="text-base">Category Management</CardTitle>
           </CardHeader>
           <CardContent className="px-4 pb-4 pt-0">
-            {React.createElement(CategoryManager as any, { compact: true })}
+            <CategoryManager compact />
           </CardContent>
         </Card>
       );

@@ -6,10 +6,9 @@ import { Package, Tag, FileText, ShieldCheck, BarChart3 } from 'lucide-react';
 
 interface CategoryActionsProps {
   category?: string;
-  onSelect?: (prompt: string) => void; // Added this property
 }
 
-const CategoryActions = ({ category, onSelect }: CategoryActionsProps) => {
+const CategoryActions = ({ category }: CategoryActionsProps) => {
   const navigate = useNavigate();
   
   // Find the category object if a category name is provided
@@ -28,7 +27,7 @@ const CategoryActions = ({ category, onSelect }: CategoryActionsProps) => {
         : 'View inventory by category',
       icon: 'package',
       actionLabel: 'Go to Inventory',
-      onClick: () => onSelect ? onSelect('Check inventory') : navigate('/inventory'),
+      onClick: () => navigate('/inventory'),
       category: 'Inventory'
     },
     {
@@ -39,7 +38,7 @@ const CategoryActions = ({ category, onSelect }: CategoryActionsProps) => {
         : 'View and filter suppliers by category',
       icon: 'link',
       actionLabel: 'Go to Suppliers',
-      onClick: () => onSelect ? onSelect('Show suppliers') : navigate('/suppliers'),
+      onClick: () => navigate('/suppliers'),
       category: 'Suppliers'
     },
     {
@@ -50,7 +49,7 @@ const CategoryActions = ({ category, onSelect }: CategoryActionsProps) => {
         : 'Filter contracts by category',
       icon: 'fileSearch',
       actionLabel: 'Go to Contracts',
-      onClick: () => onSelect ? onSelect('View contracts') : navigate('/contracts'),
+      onClick: () => navigate('/contracts'),
       category: 'Contracts'
     },
     {
@@ -61,7 +60,7 @@ const CategoryActions = ({ category, onSelect }: CategoryActionsProps) => {
         : 'View compliance status by category',
       icon: 'shield',
       actionLabel: 'Go to Compliance',
-      onClick: () => onSelect ? onSelect('Show compliance') : navigate('/compliance'),
+      onClick: () => navigate('/compliance'),
       category: 'Compliance'
     },
     {
@@ -72,7 +71,7 @@ const CategoryActions = ({ category, onSelect }: CategoryActionsProps) => {
         : 'View spending patterns by category',
       icon: 'chart',
       actionLabel: 'Go to Reports',
-      onClick: () => onSelect ? onSelect('Show spend analytics') : navigate('/reports'),
+      onClick: () => navigate('/reports'),
       category: 'Analytics'
     },
     {
@@ -83,16 +82,16 @@ const CategoryActions = ({ category, onSelect }: CategoryActionsProps) => {
         : 'Design workflows by category',
       icon: 'list',
       actionLabel: 'Go to Workflows',
-      onClick: () => onSelect ? onSelect('Manage workflows') : navigate('/workflows'),
+      onClick: () => navigate('/workflows'),
       category: 'Workflows'
     },
     {
       id: 'category-management',
       title: 'Manage Categories',
       description: 'View and manage all procurement categories',
-      icon: 'box',
+      icon: 'box', // Changed from 'tag' to 'box' which is a valid icon type
       actionLabel: 'Go to Categories',
-      onClick: () => onSelect ? onSelect('Manage categories') : navigate('/categories'),
+      onClick: () => navigate('/categories'),
       category: 'Management'
     }
   ];
