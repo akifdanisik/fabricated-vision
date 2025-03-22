@@ -5,6 +5,7 @@ import AlertsSection from '@/components/dashboard/AlertsSection';
 import WorkflowPreview from '@/components/workflow/WorkflowPreview';
 import MetricsCard from '@/components/dashboard/MetricsCard';
 import RecentOrdersChart from '@/components/dashboard/RecentOrdersChart';
+import ActivitySection from '@/components/dashboard/ActivitySection'; // Added import
 import { CircleAlert, Brain, Link, AlertTriangle, Workflow, Calendar, FileCheck, TrendingUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
