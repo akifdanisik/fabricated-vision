@@ -40,7 +40,6 @@ export default function ChatInterface() {
   const [moduleSelectOpen, setModuleSelectOpen] = useState(false);
   const [activeModules, setActiveModules] = useState<ModuleItem[]>([]);
   
-  // Track conversation context for multi-turn interactions
   const [conversationContext, setConversationContext] = useState<{
     type: string;
     step: number;
@@ -55,7 +54,6 @@ export default function ChatInterface() {
     e.preventDefault();
     if (!input.trim()) return;
 
-    // Hide welcome screen on first message
     if (showWelcomeScreen) {
       setShowWelcomeScreen(false);
     }
@@ -71,12 +69,10 @@ export default function ChatInterface() {
     setInput('');
 
     setTimeout(() => {
-      // Check if we're in a multi-turn conversation flow
       if (conversationContext) {
         const aiResponse = handleConversationFlow(input, conversationContext);
         setMessages(prev => [...prev, aiResponse]);
       } else {
-        // Handle module requests
         const lowerCaseInput = input.toLowerCase();
         if (lowerCaseInput.includes('show') || lowerCaseInput.includes('display') || lowerCaseInput.includes('get')) {
           const moduleResponse = handleModuleRequest(input);
@@ -398,8 +394,7 @@ export default function ChatInterface() {
             ]
           };
         case 3: // Asked for quality specs
-          // Complete the RFQ process
-          setConversationContext(null); // End the conversation flow
+          setConversationContext(null);
           return {
             id: Date.now().toString(),
             content: `Great! I've created an RFQ for ${context.data.product} with the following details:\n\nQuantity: ${context.data.quantity}\nTimeline: ${context.data.timeline}\nSpecifications: ${userInput}\n\nThe RFQ has been sent to the top 3 matching suppliers. You'll receive responses within 48 hours.`,
@@ -416,7 +411,6 @@ export default function ChatInterface() {
       }
     }
     
-    // If we don't recognize the context type, revert to normal responses
     setConversationContext(null);
     return generateAIResponse(userInput);
   };
@@ -438,7 +432,6 @@ export default function ChatInterface() {
           { 
             label: 'Create RFQ', 
             onClick: () => {
-              // Start the RFQ conversation flow
               setConversationContext({ 
                 type: 'rfq', 
                 step: 1, 
@@ -456,7 +449,6 @@ export default function ChatInterface() {
     } else if (lowercaseInput.includes('create') && lowercaseInput.includes('rfq')) {
       const product = lowercaseInput.includes('paracetamol') ? 'Paracetamol API' : 'the requested product';
       
-      // Start the RFQ conversation flow
       setConversationContext({ 
         type: 'rfq', 
         step: 1, 
@@ -472,7 +464,7 @@ export default function ChatInterface() {
           { label: '100kg', onClick: () => handleQuickPrompt('100kg') },
           { label: '250kg', onClick: () => handleQuickPrompt('250kg') },
           { label: '500kg', onClick: () => handleQuickPrompt('500kg') },
-          { label: 'Custom amount', onClick: () => {} } // This one just lets them type
+          { label: 'Custom amount', onClick: () => {} }
         ]
       };
     } else if (lowercaseInput.includes('compare') && lowercaseInput.includes('supplier')) {
@@ -642,7 +634,6 @@ export default function ChatInterface() {
   const handleModuleRequest = (userInput: string): Message => {
     const lowercaseInput = userInput.toLowerCase();
     
-    // Compliance module
     if (lowercaseInput.includes('compliance') || lowercaseInput.includes('audit')) {
       return {
         id: Date.now().toString(),
@@ -666,7 +657,6 @@ export default function ChatInterface() {
       };
     }
     
-    // Spend metrics / Reports module
     if (lowercaseInput.includes('spend') || lowercaseInput.includes('metrics') || lowercaseInput.includes('analytics') || lowercaseInput.includes('reports')) {
       return {
         id: Date.now().toString(),
@@ -691,8 +681,7 @@ export default function ChatInterface() {
       };
     }
     
-    // Supplier module
-    if (lowercaseInput.includes('supplier') || lowercaseInput.includes('vendor')) {
+    if (lowercaseInput.includes('supplier') || lowercaseInput.includes('vendor') || lowercaseInput.includes('show supplier') || lowercaseInput.includes('find supplier')) {
       const showGmpCertified = lowercaseInput.includes('gmp') || lowercaseInput.includes('certification');
       
       return {
@@ -724,7 +713,6 @@ export default function ChatInterface() {
       };
     }
     
-    // Inventory module
     if (lowercaseInput.includes('inventory') || lowercaseInput.includes('stock')) {
       return {
         id: Date.now().toString(),
@@ -746,7 +734,6 @@ export default function ChatInterface() {
       };
     }
     
-    // Category management
     if (lowercaseInput.includes('categor') && (lowercaseInput.includes('manage') || lowercaseInput.includes('view'))) {
       return {
         id: Date.now().toString(),
@@ -768,7 +755,6 @@ export default function ChatInterface() {
       };
     }
     
-    // Default fallback
     return generateAIResponse(userInput);
   };
 
@@ -865,4 +851,136 @@ export default function ChatInterface() {
                   <div 
                     key={message.id} 
                     className={cn(
-                      "mb-6 max-w-3xl
+                      "mb-6 max-w-3xl",
+                      message.sender === 'user' ? "ml-auto" : "mr-auto"
+                    )}
+                  >
+                    <div className="flex items-start gap-3">
+                      {message.sender === 'ai' && (
+                        <Avatar>
+                          <AvatarFallback className="bg-primary text-white">AI</AvatarFallback>
+                        </Avatar>
+                      )}
+                      <div className={cn(
+                        "rounded-lg p-4",
+                        message.sender === 'user' 
+                          ? "bg-primary text-primary-foreground ml-auto" 
+                          : "bg-muted"
+                      )}>
+                        <div className="whitespace-pre-line">
+                          {message.content}
+                        </div>
+                        
+                        {message.actions && message.actions.length > 0 && (
+                          <div className="flex flex-wrap gap-2 mt-4">
+                            {message.actions.map((action, index) => (
+                              <Button 
+                                key={index} 
+                                variant="secondary" 
+                                size="sm"
+                                onClick={action.onClick}
+                              >
+                                {action.label}
+                              </Button>
+                            ))}
+                          </div>
+                        )}
+                        
+                        {message.moduleType && (
+                          <div className="mt-4 bg-white rounded-lg border shadow-sm overflow-hidden">
+                            <ModuleRenderer type={message.moduleType} data={message.moduleData || {}} />
+                          </div>
+                        )}
+                      </div>
+                      {message.sender === 'user' && (
+                        <Avatar>
+                          <AvatarFallback className="bg-gray-200 text-gray-900">You</AvatarFallback>
+                        </Avatar>
+                      )}
+                    </div>
+                  </div>
+                ))}
+                <div ref={messagesEndRef} />
+              </>
+            )}
+          </div>
+          
+          <form onSubmit={handleSubmit} className="p-4 border-t bg-white">
+            <div className="flex items-center gap-2">
+              <Button 
+                type="button" 
+                variant="outline" 
+                size="icon"
+                onClick={() => setModuleSelectOpen(true)}
+                className="rounded-full flex-shrink-0"
+              >
+                <Plus className="h-5 w-5" />
+                <span className="sr-only">Add module</span>
+              </Button>
+              
+              <ModuleSelector 
+                modules={availableModules}
+                onSelect={handleSelectModule}
+                open={moduleSelectOpen}
+                onOpenChange={setModuleSelectOpen}
+              />
+              
+              <div className="relative flex-1">
+                <Input
+                  type="text"
+                  placeholder="Send a message..."
+                  className="pr-10 py-6 rounded-full bg-gray-100 border-0"
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                />
+                
+                <Button 
+                  type="button" 
+                  variant="ghost" 
+                  size="icon" 
+                  className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-900"
+                  onClick={toggleRecording}
+                >
+                  <Mic className={cn("h-5 w-5", isRecording && "text-red-500")} />
+                  <span className="sr-only">
+                    {isRecording ? "Stop recording" : "Start recording"}
+                  </span>
+                </Button>
+              </div>
+              
+              <Button 
+                type="submit" 
+                size="icon" 
+                className="rounded-full flex-shrink-0"
+                disabled={!input.trim()}
+              >
+                <Send className="h-5 w-5" />
+                <span className="sr-only">Send message</span>
+              </Button>
+            </div>
+            
+            {!showWelcomeScreen && (
+              <div className="flex items-center justify-center mt-4">
+                <div className="text-xs text-gray-500">
+                  <CategoryActions onSelect={handleQuickPrompt} />
+                </div>
+              </div>
+            )}
+          </form>
+        </div>
+      </ResizablePanel>
+      
+      <ResizableHandle withHandle />
+      
+      <ResizablePanel defaultSize={40}>
+        <div className="h-full bg-gray-50 border-l">
+          <ActionPreview 
+            title={previewTitle}
+            description={previewDescription}
+            actions={previewActions}
+          />
+        </div>
+      </ResizablePanel>
+    </ResizablePanelGroup>
+  );
+}
