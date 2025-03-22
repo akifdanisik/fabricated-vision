@@ -30,10 +30,10 @@ export default function RecentOrdersChart({ data, className }: RecentOrdersChart
   }, [data]);
 
   return (
-    <Card className={cn('overflow-hidden shadow-md bg-gradient-to-br from-white to-primary-light/30 border-primary-light', className)}>
-      <CardHeader className="flex flex-row items-center justify-between p-4 bg-primary-light/50 border-b border-primary-light">
-        <CardTitle className="text-md text-primary-dark">Recent Orders</CardTitle>
-        <Badge variant="soft" className="text-xs font-normal">
+    <Card className={cn('overflow-hidden', className)}>
+      <CardHeader className="flex flex-row items-center justify-between p-4">
+        <CardTitle className="text-md">Recent Orders</CardTitle>
+        <Badge variant="outline" className="text-xs font-normal">
           Last 7 days
         </Badge>
       </CardHeader>
@@ -46,24 +46,24 @@ export default function RecentOrdersChart({ data, className }: RecentOrdersChart
                 dataKey="name" 
                 axisLine={false}
                 tickLine={false}
-                tick={{ fontSize: 12, fill: 'var(--primary-dark)' }}
+                tick={{ fontSize: 12, fill: 'var(--muted-foreground)' }}
                 dy={10}
               />
               <YAxis 
                 axisLine={false}
                 tickLine={false}
-                tick={{ fontSize: 12, fill: 'var(--primary-dark)' }}
+                tick={{ fontSize: 12, fill: 'var(--muted-foreground)' }}
                 dx={-10}
               />
               <Tooltip 
-                cursor={{ fill: 'var(--accent-pale)', opacity: 0.3 }}
+                cursor={{ fill: 'var(--accent)', opacity: 0.3 }}
                 contentStyle={{ 
                   backgroundColor: 'var(--background)',
-                  border: '1px solid var(--primary-light)',
+                  border: '1px solid var(--border)',
                   borderRadius: 'var(--radius)',
                   boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)',
                 }}
-                labelStyle={{ color: 'var(--primary-dark)', fontWeight: 'bold', marginBottom: 4 }}
+                labelStyle={{ color: 'var(--foreground)', fontWeight: 'bold', marginBottom: 4 }}
                 itemStyle={{ color: 'var(--primary)' }}
               />
               <Bar 

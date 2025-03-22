@@ -17,7 +17,7 @@ const WorkflowNode = ({ title, description, status, isLast = false }: WorkflowNo
       case 'completed':
         return <CheckCircle className="h-5 w-5 text-green-500" />;
       case 'in-progress':
-        return <Clock className="h-5 w-5 text-primary" />;
+        return <Clock className="h-5 w-5 text-blue-500" />;
       case 'error':
         return <AlertCircle className="h-5 w-5 text-red-500" />;
       default:
@@ -28,13 +28,13 @@ const WorkflowNode = ({ title, description, status, isLast = false }: WorkflowNo
   const getStatusClass = () => {
     switch (status) {
       case 'completed':
-        return 'border-green-500 bg-green-50/80 shadow-md';
+        return 'border-green-500 bg-green-50 dark:bg-green-900/20';
       case 'in-progress':
-        return 'border-primary bg-primary-light/30 shadow-md';
+        return 'border-blue-500 bg-blue-50 dark:bg-blue-900/20';
       case 'error':
-        return 'border-red-500 bg-red-50/80 shadow-md';
+        return 'border-red-500 bg-red-50 dark:bg-red-900/20';
       default:
-        return 'border-gray-300 bg-gray-50/80 shadow-sm';
+        return 'border-gray-300 bg-gray-50 dark:bg-gray-800/20';
     }
   };
 
@@ -42,17 +42,17 @@ const WorkflowNode = ({ title, description, status, isLast = false }: WorkflowNo
     <div className="flex flex-col items-center">
       <div className={`flex flex-col p-3 border-2 rounded-lg w-64 ${getStatusClass()}`}>
         <div className="flex items-center justify-between mb-1">
-          <span className="text-sm font-medium text-primary-dark">{title}</span>
+          <span className="text-sm font-medium">{title}</span>
           {getStatusIcon()}
         </div>
         {description && (
-          <p className="text-xs text-primary-dark/70">{description}</p>
+          <p className="text-xs text-muted-foreground">{description}</p>
         )}
       </div>
       
       {!isLast && (
         <div className="h-10 flex items-center justify-center">
-          <ArrowRight className="h-5 w-5 text-primary-dark/50" />
+          <ArrowRight className="h-5 w-5 text-muted-foreground" />
         </div>
       )}
     </div>
@@ -70,11 +70,11 @@ export default function WorkflowPreview({ compact = false }: WorkflowPreviewProp
         <div>
           <div className="flex items-center gap-2">
             <Workflow className="h-5 w-5 text-primary" />
-            <CardTitle className="text-md text-primary-dark">Inventory Replenishment Workflow</CardTitle>
+            <CardTitle className="text-md">Inventory Replenishment Workflow</CardTitle>
           </div>
           <CardDescription>Triggered by low inventory alert</CardDescription>
         </div>
-        <Badge variant="soft" className="ml-2">In Progress</Badge>
+        <Badge variant="outline" className="ml-2">In Progress</Badge>
       </CardHeader>
       <CardContent className="pt-0">
         <div className="flex flex-wrap items-start justify-center gap-3 py-4 overflow-x-auto">

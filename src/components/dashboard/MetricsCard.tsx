@@ -36,15 +36,15 @@ export default function MetricsCard({
 }: MetricsCardProps) {
   return (
     <div className={cn(
-      'rounded-xl overflow-hidden transition-all duration-300 hover:shadow-lg p-5',
+      'glass-card flex flex-col p-6 rounded-xl overflow-hidden transition-all duration-300 hover:shadow-md',
       className
     )}>
-      <div className="flex justify-between items-start">
+      <div className="flex justify-between items-start mb-4">
         <div className="space-y-1">
-          <h3 className="text-sm font-medium text-primary-dark">{title}</h3>
+          <h3 className="text-sm font-medium text-muted-foreground">{title}</h3>
           <div className="flex items-end gap-2">
             <div className={cn(
-              'text-2xl font-bold tracking-tight text-primary-dark',
+              'text-2xl font-semibold tracking-tight',
               loading && 'animate-pulse bg-muted h-8 w-24 rounded'
             )}>
               {!loading && (
@@ -61,25 +61,25 @@ export default function MetricsCard({
                 "flex items-center text-xs font-medium",
                 trendDirection === 'up' && 'text-green-600',
                 trendDirection === 'down' && 'text-red-600',
-                trendDirection === 'neutral' && 'text-primary-dark/70'
+                trendDirection === 'neutral' && 'text-muted-foreground'
               )}>
                 {trend > 0 ? '+' : ''}
                 {trend}%
-                {trendLabel && <span className="ml-1 text-primary-dark/70">{trendLabel}</span>}
+                {trendLabel && <span className="ml-1 text-muted-foreground">{trendLabel}</span>}
               </div>
             )}
           </div>
           
           {description && (
-            <p className="text-xs text-primary-dark/70">{description}</p>
+            <p className="text-xs text-muted-foreground">{description}</p>
           )}
         </div>
         
         <div className={cn(
-          "h-12 w-12 rounded-full flex items-center justify-center bg-primary/20 shadow-inner",
+          "h-10 w-10 rounded-full flex items-center justify-center bg-primary/10",
           loading && 'animate-pulse'
         )}>
-          <Icon className="h-6 w-6 text-primary" />
+          <Icon className="h-5 w-5 text-primary" />
         </div>
       </div>
     </div>
