@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import Layout from '@/components/layout/Layout';
 import SuppliersTable, { Supplier } from '@/components/suppliers/SuppliersTable';
@@ -6,6 +7,7 @@ import SupplierEvaluation from '@/components/suppliers/SupplierEvaluation';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Category, predefinedCategories } from '@/components/categories/CategoryBadge';
+import CategoryBadge from '@/components/categories/CategoryBadge';
 
 const Suppliers = () => {
   const [loading, setLoading] = useState(true);
@@ -146,6 +148,7 @@ const Suppliers = () => {
     },
   ];
   
+  // Filter suppliers by GMP certification if needed
   const displayedSuppliers = showGMPOnly 
     ? suppliersData.filter(s => s.certifications?.includes('GMP'))
     : suppliersData;
@@ -163,16 +166,6 @@ const Suppliers = () => {
     setActiveTab('profile');
   };
 
-  const handleGMPTabClick = () => {
-    setShowGMPOnly(true);
-    setActiveTab('gmp');
-  };
-
-  const handleListTabClick = () => {
-    setShowGMPOnly(false);
-    setActiveTab('list');
-  };
-
   return (
     <Layout>
       <div className="space-y-6">
@@ -186,10 +179,11 @@ const Suppliers = () => {
           <CardContent>
             <Tabs value={activeTab} onValueChange={setActiveTab}>
               <TabsList className="mb-6">
-                <TabsTrigger value="list" onClick={handleListTabClick}>Supplier List</TabsTrigger>
+                <TabsTrigger value="list">Supplier List</TabsTrigger>
                 <TabsTrigger value="profile" disabled={!selectedSupplier}>Supplier Profile</TabsTrigger>
                 <TabsTrigger value="evaluation">AI Evaluations</TabsTrigger>
-                <TabsTrigger value="gmp" onClick={handleGMPTabClick}>GMP Certified</TabsTrigger>
+                <TabsTrigger value="categories">Categories</TabsTrigger>
+                <TabsTrigger value="gmp" onClick={() => setShowGMPOnly(true)}>GMP Certified</TabsTrigger>
               </TabsList>
               
               <TabsContent value="list" className="mt-0">
@@ -208,6 +202,32 @@ const Suppliers = () => {
               
               <TabsContent value="evaluation" className="mt-0">
                 <SupplierEvaluation suppliers={suppliersData} />
+              </TabsContent>
+              
+              <TabsContent value="categories" className="mt-0">
+                <div className="p-4 bg-muted/40 rounded-lg">
+                  <h3 className="text-lg font-medium mb-2">Category Management</h3>
+                  <p className="text-sm text-muted-foreground mb-4">
+                    Organize suppliers by category to improve analysis and decision-making.
+                  </p>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {predefinedCategories.map(category => (
+                      <Card key={category.id} className="overflow-hidden">
+                        <CardHeader className="p-4 pb-2">
+                          <CardTitle className="text-base flex items-center gap-2">
+                            <CategoryBadge category={category} />
+                          </CardTitle>
+                          <CardDescription className="text-xs">
+                            {suppliersData.filter(s => 
+                              s.categories?.some(c => c.id === category.id) || 
+                              s.category === category.name
+                            ).length} suppliers
+                          </CardDescription>
+                        </CardHeader>
+                      </Card>
+                    ))}
+                  </div>
+                </div>
               </TabsContent>
               
               <TabsContent value="gmp" className="mt-0">

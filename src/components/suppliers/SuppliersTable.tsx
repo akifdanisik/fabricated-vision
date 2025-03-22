@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { 
   Table, 
@@ -40,7 +41,7 @@ export interface Supplier {
   id: string;
   name: string;
   category: string;
-  categories?: Category[];
+  categories?: Category[]; // Added for multiple categories
   performance: number;
   riskLevel: 'low' | 'medium' | 'high';
   items: number;
@@ -52,7 +53,7 @@ export interface Supplier {
   location: string;
   logo?: string;
   initials: string;
-  certifications?: string[];
+  certifications?: string[]; // Added for certifications like GMP
 }
 
 interface SuppliersTableProps {
@@ -64,6 +65,7 @@ interface SuppliersTableProps {
   filterByCategories?: Category[];
 }
 
+// Sample supplier data for testing
 const sampleSuppliers: Supplier[] = [
   {
     id: "1",
