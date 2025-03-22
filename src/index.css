@@ -15,10 +15,10 @@
     --popover-foreground: 222 47% 11%;
 
     /* Main blues from the palette */
-    --primary: 230 70% 60%; /* Base blue */
+    --primary: 215 75% 50%; /* Base blue */
     --primary-foreground: 210 40% 98%;
-    --primary-light: 230 70% 85%;
-    --primary-dark: 235 75% 40%;
+    --primary-light: 215 75% 85%;
+    --primary-dark: 220 80% 40%;
 
     --secondary: 220 14% 94%;
     --secondary-foreground: 222 47% 11%;
@@ -27,14 +27,14 @@
     --muted-foreground: 215 16% 47%;
 
     /* Additional blues from the palette */
-    --accent: 235 65% 65%; /* Deeper blue */
+    --accent: 220 80% 55%; /* Deeper blue */
     --accent-foreground: 210 40% 98%;
-    --accent-light: 225 60% 85%; /* Lighter blue */
+    --accent-light: 215 70% 85%; /* Lighter blue */
 
     /* Complementary colors */
-    --accent-medium: 240 65% 75%; /* Medium blue-purple */
-    --accent-soft: 215 60% 80%; /* Soft blue */
-    --accent-pale: 220 40% 85%; /* Pale blue */
+    --accent-medium: 225 75% 65%; /* Medium blue */
+    --accent-soft: 210 70% 80%; /* Soft blue */
+    --accent-pale: 210 50% 90%; /* Pale blue */
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 210 40% 98%;
@@ -47,12 +47,12 @@
 
     --sidebar-background: 0 0% 100%;
     --sidebar-foreground: 240 5% 26%;
-    --sidebar-primary: 230 70% 60%;
+    --sidebar-primary: 215 75% 50%;
     --sidebar-primary-foreground: 0 0% 100%;
     --sidebar-accent: 240 5% 96%;
     --sidebar-accent-foreground: 240 6% 10%;
     --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 230 70% 60%;
+    --sidebar-ring: 215 75% 50%;
   }
 
   .dark {
@@ -66,7 +66,7 @@
     --popover-foreground: 210 40% 98%;
 
     /* Main blues from the palette - dark mode */
-    --primary: 230 70% 60%;
+    --primary: 215 75% 50%;
     --primary-foreground: 210 40% 98%;
 
     --secondary: 217 33% 18%;
@@ -76,13 +76,13 @@
     --muted-foreground: 215 20% 65%;
 
     /* Additional blues from the palette - dark mode */
-    --accent: 235 65% 65%;
+    --accent: 220 80% 55%;
     --accent-foreground: 210 40% 98%;
     
     /* Complementary colors - dark mode */
-    --accent-medium: 240 65% 65%;
-    --accent-soft: 215 60% 65%;
-    --accent-pale: 220 40% 65%;
+    --accent-medium: 225 75% 65%;
+    --accent-soft: 210 70% 70%;
+    --accent-pale: 210 50% 75%;
 
     --destructive: 0 63% 31%;
     --destructive-foreground: 210 40% 98%;
@@ -93,12 +93,12 @@
     
     --sidebar-background: 240 6% 10%;
     --sidebar-foreground: 240 5% 96%;
-    --sidebar-primary: 230 70% 60%;
+    --sidebar-primary: 215 75% 50%;
     --sidebar-primary-foreground: 0 0% 100%;
     --sidebar-accent: 240 4% 16%;
     --sidebar-accent-foreground: 240 5% 96%;
     --sidebar-border: 240 4% 16%;
-    --sidebar-ring: 230 70% 60%;
+    --sidebar-ring: 215 75% 50%;
   }
 }
 
