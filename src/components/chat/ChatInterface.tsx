@@ -74,7 +74,7 @@ export default function ChatInterface() {
         setMessages(prev => [...prev, aiResponse]);
       } else {
         const lowerCaseInput = input.toLowerCase();
-        if (lowercaseInput.includes('show') || lowerCaseInput.includes('display') || lowerCaseInput.includes('get')) {
+        if (lowerCaseInput.includes('show') || lowerCaseInput.includes('display') || lowerCaseInput.includes('get')) {
           const moduleResponse = handleModuleRequest(input);
           setMessages(prev => [...prev, moduleResponse]);
         } else {
