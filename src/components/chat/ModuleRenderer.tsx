@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
@@ -95,7 +96,7 @@ const sampleSuppliers: Supplier[] = [
     id: "5",
     name: "GlobalPharma",
     category: "Packaging",
-    categories: [{ id: "packaging", name: "Packaging", color: "amber" }],
+    categories: [{ id: "packaging", name: "Packaging", color: "amber" }], // Changed from orange to amber
     performance: 86,
     riskLevel: "medium",
     items: 31,
@@ -115,11 +116,6 @@ const ModuleRenderer: React.FC<ModuleRendererProps> = ({ type, data }) => {
   const handleCategoryFilterChange = (categories: Category[]) => {
     setSelectedCategories(categories);
   };
-
-  // Get GMP certified suppliers for GMP filtering
-  const gmpCertifiedSuppliers = sampleSuppliers.filter(
-    supplier => supplier.certifications && supplier.certifications.includes("GMP")
-  );
 
   // Reports module mock data
   const spendData = [
@@ -325,7 +321,7 @@ const ModuleRenderer: React.FC<ModuleRendererProps> = ({ type, data }) => {
             <div className="max-h-[400px] overflow-auto">
               <SuppliersTable 
                 compact={true}
-                suppliers={data.filteredByGMP ? gmpCertifiedSuppliers : sampleSuppliers}
+                suppliers={sampleSuppliers} // Added suppliers prop
                 filterByGMP={data.filteredByGMP}
                 filterByCategories={selectedCategories}
               />
