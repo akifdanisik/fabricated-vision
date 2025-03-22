@@ -1,8 +1,6 @@
-
 import { useNavigate } from 'react-router-dom';
 import Layout from '@/components/layout/Layout';
 import AlertsSection from '@/components/dashboard/AlertsSection';
-import ActivitySection from '@/components/dashboard/ActivitySection';
 import WorkflowPreview from '@/components/workflow/WorkflowPreview';
 import { CircleAlert, Brain, Link, AlertTriangle, Workflow, Calendar, FileCheck } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -39,40 +37,6 @@ const Dashboard = () => {
     description: 'PharmaCorp GMP certification expires in 30 days.',
     time: '1 day ago'
   }];
-
-  // Mock data for activities
-  const activities = [{
-    id: '1',
-    type: 'order' as const,
-    title: 'New Order Created',
-    description: 'Order #38293 for API-24X was created.',
-    time: '5 minutes ago',
-    user: {
-      name: 'Lisa Monroe',
-      initials: 'LM'
-    }
-  }, {
-    id: '2',
-    type: 'approval' as const,
-    title: 'Quality Check Approved',
-    description: 'Batch #A2984 passed final inspection.',
-    time: '1 hour ago',
-    user: {
-      name: 'David Chen',
-      initials: 'DC'
-    }
-  }, {
-    id: '3',
-    type: 'supplier' as const,
-    title: 'Supplier Added',
-    description: 'BioGen Labs was added to preferred suppliers.',
-    time: '3 hours ago',
-    user: {
-      name: 'Sarah Johnson',
-      initials: 'SJ'
-    }
-  }];
-
   return <Layout>
       <div className="space-y-8 pb-6">
         {/* Welcome header with logo */}
@@ -174,14 +138,22 @@ const Dashboard = () => {
             </CardContent>
           </Card>
           
-          {/* Activity and Alerts */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {/* Activity Section */}
-            <ActivitySection activities={activities} />
-            
-            {/* Alerts Section */}
-            <AlertsSection alerts={alerts} />
-          </div>
+          {/* Alerts Section */}
+          <Card className="border border-gray-200">
+            <CardHeader className="p-5 pb-0 flex flex-row items-center justify-between">
+              <div>
+                <CardTitle className="text-lg">Recent Alerts</CardTitle>
+                <CardDescription>Important notifications that require attention</CardDescription>
+              </div>
+              <Button variant="outline" size="sm" className="gap-1">
+                <FileCheck className="h-4 w-4" />
+                Mark all as read
+              </Button>
+            </CardHeader>
+            <CardContent className="p-5">
+              <AlertsSection alerts={alerts} />
+            </CardContent>
+          </Card>
         </div>
       </div>
     </Layout>;
