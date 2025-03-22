@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import Layout from '@/components/layout/Layout';
 import SuppliersTable, { Supplier } from '@/components/suppliers/SuppliersTable';
@@ -12,6 +13,7 @@ const Suppliers = () => {
   const [loading, setLoading] = useState(true);
   const [selectedSupplier, setSelectedSupplier] = useState<Supplier | null>(null);
   const [activeTab, setActiveTab] = useState('list');
+  const [showGMPOnly, setShowGMPOnly] = useState(false);
   
   const suppliersData: Supplier[] = [
     {
@@ -31,6 +33,7 @@ const Suppliers = () => {
       },
       location: 'Boston, USA',
       initials: 'PC',
+      certifications: ['GMP', 'ISO 9001'],
     },
     {
       id: '2',
@@ -48,6 +51,7 @@ const Suppliers = () => {
       },
       location: 'Barcelona, Spain',
       initials: 'BM',
+      certifications: ['GMP', 'FDA', 'ISO 9001'],
     },
     {
       id: '3',
@@ -66,6 +70,7 @@ const Suppliers = () => {
       },
       location: 'Singapore',
       initials: 'CS',
+      certifications: ['ISO 9001'],
     },
     {
       id: '4',
@@ -83,6 +88,7 @@ const Suppliers = () => {
       },
       location: 'Chicago, USA',
       initials: 'PS',
+      certifications: ['ISO 14001'],
     },
     {
       id: '5',
@@ -101,6 +107,7 @@ const Suppliers = () => {
       },
       location: 'Mumbai, India',
       initials: 'MI',
+      certifications: ['GMP'],
     },
     {
       id: '6',
@@ -119,6 +126,7 @@ const Suppliers = () => {
       },
       location: 'Frankfurt, Germany',
       initials: 'MP',
+      certifications: ['ISO 9001', 'ISO 14001'],
     },
     {
       id: '7',
@@ -136,8 +144,14 @@ const Suppliers = () => {
       },
       location: 'Toronto, Canada',
       initials: 'BC',
+      certifications: ['ISO 9001'],
     },
   ];
+  
+  // Filter suppliers by GMP certification if needed
+  const displayedSuppliers = showGMPOnly 
+    ? suppliersData.filter(s => s.certifications?.includes('GMP'))
+    : suppliersData;
   
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -169,12 +183,14 @@ const Suppliers = () => {
                 <TabsTrigger value="profile" disabled={!selectedSupplier}>Supplier Profile</TabsTrigger>
                 <TabsTrigger value="evaluation">AI Evaluations</TabsTrigger>
                 <TabsTrigger value="categories">Categories</TabsTrigger>
+                <TabsTrigger value="gmp" onClick={() => setShowGMPOnly(true)}>GMP Certified</TabsTrigger>
               </TabsList>
               
               <TabsContent value="list" className="mt-0">
                 <SuppliersTable 
-                  suppliers={suppliersData} 
+                  suppliers={displayedSuppliers} 
                   onSelectSupplier={handleSupplierSelect}
+                  filterByGMP={showGMPOnly}
                 />
               </TabsContent>
               
@@ -212,6 +228,14 @@ const Suppliers = () => {
                     ))}
                   </div>
                 </div>
+              </TabsContent>
+              
+              <TabsContent value="gmp" className="mt-0">
+                <SuppliersTable 
+                  suppliers={suppliersData.filter(s => s.certifications?.includes('GMP'))} 
+                  onSelectSupplier={handleSupplierSelect}
+                  filterByGMP={true}
+                />
               </TabsContent>
             </Tabs>
           </CardContent>
