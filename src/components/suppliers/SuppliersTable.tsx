@@ -135,7 +135,7 @@ const sampleSuppliers: Supplier[] = [
     id: "5",
     name: "GlobalPharma",
     category: "Packaging",
-    categories: [{ id: "packaging", name: "Packaging", color: "orange" }],
+    categories: [{ id: "packaging", name: "Packaging", color: "amber" }], // Changed from orange to amber
     performance: 86,
     riskLevel: "medium",
     items: 31,
@@ -159,6 +159,11 @@ export default function SuppliersTable({
 }: SuppliersTableProps) {
   const [searchQuery, setSearchQuery] = useState('');
   const [categoryFilter, setCategoryFilter] = useState<Category[]>(filterByCategories);
+  
+  // Update to use the initialCategories prop
+  const handleCategoryFilterChange = (categories: Category[]) => {
+    setCategoryFilter(categories);
+  };
   
   const filteredSuppliers = suppliers.filter(supplier => {
     const matchesSearch = 

@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
@@ -24,6 +25,90 @@ interface ModuleRendererProps {
 interface ComplianceComponentProps {
   selectedCategories?: Category[];
 }
+
+// Sample supplier data for SuppliersTable
+const sampleSuppliers: Supplier[] = [
+  {
+    id: "1",
+    name: "PharmaCorp",
+    category: "APIs",
+    categories: [{ id: "apis", name: "APIs", color: "blue" }],
+    performance: 95,
+    riskLevel: "low",
+    items: 42,
+    contact: {
+      name: "John Smith",
+      email: "john@pharmacorp.com"
+    },
+    location: "Mumbai, India",
+    initials: "PC",
+    certifications: ["GMP", "ISO 9001"]
+  },
+  {
+    id: "2",
+    name: "BioTech Materials",
+    category: "Excipients",
+    categories: [{ id: "excipients", name: "Excipients", color: "green" }],
+    performance: 92,
+    riskLevel: "low",
+    items: 28,
+    contact: {
+      name: "Maria Weber",
+      email: "maria@biotech.com"
+    },
+    location: "Frankfurt, Germany",
+    initials: "BT",
+    certifications: ["GMP", "FDA", "ISO 9001"]
+  },
+  {
+    id: "3",
+    name: "ChemSource",
+    category: "APIs",
+    categories: [{ id: "apis", name: "APIs", color: "blue" }],
+    performance: 88,
+    riskLevel: "medium",
+    items: 35,
+    contact: {
+      name: "Li Chen",
+      email: "chen@chemsource.com"
+    },
+    location: "Shanghai, China",
+    initials: "CS",
+    certifications: ["ISO 9001"]
+  },
+  {
+    id: "4",
+    name: "MedSource Inc.",
+    category: "Equipment",
+    categories: [{ id: "equipment", name: "Equipment", color: "purple" }],
+    performance: 89,
+    riskLevel: "medium",
+    items: 19,
+    contact: {
+      name: "Robert Davis",
+      email: "robert@medsource.com"
+    },
+    location: "Boston, USA",
+    initials: "MS",
+    certifications: ["GMP", "ISO 9001"]
+  },
+  {
+    id: "5",
+    name: "GlobalPharma",
+    category: "Packaging",
+    categories: [{ id: "packaging", name: "Packaging", color: "amber" }], // Changed from orange to amber
+    performance: 86,
+    riskLevel: "medium",
+    items: 31,
+    contact: {
+      name: "Sarah Johnson",
+      email: "sarah@globalpharma.com"
+    },
+    location: "London, UK",
+    initials: "GP",
+    certifications: ["ISO 9001", "ISO 14001"]
+  }
+];
 
 const ModuleRenderer: React.FC<ModuleRendererProps> = ({ type, data }) => {
   const [selectedCategories, setSelectedCategories] = useState<Category[]>([]);
@@ -236,6 +321,7 @@ const ModuleRenderer: React.FC<ModuleRendererProps> = ({ type, data }) => {
             <div className="max-h-[400px] overflow-auto">
               <SuppliersTable 
                 compact={true}
+                suppliers={sampleSuppliers} // Added suppliers prop
                 filterByGMP={data.filteredByGMP}
                 filterByCategories={selectedCategories}
               />

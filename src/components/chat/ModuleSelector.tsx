@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -26,8 +25,9 @@ export interface ModuleItem {
 
 interface ModuleSelectorProps {
   open: boolean;
-  setOpen: (open: boolean) => void;
-  onSelectModule: (module: ModuleItem) => void;
+  onOpenChange: (open: boolean) => void;
+  onSelect: (moduleId: string) => void;
+  modules: ModuleItem[];
 }
 
 const availableModules: ModuleItem[] = [
@@ -103,9 +103,9 @@ const getIconComponent = (iconName: string) => {
   }
 };
 
-export const ModuleSelector = ({ open, setOpen, onSelectModule }: ModuleSelectorProps) => {
+export const ModuleSelector = ({ open, onOpenChange, onSelect, modules }: ModuleSelectorProps) => {
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[700px] p-0 gap-0">
         <DialogHeader className="p-6 pb-2">
           <DialogTitle className="text-xl font-semibold">Select AI Module</DialogTitle>
@@ -135,11 +135,11 @@ export const ModuleSelector = ({ open, setOpen, onSelectModule }: ModuleSelector
           
           <TabsContent value="all" className="p-6 pt-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {availableModules.map((module) => (
+              {modules.map((module) => (
                 <div 
                   key={module.id}
                   className="border rounded-xl p-4 cursor-pointer hover:shadow-md transition-all flex items-start gap-4"
-                  onClick={() => onSelectModule(module)}
+                  onClick={() => onSelect(module.id)}
                 >
                   <div className={cn(
                     "p-3 rounded-full flex-shrink-0",
@@ -162,13 +162,13 @@ export const ModuleSelector = ({ open, setOpen, onSelectModule }: ModuleSelector
           {['analysis', 'data', 'development', 'security'].map((category) => (
             <TabsContent key={category} value={category} className="p-6 pt-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {availableModules
+                {modules
                   .filter(module => module.category === category)
                   .map((module) => (
                     <div 
                       key={module.id}
                       className="border rounded-xl p-4 cursor-pointer hover:shadow-md transition-all flex items-start gap-4"
-                      onClick={() => onSelectModule(module)}
+                      onClick={() => onSelect(module.id)}
                     >
                       <div className={cn(
                         "p-3 rounded-full flex-shrink-0",
@@ -195,4 +195,3 @@ export const ModuleSelector = ({ open, setOpen, onSelectModule }: ModuleSelector
 };
 
 export default ModuleSelector;
-

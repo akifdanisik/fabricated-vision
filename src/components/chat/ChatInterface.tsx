@@ -74,7 +74,7 @@ export default function ChatInterface() {
         setMessages(prev => [...prev, aiResponse]);
       } else {
         const lowerCaseInput = input.toLowerCase();
-        if (lowerCaseInput.includes('show') || lowerCaseInput.includes('display') || lowerCaseInput.includes('get')) {
+        if (lowercaseInput.includes('show') || lowerCaseInput.includes('display') || lowerCaseInput.includes('get')) {
           const moduleResponse = handleModuleRequest(input);
           setMessages(prev => [...prev, moduleResponse]);
         } else {
@@ -919,10 +919,10 @@ export default function ChatInterface() {
               </Button>
               
               <ModuleSelector 
-                modules={availableModules}
-                onSelect={handleSelectModule}
                 open={moduleSelectOpen}
                 onOpenChange={setModuleSelectOpen}
+                onSelect={handleSelectModule}
+                modules={availableModules}
               />
               
               <div className="relative flex-1">
