@@ -15,15 +15,15 @@ interface ComplianceComponentProps {
   selectedCategories: Category[];
 }
 
-// Ensure these components can properly accept the selectedCategories prop
-const EnhancedComplianceOverview = (props: ComplianceComponentProps) => 
-  <ComplianceOverview {...props} />;
+// Update the component definitions to properly accept props
+const EnhancedComplianceOverview = ({ selectedCategories }: ComplianceComponentProps) => 
+  <ComplianceOverview selectedCategories={selectedCategories} />;
 
-const EnhancedDocumentManagement = (props: ComplianceComponentProps) => 
-  <DocumentManagement {...props} />;
+const EnhancedDocumentManagement = ({ selectedCategories }: ComplianceComponentProps) => 
+  <DocumentManagement selectedCategories={selectedCategories} />;
 
-const EnhancedAuditReadiness = (props: ComplianceComponentProps) => 
-  <AuditReadiness {...props} />;
+const EnhancedAuditReadiness = ({ selectedCategories }: ComplianceComponentProps) => 
+  <AuditReadiness selectedCategories={selectedCategories} />;
 
 const Compliance = () => {
   const [selectedCategories, setSelectedCategories] = useState<Category[]>([]);

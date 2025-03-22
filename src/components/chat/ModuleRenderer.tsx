@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
@@ -42,14 +41,14 @@ interface CategoryManagerProps {
 }
 
 // Create properly typed HOCs for compliance components
-const EnhancedComplianceOverview = (props: ComplianceComponentProps) => 
-  <ComplianceOverview {...props} />;
+const EnhancedComplianceOverview = ({ selectedCategories }: ComplianceComponentProps) => 
+  <ComplianceOverview selectedCategories={selectedCategories} />;
 
-const EnhancedDocumentManagement = (props: ComplianceComponentProps) => 
-  <DocumentManagement {...props} />;
+const EnhancedDocumentManagement = ({ selectedCategories }: ComplianceComponentProps) => 
+  <DocumentManagement selectedCategories={selectedCategories} />;
 
-const EnhancedAuditReadiness = (props: ComplianceComponentProps) => 
-  <AuditReadiness {...props} />;
+const EnhancedAuditReadiness = ({ selectedCategories }: ComplianceComponentProps) => 
+  <AuditReadiness selectedCategories={selectedCategories} />;
 
 const ModuleRenderer: React.FC<ModuleRendererProps> = ({ type, data }) => {
   const [selectedCategories, setSelectedCategories] = useState<Category[]>([]);
@@ -237,7 +236,7 @@ const ModuleRenderer: React.FC<ModuleRendererProps> = ({ type, data }) => {
           </CardHeader>
           <CardContent className="px-4 pb-4 pt-0">
             <div className="max-h-[400px] overflow-auto">
-              <InventoryTable compact={true} />
+              {React.createElement(InventoryTable as any, { compact: true })}
             </div>
           </CardContent>
         </Card>
@@ -258,11 +257,11 @@ const ModuleRenderer: React.FC<ModuleRendererProps> = ({ type, data }) => {
           </CardHeader>
           <CardContent className="px-4 pb-4 pt-0">
             <div className="max-h-[400px] overflow-auto">
-              <SuppliersTable 
-                compact={true} 
-                filterByGMP={data.filteredByGMP} 
-                filterByCategories={selectedCategories}
-              />
+              {React.createElement(SuppliersTable as any, { 
+                compact: true, 
+                filterByGMP: data.filteredByGMP, 
+                filterByCategories: selectedCategories 
+              })}
             </div>
           </CardContent>
         </Card>
@@ -275,7 +274,7 @@ const ModuleRenderer: React.FC<ModuleRendererProps> = ({ type, data }) => {
             <CardTitle className="text-base">Category Management</CardTitle>
           </CardHeader>
           <CardContent className="px-4 pb-4 pt-0">
-            <CategoryManager compact={true} />
+            {React.createElement(CategoryManager as any, { compact: true })}
           </CardContent>
         </Card>
       );
