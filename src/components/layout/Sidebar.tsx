@@ -83,15 +83,6 @@ const Sidebar = ({ isOpen, onToggle }: SidebarProps) => {
             </div>
           )}
         </Link>
-        
-        <Button 
-          variant="ghost" 
-          size="icon" 
-          onClick={onToggle}
-          className={cn("transition-opacity rounded-full", isOpen ? "opacity-100" : "opacity-0 md:opacity-100")}
-        >
-          {isOpen ? <ChevronLeft className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
-        </Button>
       </div>
       
       <ScrollArea className="flex-1 pt-3">
@@ -203,6 +194,22 @@ const Sidebar = ({ isOpen, onToggle }: SidebarProps) => {
           )}
         </div>
       </div>
+      
+      {/* Collapse button moved to the side of the sidebar */}
+      <Button 
+        variant="ghost" 
+        size="icon" 
+        onClick={onToggle}
+        className={cn(
+          "absolute top-1/2 -right-3 h-6 w-6 transform -translate-y-1/2 rounded-full bg-white shadow-md border border-gray-200",
+          "flex items-center justify-center"
+        )}
+      >
+        {isOpen ? 
+          <ChevronLeft className="h-3 w-3" /> : 
+          <ChevronRight className="h-3 w-3" />
+        }
+      </Button>
     </div>
   );
 };
