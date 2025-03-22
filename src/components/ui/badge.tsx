@@ -24,6 +24,10 @@ const badgeVariants = cva(
           "border-transparent bg-accent text-white hover:bg-accent/80",
         soft:
           "border-transparent bg-primary-light text-primary hover:bg-primary-light/80",
+        medium:
+          "border-transparent bg-accent-medium text-white hover:bg-accent-medium/80",
+        pale:
+          "border-transparent bg-accent-pale text-primary-dark hover:bg-accent-pale/80",
       },
     },
     defaultVariants: {

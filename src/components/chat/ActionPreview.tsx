@@ -64,23 +64,23 @@ const ActionPreview: React.FC<ActionPreviewProps> = ({
   const categories = Object.keys(actionsByCategory);
 
   return (
-    <div className={cn("flex flex-col h-full overflow-auto p-4 bg-gray-50", className)}>
+    <div className={cn("flex flex-col h-full overflow-auto p-4 bg-accent-pale/20", className)}>
       <div className="mb-6">
-        <h2 className="text-xl font-medium text-primary">{title}</h2>
-        {description && <p className="text-sm text-gray-500 mt-1">{description}</p>}
+        <h2 className="text-xl font-medium text-primary-dark">{title}</h2>
+        {description && <p className="text-sm text-accent-medium mt-1">{description}</p>}
       </div>
 
       {categories.map((category) => (
         <div key={category} className="mb-6">
-          <h3 className="text-sm font-medium text-gray-600 mb-3">{category}</h3>
+          <h3 className="text-sm font-medium text-accent mb-3">{category}</h3>
           <div className="grid gap-3">
             {actionsByCategory[category].map((action) => (
               <Card 
                 key={action.id} 
-                className="bg-white hover:bg-primary-light/20 transition-colors border-primary-light/30"
+                className="bg-white hover:bg-accent-pale/40 transition-colors border-accent-pale/50"
               >
                 <CardHeader className="p-4 pb-2 flex flex-row items-start gap-3">
-                  <div className="p-2 rounded-md bg-primary-light/50 text-primary">
+                  <div className="p-2 rounded-md bg-primary-light/70 text-primary-dark">
                     {getActionIcon(action.icon)}
                   </div>
                   <div className="flex-1">
@@ -92,7 +92,7 @@ const ActionPreview: React.FC<ActionPreviewProps> = ({
                   <Button 
                     variant="ghost" 
                     size="sm" 
-                    className="text-primary hover:text-primary hover:bg-primary-light/30" 
+                    className="text-accent hover:text-accent hover:bg-accent-pale/50" 
                     onClick={action.onClick}
                   >
                     {action.actionLabel}
@@ -106,7 +106,7 @@ const ActionPreview: React.FC<ActionPreviewProps> = ({
       ))}
 
       {actions.length === 0 && (
-        <div className="flex flex-col items-center justify-center h-full text-gray-400 text-center p-6 bg-gray-50">
+        <div className="flex flex-col items-center justify-center h-full text-accent-medium text-center p-6 bg-accent-pale/10">
           <img 
             src="/lovable-uploads/8909c790-d73e-4ca4-99fb-106aa9109740.png" 
             alt="Fabricated Logo" 
