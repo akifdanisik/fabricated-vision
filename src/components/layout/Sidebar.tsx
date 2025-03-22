@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { 
@@ -70,7 +71,7 @@ const Sidebar = ({ isOpen, onToggle }: SidebarProps) => {
             <img 
               src="/lovable-uploads/0f378f40-c5be-494e-a251-1513b467af1d.png" 
               alt="Fabricated Logo" 
-              className="h-15 w-auto" 
+              className="h-13 w-auto" 
             />
           ) : (
             <div className="flex h-11 w-11 items-center justify-center">
