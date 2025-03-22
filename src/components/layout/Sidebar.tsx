@@ -73,11 +73,11 @@ const Sidebar = ({ isOpen, onToggle }: SidebarProps) => {
             <img 
               src="/lovable-uploads/0f378f40-c5be-494e-a251-1513b467af1d.png" 
               alt="Fabricated Logo" 
-              className="h-6 w-auto"
+              className="h-9 w-auto" 
             />
           ) : (
-            <div className="flex h-8 w-8 items-center justify-center">
-              <span className="text-xl font-serif font-bold">F</span>
+            <div className="flex h-10 w-10 items-center justify-center">
+              <span className="text-2xl font-serif font-bold">F</span>
             </div>
           )}
         </Link>

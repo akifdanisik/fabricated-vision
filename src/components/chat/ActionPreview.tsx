@@ -110,7 +110,7 @@ const ActionPreview: React.FC<ActionPreviewProps> = ({
           <img 
             src="/lovable-uploads/0f378f40-c5be-494e-a251-1513b467af1d.png" 
             alt="Fabricated Logo" 
-            className="h-8 w-auto mb-4 opacity-30" 
+            className="h-12 w-auto mb-4 opacity-30" 
           />
           <p className="text-sm max-w-xs">Ask about inventory levels, suppliers, or orders to see actionable suggestions here.</p>
         </div>
