@@ -67,15 +67,15 @@ const Compliance = () => {
               </TabsList>
               
               <TabsContent value="overview" className="space-y-6">
-                <EnhancedComplianceOverview selectedCategories={selectedCategories} />
+                <ComplianceOverview selectedCategories={selectedCategories} />
               </TabsContent>
               
               <TabsContent value="documents" className="space-y-6">
-                <EnhancedDocumentManagement selectedCategories={selectedCategories} />
+                <DocumentManagement selectedCategories={selectedCategories} />
               </TabsContent>
               
               <TabsContent value="audit" className="space-y-6">
-                <EnhancedAuditReadiness selectedCategories={selectedCategories} />
+                <AuditReadiness selectedCategories={selectedCategories} />
               </TabsContent>
             </Tabs>
           </CardContent>

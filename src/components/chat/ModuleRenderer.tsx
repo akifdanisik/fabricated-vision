@@ -128,15 +128,15 @@ const ModuleRenderer: React.FC<ModuleRendererProps> = ({ type, data }) => {
               </TabsList>
               
               <TabsContent value="overview" className="mt-0">
-                <EnhancedComplianceOverview selectedCategories={selectedCategories} />
+                <ComplianceOverview selectedCategories={selectedCategories} />
               </TabsContent>
               
               <TabsContent value="documents" className="mt-0">
-                <EnhancedDocumentManagement selectedCategories={selectedCategories} />
+                <DocumentManagement selectedCategories={selectedCategories} />
               </TabsContent>
               
               <TabsContent value="audit" className="mt-0">
-                <EnhancedAuditReadiness selectedCategories={selectedCategories} />
+                <AuditReadiness selectedCategories={selectedCategories} />
               </TabsContent>
             </Tabs>
           </CardContent>

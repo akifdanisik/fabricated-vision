@@ -38,6 +38,12 @@ import {
   Calendar
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Category } from '@/components/categories/CategoryBadge';
+
+// Props interface
+interface DocumentManagementProps {
+  selectedCategories?: Category[];
+}
 
 // Document types
 type DocumentStatus = 'valid' | 'expiring' | 'expired';
@@ -55,7 +61,7 @@ interface Document {
 }
 
 // Component
-const DocumentManagement = () => {
+const DocumentManagement = ({ selectedCategories = [] }: DocumentManagementProps) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [typeFilter, setTypeFilter] = useState<string>('all');
   const [statusFilter, setStatusFilter] = useState<string>('all');
