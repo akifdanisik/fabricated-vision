@@ -15,6 +15,11 @@ import Chat from "./pages/Chat";
 import Categories from "./pages/Categories";
 import LiveDeals from "./pages/LiveDeals";
 import NotFound from "./pages/NotFound";
+import ProcurementMethods from "./pages/ProcurementMethods";
+import Quantification from "./pages/Quantification";
+import Reconciliation from "./pages/Reconciliation";
+import GroupPurchasing from "./pages/GroupPurchasing";
+import QualityAssurance from "./pages/QualityAssurance";
 import { useEffect } from "react";
 
 const queryClient = new QueryClient();
@@ -47,6 +52,11 @@ const App = () => {
             <Route path="/reports" element={<Reports />} />
             <Route path="/workflows" element={<Workflows />} />
             <Route path="/live-deals" element={<LiveDeals />} />
+            <Route path="/procurement-methods" element={<ProcurementMethods />} />
+            <Route path="/quantification" element={<Quantification />} />
+            <Route path="/reconciliation" element={<Reconciliation />} />
+            <Route path="/group-purchasing" element={<GroupPurchasing />} />
+            <Route path="/quality-assurance" element={<QualityAssurance />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>

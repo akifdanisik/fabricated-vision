@@ -14,7 +14,13 @@ import {
   MessageSquare,
   Workflow,
   Brain,
-  Package
+  Package,
+  Calculator,
+  FileSpreadsheet,
+  Building2,
+  Award,
+  GroupIcon,
+  Scale
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -36,10 +42,15 @@ interface NavItem {
 const navItems: NavItem[] = [
   { title: "Dashboard", icon: LayoutDashboard, path: "/" },
   { title: "Chat", icon: MessageSquare, path: "/chat", priority: true },
-  { title: "Workflows", icon: Workflow, path: "/workflows", priority: true },
-  { title: "Live Deals", icon: Package, path: "/live-deals", priority: true },
+  { title: "Procurement Methods", icon: Scale, path: "/procurement-methods", priority: true },
+  { title: "Quantification", icon: Calculator, path: "/quantification", priority: true },
+  { title: "Reconciliation", icon: FileSpreadsheet, path: "/reconciliation", priority: true },
+  { title: "Workflows", icon: Workflow, path: "/workflows" },
+  { title: "Live Deals", icon: Package, path: "/live-deals" },
   { title: "Inventory", icon: Box, path: "/inventory" },
   { title: "Suppliers", icon: Users, path: "/suppliers" },
+  { title: "Group Purchasing", icon: Building2, path: "/group-purchasing" },
+  { title: "Quality Assurance", icon: Award, path: "/quality-assurance" },
   { title: "Contracts", icon: FileText, path: "/contracts" },
   { title: "Compliance", icon: ShieldCheck, path: "/compliance" },
   { title: "Reports", icon: BarChart3, path: "/reports" },
@@ -59,13 +70,13 @@ const Sidebar = ({ isOpen, onToggle }: SidebarProps) => {
   return (
     <div
       className={cn(
-        "fixed inset-y-0 left-0 z-50 flex flex-col border-r bg-white transition-all duration-300 ease-in-out-expo shadow-sm",
+        "fixed inset-y-0 left-0 z-50 flex flex-col border-r bg-slate-900 text-white transition-all duration-300 ease-in-out-expo shadow-sm",
         isOpen ? "w-64" : "w-[70px]",
         isMounted ? "translate-x-0" : "-translate-x-full"
       )}
     >
       <div className={cn(
-        "flex h-16 items-center border-b border-gray-100",
+        "flex h-16 items-center border-b border-slate-800",
         isOpen ? "justify-center px-6" : "justify-center px-2"
       )}>
         <Link to="/" className="flex items-center justify-center py-4">
@@ -101,13 +112,13 @@ const Sidebar = ({ isOpen, onToggle }: SidebarProps) => {
                 className={cn(
                   "group flex items-center gap-3 rounded-xl px-3 py-2.5 transition-all",
                   isActive 
-                    ? "bg-primary/10 text-primary" 
-                    : "text-gray-500 hover:bg-gray-100 hover:text-gray-900",
+                    ? "bg-primary text-white" 
+                    : "text-slate-300 hover:bg-slate-800 hover:text-white",
                   !isOpen && "justify-center py-2.5"
                 )}
                 style={{ animationDelay: `${index * 50}ms` }}
               >
-                <item.icon className={cn("h-5 w-5 shrink-0", isActive && "text-primary")} />
+                <item.icon className={cn("h-5 w-5 shrink-0", isActive && "text-white")} />
                 <span
                   className={cn(
                     "text-sm font-medium transition-all",
@@ -121,7 +132,7 @@ const Sidebar = ({ isOpen, onToggle }: SidebarProps) => {
           })}
         </nav>
         
-        <Separator className={cn("my-2 bg-gray-100", !isOpen && "mx-2")} />
+        <Separator className={cn("my-2 bg-slate-800", !isOpen && "mx-2")} />
         
         <nav className="grid gap-1 px-3 py-2">
           {standardItems.map((item, index) => {
@@ -134,13 +145,13 @@ const Sidebar = ({ isOpen, onToggle }: SidebarProps) => {
                 className={cn(
                   "group flex items-center gap-3 rounded-xl px-3 py-2.5 transition-all",
                   isActive 
-                    ? "bg-primary/10 text-primary" 
-                    : "text-gray-500 hover:bg-gray-100 hover:text-gray-900",
+                    ? "bg-primary text-white" 
+                    : "text-slate-300 hover:bg-slate-800 hover:text-white",
                   !isOpen && "justify-center py-2.5"
                 )}
                 style={{ animationDelay: `${index * 50}ms` }}
               >
-                <item.icon className={cn("h-5 w-5 shrink-0", isActive && "text-primary")} />
+                <item.icon className={cn("h-5 w-5 shrink-0", isActive && "text-white")} />
                 <span
                   className={cn(
                     "text-sm font-medium transition-all",
@@ -154,18 +165,18 @@ const Sidebar = ({ isOpen, onToggle }: SidebarProps) => {
           })}
         </nav>
         
-        <Separator className={cn("my-2 bg-gray-100", !isOpen && "mx-2")} />
+        <Separator className={cn("my-2 bg-slate-800", !isOpen && "mx-2")} />
         
         <div className="px-3 py-2">
           <Link
             to="/settings"
             className={cn(
-              "flex items-center gap-3 rounded-xl px-3 py-2.5 text-gray-500 transition-all hover:bg-gray-100 hover:text-gray-900",
+              "flex items-center gap-3 rounded-xl px-3 py-2.5 text-slate-300 transition-all hover:bg-slate-800 hover:text-white",
               !isOpen && "justify-center py-2.5",
-              location.pathname === "/settings" && "bg-primary/10 text-primary"
+              location.pathname === "/settings" && "bg-primary text-white"
             )}
           >
-            <Settings className={cn("h-5 w-5 shrink-0", location.pathname === "/settings" && "text-primary")} />
+            <Settings className={cn("h-5 w-5 shrink-0", location.pathname === "/settings" && "text-white")} />
             <span
               className={cn(
                 "text-sm font-medium transition-all",
@@ -179,12 +190,12 @@ const Sidebar = ({ isOpen, onToggle }: SidebarProps) => {
       </ScrollArea>
       
       <div className={cn(
-        "border-t border-gray-100 p-4",
+        "border-t border-slate-800 p-4",
         !isOpen && "p-2"
       )}>
         <div
           className={cn(
-            "flex items-center gap-3 rounded-xl bg-gray-50 p-2.5 text-xs text-gray-600",
+            "flex items-center gap-3 rounded-xl bg-slate-800 p-2.5 text-xs text-slate-300",
             !isOpen && "justify-center"
           )}
         >
@@ -199,7 +210,6 @@ const Sidebar = ({ isOpen, onToggle }: SidebarProps) => {
         </div>
       </div>
       
-      {/* Collapse button moved to the side of the sidebar */}
       <Button 
         variant="ghost" 
         size="icon" 

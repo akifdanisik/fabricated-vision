@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { useLocation, Link } from 'react-router-dom';
 import { Bell, ChevronDown, Menu, Search, Settings, User } from 'lucide-react';
@@ -8,10 +9,12 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel,
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Badge } from "@/components/ui/badge";
 import { cn } from '@/lib/utils';
+
 interface NavbarProps {
   toggleSidebar: () => void;
   isSidebarOpen: boolean;
 }
+
 const Navbar = ({
   toggleSidebar,
   isSidebarOpen
@@ -27,7 +30,7 @@ const Navbar = ({
       setPageTitle('Dashboard');
     } else {
       // Convert path to title (e.g., '/inventory' to 'Inventory')
-      setPageTitle(path.substring(1).charAt(0).toUpperCase() + path.substring(2));
+      setPageTitle(path.substring(1).charAt(0).toUpperCase() + path.substring(2).replace(/-/g, ' '));
     }
   }, [location]);
 
@@ -39,11 +42,20 @@ const Navbar = ({
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-  return <header className={cn("sticky top-0 z-40 flex h-16 w-full items-center justify-between border-b border-gray-100 bg-white/95 px-4 backdrop-blur transition-all duration-200", scrolled ? "shadow-sm" : "")}>
+  
+  return (
+    <header className={cn("sticky top-0 z-40 flex h-16 w-full items-center justify-between border-b border-gray-100 bg-white/95 px-4 backdrop-blur transition-all duration-200", scrolled ? "shadow-sm" : "")}>
       <div className="flex items-center gap-2">
+        <Button 
+          variant="ghost" 
+          size="icon" 
+          onClick={toggleSidebar} 
+          className="mr-2 md:hidden rounded-full text-gray-500 hover:bg-gray-100 hover:text-gray-900"
+        >
+          <Menu className="h-5 w-5" />
+        </Button>
         
-        
-        
+        <h1 className="text-xl font-semibold">{pageTitle}</h1>
       </div>
       
       <div className="flex items-center gap-4 md:gap-6">
@@ -119,6 +131,8 @@ const Navbar = ({
           </DropdownMenu>
         </div>
       </div>
-    </header>;
+    </header>
+  );
 };
+
 export default Navbar;
