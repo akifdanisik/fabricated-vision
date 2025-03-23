@@ -70,13 +70,13 @@ const Sidebar = ({ isOpen, onToggle }: SidebarProps) => {
   return (
     <div
       className={cn(
-        "fixed inset-y-0 left-0 z-50 flex flex-col border-r bg-slate-900 text-white transition-all duration-300 ease-in-out-expo shadow-sm",
+        "fixed inset-y-0 left-0 z-50 flex flex-col border-r bg-white text-slate-800 transition-all duration-300 ease-in-out-expo shadow-sm",
         isOpen ? "w-64" : "w-[70px]",
         isMounted ? "translate-x-0" : "-translate-x-full"
       )}
     >
       <div className={cn(
-        "flex h-16 items-center border-b border-slate-800",
+        "flex h-16 items-center border-b border-gray-200",
         isOpen ? "justify-center px-6" : "justify-center px-2"
       )}>
         <Link to="/" className="flex items-center justify-center py-4">
@@ -113,7 +113,7 @@ const Sidebar = ({ isOpen, onToggle }: SidebarProps) => {
                   "group flex items-center gap-3 rounded-xl px-3 py-2.5 transition-all",
                   isActive 
                     ? "bg-primary text-white" 
-                    : "text-slate-300 hover:bg-slate-800 hover:text-white",
+                    : "text-slate-700 hover:bg-gray-100 hover:text-slate-900",
                   !isOpen && "justify-center py-2.5"
                 )}
                 style={{ animationDelay: `${index * 50}ms` }}
@@ -132,7 +132,7 @@ const Sidebar = ({ isOpen, onToggle }: SidebarProps) => {
           })}
         </nav>
         
-        <Separator className={cn("my-2 bg-slate-800", !isOpen && "mx-2")} />
+        <Separator className={cn("my-2 bg-gray-200", !isOpen && "mx-2")} />
         
         <nav className="grid gap-1 px-3 py-2">
           {standardItems.map((item, index) => {
@@ -146,7 +146,7 @@ const Sidebar = ({ isOpen, onToggle }: SidebarProps) => {
                   "group flex items-center gap-3 rounded-xl px-3 py-2.5 transition-all",
                   isActive 
                     ? "bg-primary text-white" 
-                    : "text-slate-300 hover:bg-slate-800 hover:text-white",
+                    : "text-slate-700 hover:bg-gray-100 hover:text-slate-900",
                   !isOpen && "justify-center py-2.5"
                 )}
                 style={{ animationDelay: `${index * 50}ms` }}
@@ -165,13 +165,13 @@ const Sidebar = ({ isOpen, onToggle }: SidebarProps) => {
           })}
         </nav>
         
-        <Separator className={cn("my-2 bg-slate-800", !isOpen && "mx-2")} />
+        <Separator className={cn("my-2 bg-gray-200", !isOpen && "mx-2")} />
         
         <div className="px-3 py-2">
           <Link
             to="/settings"
             className={cn(
-              "flex items-center gap-3 rounded-xl px-3 py-2.5 text-slate-300 transition-all hover:bg-slate-800 hover:text-white",
+              "flex items-center gap-3 rounded-xl px-3 py-2.5 text-slate-700 transition-all hover:bg-gray-100 hover:text-slate-900",
               !isOpen && "justify-center py-2.5",
               location.pathname === "/settings" && "bg-primary text-white"
             )}
@@ -190,12 +190,12 @@ const Sidebar = ({ isOpen, onToggle }: SidebarProps) => {
       </ScrollArea>
       
       <div className={cn(
-        "border-t border-slate-800 p-4",
+        "border-t border-gray-200 p-4",
         !isOpen && "p-2"
       )}>
         <div
           className={cn(
-            "flex items-center gap-3 rounded-xl bg-slate-800 p-2.5 text-xs text-slate-300",
+            "flex items-center gap-3 rounded-xl bg-gray-100 p-2.5 text-xs text-slate-700",
             !isOpen && "justify-center"
           )}
         >
