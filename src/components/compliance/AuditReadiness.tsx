@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import {
   Card,
@@ -32,6 +31,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
+import { Category } from '@/components/categories/CategoryBadge';
 
 // Types
 interface RegulatoryUpdate {
@@ -51,8 +51,13 @@ interface AuditItem {
   status: 'ready' | 'attention' | 'critical';
 }
 
+// Component props
+interface AuditReadinessProps {
+  selectedCategories?: Category[];
+}
+
 // Component
-const AuditReadiness = () => {
+const AuditReadiness = ({ selectedCategories = [] }: AuditReadinessProps) => {
   const [activeTab, setActiveTab] = useState("updates");
   
   // Sample regulatory updates

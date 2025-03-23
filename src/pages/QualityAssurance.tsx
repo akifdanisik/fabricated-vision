@@ -8,7 +8,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Badge } from '@/components/ui/badge';
-import { CheckCircle, FileText, Flask } from 'lucide-react';
+import { CheckCircle, FileText, Beaker } from 'lucide-react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Progress } from '@/components/ui/progress';
 
@@ -36,7 +36,7 @@ const QualityAssurance = () => {
               Quality Testing
             </TabsTrigger>
             <TabsTrigger value="bioequivalence">
-              <Flask className="mr-2 h-4 w-4" />
+              <Beaker className="mr-2 h-4 w-4" />
               Bioequivalence
             </TabsTrigger>
           </TabsList>

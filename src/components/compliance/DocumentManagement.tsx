@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { 
   Table, 
@@ -38,6 +37,7 @@ import {
   Calendar
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Category } from '@/components/categories/CategoryBadge';
 
 // Document types
 type DocumentStatus = 'valid' | 'expiring' | 'expired';
@@ -54,8 +54,13 @@ interface Document {
   verificationStatus: 'verified' | 'pending' | 'failed';
 }
 
+// Component props
+interface DocumentManagementProps {
+  selectedCategories?: Category[];
+}
+
 // Component
-const DocumentManagement = () => {
+const DocumentManagement = ({ selectedCategories = [] }: DocumentManagementProps) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [typeFilter, setTypeFilter] = useState<string>('all');
   const [statusFilter, setStatusFilter] = useState<string>('all');

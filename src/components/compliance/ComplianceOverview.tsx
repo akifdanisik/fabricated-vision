@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import {
   Card,
@@ -18,6 +17,7 @@ import {
   Clock
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Category } from '@/components/categories/CategoryBadge';
 
 // Types
 interface ComplianceStats {
@@ -35,8 +35,13 @@ interface ComplianceCategory {
   status: 'high' | 'medium' | 'low';
 }
 
+// Component props
+interface ComplianceOverviewProps {
+  selectedCategories?: Category[];
+}
+
 // Component
-const ComplianceOverview = () => {
+const ComplianceOverview = ({ selectedCategories = [] }: ComplianceOverviewProps) => {
   // Sample data
   const stats: ComplianceStats = {
     totalDocuments: 245,
