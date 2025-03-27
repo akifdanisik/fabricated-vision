@@ -26,6 +26,7 @@ interface ChatItem {
 const ChatSidebar = () => {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
+  const [open, setOpen] = useState<Record<string, boolean>>({});
   
   // Mock data for the sidebar
   const todayChats: ChatItem[] = [
@@ -70,25 +71,30 @@ const ChatSidebar = () => {
     window.location.reload();
   };
   
+  const toggleCollapsible = (id: string) => {
+    setOpen(prev => ({
+      ...prev,
+      [id]: !prev[id]
+    }));
+  };
+  
   const renderChatItem = (item: ChatItem) => {
     const Icon = item.isProject ? FolderOpen : File;
     
     if (item.children?.length) {
       return (
-        <Collapsible key={item.id} className="w-full">
+        <Collapsible key={item.id} className="w-full" open={open[item.id]} onOpenChange={() => toggleCollapsible(item.id)}>
           <CollapsibleTrigger className="flex items-center w-full group/item text-left">
             <div className="flex items-center w-full py-1 px-2 hover:bg-gray-100 rounded-md cursor-pointer">
               <Icon className="h-4 w-4 mr-2 text-gray-500" />
               <span className="text-sm text-gray-700 flex-1">{item.title}</span>
-              {item.children?.length > 0 && (
-                <div className="invisible group-hover/item:visible">
-                  {open ? (
-                    <ChevronDown className="h-4 w-4 text-gray-500" />
-                  ) : (
-                    <ChevronRight className="h-4 w-4 text-gray-500" />
-                  )}
-                </div>
-              )}
+              <div className="group-hover/item:visible">
+                {open[item.id] ? (
+                  <ChevronDown className="h-4 w-4 text-gray-500" />
+                ) : (
+                  <ChevronRight className="h-4 w-4 text-gray-500" />
+                )}
+              </div>
             </div>
           </CollapsibleTrigger>
           <CollapsibleContent className="ml-4 pl-2 border-l border-gray-200">
