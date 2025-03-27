@@ -126,15 +126,15 @@ const Sidebar = ({ isOpen, onToggle }: SidebarProps) => {
     >
       <div className={cn(
         "flex h-16 items-center border-b border-gray-200",
-        isOpen ? "justify-between px-6" : "justify-center px-2"
+        isOpen ? "justify-center px-6" : "justify-center px-2"
       )}>
-        <Link to="/" className="flex items-center py-4">
+        <Link to="/" className="flex items-center justify-center py-4">
           {isOpen ? (
-            <div className="flex items-center">
+            <div className="flex items-center justify-center w-full">
               <img 
                 src="/lovable-uploads/42466f5f-6d74-466e-af4c-1fc0de255379.png" 
                 alt="Fabricated Logo" 
-                className="h-14 w-auto" 
+                className="h-14 w-auto mx-auto" 
               />
             </div>
           ) : (
@@ -147,19 +147,6 @@ const Sidebar = ({ isOpen, onToggle }: SidebarProps) => {
             </div>
           )}
         </Link>
-        
-        <Button 
-          variant="ghost" 
-          size="icon" 
-          onClick={onToggle}
-          className="flex items-center justify-center h-9 w-9 p-0"
-        >
-          <img 
-            src="/lovable-uploads/0a2ad906-662f-41b4-ad21-4e0655e11409.png" 
-            alt="Toggle Menu" 
-            className="h-6 w-6" 
-          />
-        </Button>
       </div>
       
       {isOpen && (
@@ -272,6 +259,21 @@ const Sidebar = ({ isOpen, onToggle }: SidebarProps) => {
           </div>
         )}
       </ScrollArea>
+      
+      <Button 
+        variant="ghost" 
+        size="icon" 
+        onClick={onToggle}
+        className={cn(
+          "absolute top-1/2 -right-3 h-6 w-6 transform -translate-y-1/2 rounded-full bg-white shadow-md border border-gray-200",
+          "flex items-center justify-center"
+        )}
+      >
+        {isOpen ? 
+          <ChevronLeft className="h-3 w-3" /> : 
+          <ChevronRight className="h-3 w-3" />
+        }
+      </Button>
     </div>
   );
 };
