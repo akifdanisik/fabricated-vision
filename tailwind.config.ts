@@ -59,7 +59,7 @@ export default {
           foreground: 'hsl(222 47% 11%)'
         },
         sidebar: {
-          DEFAULT: 'hsl(0 0% 100%)',
+          DEFAULT: 'hsl(0 0% 97%)',
           foreground: 'hsl(240 5% 26%)',
           primary: 'hsl(230 70% 60%)',
           'primary-foreground': 'hsl(0 0% 100%)',
