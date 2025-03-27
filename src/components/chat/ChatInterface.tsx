@@ -1058,8 +1058,8 @@ export default function ChatInterface() {
   return (
     <div className="flex flex-col h-full">
       <ResizablePanelGroup direction="horizontal">
-        <ResizablePanel defaultSize={65} minSize={50} className="flex flex-col">
-          <div className="flex-1 overflow-auto px-4">
+        <ResizablePanel defaultSize={65} minSize={50} className="flex flex-col bg-[#f3f3f3]">
+          <div className="flex-1 overflow-auto px-4 bg-[#f3f3f3]">
             {showWelcomeScreen ? (
               <WelcomeScreen 
                 onSelectQuickStart={handleQuickPrompt} 
