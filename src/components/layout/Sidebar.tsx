@@ -22,6 +22,7 @@ import {
 
 interface SidebarProps {
   isOpen: boolean;
+  isCompleteClosed?: boolean;
   onToggle: () => void;
 }
 
@@ -79,7 +80,7 @@ const mockProjects: Project[] = [
   }
 ];
 
-const Sidebar = ({ isOpen, onToggle }: SidebarProps) => {
+const Sidebar = ({ isOpen, isCompleteClosed = false, onToggle }: SidebarProps) => {
   const location = useLocation();
   const [isMounted, setIsMounted] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
@@ -115,6 +116,24 @@ const Sidebar = ({ isOpen, onToggle }: SidebarProps) => {
       [projectId]: !prev[projectId]
     }));
   };
+
+  if (isCompleteClosed) {
+    return (
+      <div className="fixed inset-y-0 left-0 z-50 w-0 transition-all duration-300 ease-in-out-expo">
+        <Button 
+          variant="ghost" 
+          size="icon" 
+          onClick={onToggle}
+          className={cn(
+            "absolute top-4 left-2 h-6 w-6 rounded-full bg-white shadow-md border border-gray-200",
+            "flex items-center justify-center"
+          )}
+        >
+          <ChevronRight className="h-3 w-3" />
+        </Button>
+      </div>
+    );
+  }
 
   return (
     <div

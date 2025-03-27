@@ -1,3 +1,4 @@
+
 import Layout from '@/components/layout/Layout';
 import ChatInterface from '@/components/chat/ChatInterface';
 import { useEffect, useState } from 'react';
@@ -83,7 +84,7 @@ const Chat = () => {
           </div>
         </div>
         
-        <div className="flex-1 overflow-hidden bg-white">
+        <div className="flex-1 overflow-hidden bg-[#f3f3f3]">
           <ChatInterface />
         </div>
       </div>

@@ -13,12 +13,19 @@ interface LayoutProps {
 
 const Layout = ({ children, fullWidth = false, hideNavbar = false }: LayoutProps) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isSidebarClosed, setIsSidebarClosed] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
   const location = useLocation();
   
   // Toggle sidebar
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
+    // When sidebar is completely closed, we set isSidebarClosed to true
+    if (isSidebarOpen) {
+      setIsSidebarClosed(true);
+    } else {
+      setIsSidebarClosed(false);
+    }
   };
   
   // For animation purposes
@@ -38,6 +45,7 @@ const Layout = ({ children, fullWidth = false, hideNavbar = false }: LayoutProps
         setIsSidebarOpen(false);
       } else {
         setIsSidebarOpen(true);
+        setIsSidebarClosed(false);
       }
     };
     
@@ -50,12 +58,12 @@ const Layout = ({ children, fullWidth = false, hideNavbar = false }: LayoutProps
 
   return (
     <div className="flex min-h-screen w-full bg-background">
-      <Sidebar isOpen={isSidebarOpen} onToggle={toggleSidebar} />
+      <Sidebar isOpen={isSidebarOpen} isCompleteClosed={isSidebarClosed} onToggle={toggleSidebar} />
       
       <div 
         className={cn(
           "flex flex-1 flex-col transition-all duration-300 ease-in-out-expo",
-          isSidebarOpen ? "md:ml-64" : "md:ml-[70px]",
+          isSidebarOpen ? (isSidebarClosed ? "md:ml-0" : "md:ml-64") : "md:ml-[70px]",
           isMounted ? "opacity-100" : "opacity-0"
         )}
       >
