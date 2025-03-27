@@ -49,7 +49,7 @@ const Layout = ({ children, fullWidth = false, hideNavbar = false }: LayoutProps
   }, []);
 
   return (
-    <div className="flex min-h-screen w-full bg-gray-50">
+    <div className="flex min-h-screen w-full bg-background">
       <Sidebar isOpen={isSidebarOpen} onToggle={toggleSidebar} />
       
       <div 
@@ -65,7 +65,7 @@ const Layout = ({ children, fullWidth = false, hideNavbar = false }: LayoutProps
         
         <main className={cn(
           "flex-1 animate-fade-in",
-          fullWidth ? "p-0" : "p-5 md:p-8 bg-gray-50"
+          fullWidth ? "p-0" : "p-5 md:p-8 bg-background"
         )}>
           <div className={cn(
             fullWidth ? "w-full h-full" : "w-full mx-auto"
