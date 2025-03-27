@@ -1,3 +1,4 @@
+
 import { useCallback, useState } from 'react';
 import {
   ReactFlow,
@@ -30,18 +31,20 @@ import {
   UserCheck,
   Truck
 } from 'lucide-react';
-import { toast } from '@/hooks/use-toast';
+import { useToast } from '@/hooks/use-toast';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
+// Define workflow node types
 type NodeData = {
   label: string;
   type?: 'trigger' | 'task' | 'decision' | 'end';
   icon?: JSX.Element;
 };
 
+// Node components
 const TriggerNode = ({ data }: { data: NodeData }) => (
   <div className="p-4 rounded-lg border-2 shadow-md bg-blue-50 border-blue-200 dark:bg-blue-900/30 dark:border-blue-700 w-48">
     <div className="flex items-center gap-2">
@@ -78,6 +81,7 @@ const EndNode = ({ data }: { data: NodeData }) => (
   </div>
 );
 
+// Supplier onboarding template
 const supplierOnboardingTemplate = {
   nodes: [
     {
@@ -136,6 +140,7 @@ const supplierOnboardingTemplate = {
   ],
 };
 
+// Inventory replenishment template
 const inventoryReplenishmentTemplate = {
   nodes: [
     {
@@ -194,6 +199,7 @@ const inventoryReplenishmentTemplate = {
   ],
 };
 
+// Initial workflow example (similar to what was there but with improved icons)
 const initialNodes: Node[] = [
   {
     id: '1',
@@ -221,6 +227,7 @@ const initialNodes: Node[] = [
   },
 ];
 
+// Initial edges
 const initialEdges: Edge[] = [
   {
     id: 'e1-2',
@@ -274,6 +281,7 @@ export default function WorkflowEditor() {
   const [nodeType, setNodeType] = useState<'trigger' | 'task' | 'decision' | 'end'>('task');
   const [isAddNodeOpen, setIsAddNodeOpen] = useState(false);
   const [isTemplateDialogOpen, setIsTemplateDialogOpen] = useState(false);
+  const { toast } = useToast();
 
   const nodeTypes = {
     trigger: TriggerNode,
@@ -299,8 +307,10 @@ export default function WorkflowEditor() {
 
   const addNewNode = () => {
     if (!nodeName.trim()) {
-      toast.error("Please enter a name for the node", {
-        description: "Node name cannot be empty"
+      toast({
+        title: "Error",
+        description: "Please enter a name for the node",
+        variant: "destructive",
       });
       return;
     }
@@ -330,8 +340,9 @@ export default function WorkflowEditor() {
     
     setNodes((nds) => nds.concat(newNode));
     setIsAddNodeOpen(false);
-    toast.success("Node Added", {
-      description: `Added a new ${nodeType} node to the workflow.`
+    toast({
+      title: "Node Added",
+      description: `Added a new ${nodeType} node to the workflow.`,
     });
   };
 
@@ -344,14 +355,16 @@ export default function WorkflowEditor() {
     setEdges(templateData.edges);
     setIsTemplateDialogOpen(false);
     
-    toast.success("Template Applied", {
-      description: `Applied the ${template === 'supplier' ? 'Supplier Onboarding' : 'Inventory Replenishment'} template.`
+    toast({
+      title: "Template Applied",
+      description: `Applied the ${template === 'supplier' ? 'Supplier Onboarding' : 'Inventory Replenishment'} template.`,
     });
   };
 
   const saveWorkflow = () => {
-    toast.success("Workflow Saved", {
-      description: `Saved workflow with ${nodes.length} nodes and ${edges.length} connections.`
+    toast({
+      title: "Workflow Saved",
+      description: `Saved workflow with ${nodes.length} nodes and ${edges.length} connections.`,
     });
   };
 
@@ -362,8 +375,9 @@ export default function WorkflowEditor() {
         (edge) => edge.source !== selectedNode.id && edge.target !== selectedNode.id
       ));
       setSelectedNode(null);
-      toast.success("Node Deleted", {
-        description: `Removed node from the workflow.`
+      toast({
+        title: "Node Deleted",
+        description: `Removed node from the workflow.`,
       });
     }
   };
@@ -418,6 +432,7 @@ export default function WorkflowEditor() {
         </Panel>
       </ReactFlow>
       
+      {/* Add Node Dialog */}
       <Dialog open={isAddNodeOpen} onOpenChange={setIsAddNodeOpen}>
         <DialogContent>
           <DialogHeader>
@@ -455,6 +470,7 @@ export default function WorkflowEditor() {
         </DialogContent>
       </Dialog>
       
+      {/* Template Dialog */}
       <Dialog open={isTemplateDialogOpen} onOpenChange={setIsTemplateDialogOpen}>
         <DialogContent>
           <DialogHeader>
