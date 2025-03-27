@@ -19,11 +19,13 @@ const Layout = ({ children, fullWidth = false, hideNavbar = false }: LayoutProps
   
   // Toggle sidebar
   const toggleSidebar = () => {
-    setIsSidebarOpen(!isSidebarOpen);
-    // When sidebar is completely closed, we set isSidebarClosed to true
-    if (isSidebarOpen) {
+    if (isSidebarClosed) {
+      setIsSidebarClosed(false);
+      setIsSidebarOpen(true);
+    } else if (isSidebarOpen) {
       setIsSidebarClosed(true);
     } else {
+      setIsSidebarOpen(true);
       setIsSidebarClosed(false);
     }
   };
@@ -43,6 +45,7 @@ const Layout = ({ children, fullWidth = false, hideNavbar = false }: LayoutProps
     const handleResize = () => {
       if (window.innerWidth < 768) {
         setIsSidebarOpen(false);
+        setIsSidebarClosed(false);
       } else {
         setIsSidebarOpen(true);
         setIsSidebarClosed(false);

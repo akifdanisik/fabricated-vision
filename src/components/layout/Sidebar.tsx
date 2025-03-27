@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { 
@@ -7,7 +8,8 @@ import {
   Search,
   Folder,
   ChevronDown,
-  Square
+  Square,
+  Menu
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -125,11 +127,11 @@ const Sidebar = ({ isOpen, isCompleteClosed = false, onToggle }: SidebarProps) =
           size="icon" 
           onClick={onToggle}
           className={cn(
-            "absolute top-4 left-2 h-6 w-6 rounded-full bg-white shadow-md border border-gray-200",
-            "flex items-center justify-center"
+            "absolute top-4 left-2 h-8 w-8 rounded-full bg-white shadow-md border border-gray-200",
+            "flex items-center justify-center text-gray-600 hover:text-gray-900"
           )}
         >
-          <ChevronRight className="h-3 w-3" />
+          <Menu className="h-5 w-5" />
         </Button>
       </div>
     );
@@ -145,7 +147,7 @@ const Sidebar = ({ isOpen, isCompleteClosed = false, onToggle }: SidebarProps) =
     >
       <div className={cn(
         "flex h-16 items-center border-b border-gray-200",
-        isOpen ? "justify-center px-6" : "justify-center px-2"
+        isOpen ? "justify-between px-6" : "justify-center px-2"
       )}>
         <Link to="/" className="flex items-center justify-center py-4">
           {isOpen ? (
@@ -166,6 +168,17 @@ const Sidebar = ({ isOpen, isCompleteClosed = false, onToggle }: SidebarProps) =
             </div>
           )}
         </Link>
+        
+        {isOpen && (
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            onClick={onToggle}
+            className="h-8 w-8 rounded-full text-gray-600 hover:text-gray-900 hover:bg-gray-100"
+          >
+            <Menu className="h-5 w-5" />
+          </Button>
+        )}
       </div>
       
       {isOpen && (
