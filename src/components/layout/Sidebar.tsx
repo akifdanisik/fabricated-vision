@@ -7,11 +7,13 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { Input } from "@/components/ui/input";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+
 interface SidebarProps {
   isOpen: boolean;
   isCompleteClosed?: boolean;
   onToggle: () => void;
 }
+
 interface ChatItem {
   id: string;
   title: string;
@@ -19,6 +21,7 @@ interface ChatItem {
   type: 'chat' | 'project';
   parentId?: string;
 }
+
 const mockChats: ChatItem[] = [{
   id: '1',
   title: 'First Screen Project Alpha',
@@ -50,11 +53,13 @@ const mockChats: ChatItem[] = [{
   date: new Date(Date.now() - 86400000),
   type: 'chat'
 }];
+
 interface Project {
   id: string;
   title: string;
   chats: ChatItem[];
 }
+
 const mockProjects: Project[] = [{
   id: 'p1',
   title: 'Project Alpha',
@@ -88,6 +93,7 @@ const mockProjects: Project[] = [{
   title: 'Lease Agreements',
   chats: []
 }];
+
 const Sidebar = ({
   isOpen,
   isCompleteClosed = false,
@@ -99,39 +105,63 @@ const Sidebar = ({
   const [expandedProjects, setExpandedProjects] = useState<Record<string, boolean>>({
     'p3': true
   });
+
   useEffect(() => {
     setIsMounted(true);
   }, []);
+
   const today = new Date();
   today.setHours(0, 0, 0, 0);
   const yesterday = new Date(today);
   yesterday.setDate(yesterday.getDate() - 1);
+
   const todayChats = mockChats.filter(chat => {
     const chatDate = new Date(chat.date);
     chatDate.setHours(0, 0, 0, 0);
     return chatDate.getTime() === today.getTime();
   });
+
   const yesterdayChats = mockChats.filter(chat => {
     const chatDate = new Date(chat.date);
     chatDate.setHours(0, 0, 0, 0);
     return chatDate.getTime() === yesterday.getTime();
   });
+
   const toggleProject = (projectId: string) => {
     setExpandedProjects(prev => ({
       ...prev,
       [projectId]: !prev[projectId]
     }));
   };
+
   if (isCompleteClosed) {
-    return <div className="fixed inset-y-0 left-0 z-50 w-0 transition-all duration-300 ease-in-out-expo">
+    return (
+      <div className="fixed inset-y-0 left-0 z-50 w-0 transition-all duration-300 ease-in-out-expo">
         <div className="absolute top-4 left-2 flex flex-col items-center gap-2">
+          <Link to="/" className="flex items-center justify-center">
+            <img 
+              src="/lovable-uploads/8909c790-d73e-4ca4-99fb-106aa9109740.png" 
+              alt="Fabricated Logo" 
+              className="h-12 w-auto max-w-[55px] object-contain" 
+            />
+          </Link>
           
-          <Button variant="ghost" size="icon" onClick={onToggle} className={cn("h-8 w-8 rounded-full bg-white shadow-md border border-gray-200", "flex items-center justify-center text-gray-600 hover:text-gray-900")}>
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            onClick={onToggle} 
+            className={cn(
+              "h-8 w-8 rounded-full bg-white shadow-md border border-gray-200", 
+              "flex items-center justify-center text-gray-600 hover:text-gray-900"
+            )}
+          >
             <Menu className="h-5 w-5" />
           </Button>
         </div>
-      </div>;
+      </div>
+    );
   }
+
   return <div className={cn("fixed inset-y-0 left-0 z-50 flex flex-col border-r bg-white text-slate-800 transition-all duration-300 ease-in-out-expo shadow-sm", isOpen ? "w-64" : "w-[70px]", isMounted ? "translate-x-0" : "-translate-x-full")}>
       <div className={cn("flex h-16 items-center border-b border-gray-200", isOpen ? "justify-between px-6" : "justify-center px-2")}>
         <Link to="/" className="flex items-center justify-center py-4">
@@ -210,4 +240,5 @@ const Sidebar = ({
       </Button>
     </div>;
 };
+
 export default Sidebar;
