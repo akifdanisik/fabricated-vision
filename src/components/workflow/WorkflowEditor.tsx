@@ -299,9 +299,8 @@ export default function WorkflowEditor() {
 
   const addNewNode = () => {
     if (!nodeName.trim()) {
-      toast("Please enter a name for the node", {
-        description: "Node name cannot be empty",
-        variant: "destructive",
+      toast.error("Please enter a name for the node", {
+        description: "Node name cannot be empty"
       });
       return;
     }
@@ -331,8 +330,8 @@ export default function WorkflowEditor() {
     
     setNodes((nds) => nds.concat(newNode));
     setIsAddNodeOpen(false);
-    toast("Node Added", {
-      description: `Added a new ${nodeType} node to the workflow.`,
+    toast.success("Node Added", {
+      description: `Added a new ${nodeType} node to the workflow.`
     });
   };
 
@@ -345,14 +344,14 @@ export default function WorkflowEditor() {
     setEdges(templateData.edges);
     setIsTemplateDialogOpen(false);
     
-    toast("Template Applied", {
-      description: `Applied the ${template === 'supplier' ? 'Supplier Onboarding' : 'Inventory Replenishment'} template.`,
+    toast.success("Template Applied", {
+      description: `Applied the ${template === 'supplier' ? 'Supplier Onboarding' : 'Inventory Replenishment'} template.`
     });
   };
 
   const saveWorkflow = () => {
-    toast("Workflow Saved", {
-      description: `Saved workflow with ${nodes.length} nodes and ${edges.length} connections.`,
+    toast.success("Workflow Saved", {
+      description: `Saved workflow with ${nodes.length} nodes and ${edges.length} connections.`
     });
   };
 
@@ -363,8 +362,8 @@ export default function WorkflowEditor() {
         (edge) => edge.source !== selectedNode.id && edge.target !== selectedNode.id
       ));
       setSelectedNode(null);
-      toast("Node Deleted", {
-        description: `Removed node from the workflow.`,
+      toast.success("Node Deleted", {
+        description: `Removed node from the workflow.`
       });
     }
   };

@@ -1,20 +1,12 @@
 
-import { toast as sonnerToast } from "sonner";
-import { type ToastProps } from "@/components/ui/toast";
+import { toast } from "sonner";
 
-export { sonnerToast as toast };
+// Export the toast directly from sonner
+export { toast };
 
-export interface UseToastReturn {
-  toast: typeof sonnerToast;
-  toasts: ToastProps[];
-}
-
-// Create a custom useToast hook that returns both the toast function and an empty toasts array
-// This is for compatibility with both the sonner implementation and the shadcn/ui Toaster component
-export const useToast = (): UseToastReturn => {
-  // We're returning an empty array as 'toasts' for compatibility with the Toaster component
+// Create a simplified useToast hook that just returns the toast function
+export const useToast = () => {
   return {
-    toast: sonnerToast,
-    toasts: [] // Empty array to satisfy the type requirement
+    toast
   };
 };
