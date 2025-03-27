@@ -937,32 +937,28 @@ export default function ChatInterface() {
               <div className="py-4 space-y-6">
                 <div className="space-y-6">
                   {messages.map((message, index) => (
-                    <div key={message.id} className="space-y-3">
-                      <div className={cn("flex", message.sender === 'user' ? "justify-end" : "justify-start")}>
-                        <div className={cn("flex max-w-[85%] items-start gap-3", message.sender === 'user' ? "flex-row-reverse" : "")}>
-                          <Avatar className={cn("h-10 w-10 mt-1", 
-                            message.sender === 'user' ? "bg-primary" : "bg-blue-600")}>
+                    <div key={message.id} className="space-y-1">
+                      <div className={cn("flex", message.sender === 'user' ? "justify-start" : "justify-start")}>
+                        <div className={cn("flex w-full items-start gap-3")}>
+                          <Avatar className={cn("h-9 w-9 mt-1", 
+                            message.sender === 'user' ? "bg-[#3F3434]" : "bg-[#4842E3]")}>
                             {message.sender === 'user' ? (
                               <AvatarImage src="public/lovable-uploads/88f6b600-3104-4ccb-aa6a-0f902d40cc0d.png" alt="User" />
                             ) : (
-                              <AvatarImage src="public/lovable-uploads/7174010c-0ec1-43b7-8132-e983b4472a9d.png" alt="AI" />
+                              <AvatarImage src="public/lovable-uploads/18aaacb4-ea38-497c-84d2-0b68c031c3f3.png" alt="AI" />
                             )}
                             <AvatarFallback className={message.sender === 'user' ? "text-white" : "text-white"}>
-                              {message.sender === 'user' ? 'You' : 'AI'}
+                              {message.sender === 'user' ? 'You' : 'MA'}
                             </AvatarFallback>
                           </Avatar>
                           
-                          <div className={cn("space-y-3", message.sender === 'user' ? "text-right" : "")}>
+                          <div className="space-y-1 w-full max-w-4xl">
                             <div className="font-medium text-gray-800">
                               {message.sender === 'user' ? 'You' : 'Matrix Agent'}
                             </div>
-                            <div className={cn(
-                              "rounded-2xl px-4 py-3",
-                              message.sender === 'user' 
-                                ? "bg-white border border-gray-200 text-gray-800" 
-                                : "bg-white border border-gray-200 text-gray-800"
-                            )}>
-                              <div className="whitespace-pre-wrap text-left">
+                            
+                            <div className="text-gray-800">
+                              <div className="whitespace-pre-wrap">
                                 {message.content}
                               </div>
                             </div>
@@ -974,18 +970,16 @@ export default function ChatInterface() {
                             )}
                             
                             {message.isResearch && index === messages.length - 1 && (
-                              <div className="mt-2 p-3 bg-white rounded-lg border border-gray-200">
-                                <div className="flex items-center justify-between">
-                                  <div className="text-sm font-medium text-gray-700">12 steps completed</div>
-                                  <Button variant="ghost" size="icon" className="h-6 w-6">
-                                    <ChevronDown className="h-4 w-4" />
-                                  </Button>
-                                </div>
+                              <div className="mt-4 p-3 bg-white rounded-lg border border-gray-200 flex items-center justify-between">
+                                <div className="text-sm font-medium text-gray-700">12 steps completed</div>
+                                <Button variant="ghost" size="icon" className="h-6 w-6">
+                                  <ChevronDown className="h-4 w-4" />
+                                </Button>
                               </div>
                             )}
                             
                             {message.suppliers && message.suppliers.length > 0 && message.sender === 'ai' && (
-                              <div className="mt-4 text-left">
+                              <div className="mt-4">
                                 <h3 className="font-medium text-gray-800 mb-2">Key Questions for Meeting with Project Alpha</h3>
                                 <ol className="list-decimal pl-5 space-y-2">
                                   <li className="text-gray-700">What are the key drivers behind the recent changes in your cost structure?</li>
@@ -998,7 +992,7 @@ export default function ChatInterface() {
                             )}
                             
                             {message.actions && message.actions.length > 0 && (
-                              <div className={cn("flex flex-wrap gap-2 mt-3", message.sender === 'user' ? "justify-end" : "justify-start")}>
+                              <div className="flex flex-wrap gap-2 mt-3">
                                 {message.actions.map((action, i) => (
                                   <Button 
                                     key={i} 
