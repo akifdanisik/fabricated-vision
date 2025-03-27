@@ -5,7 +5,6 @@ import {
   ChevronRight, 
   ChevronLeft,
   Search,
-  FileIcon,
   Folder,
   ChevronDown,
   Square
@@ -26,7 +25,6 @@ interface SidebarProps {
   onToggle: () => void;
 }
 
-// Mock data for chat history
 interface ChatItem {
   id: string;
   title: string;
@@ -44,7 +42,6 @@ const mockChats: ChatItem[] = [
   { id: '6', title: 'Deal Terms', date: new Date(Date.now() - 86400000), type: 'chat' },
 ];
 
-// Mock data for projects
 interface Project {
   id: string;
   title: string;
@@ -87,9 +84,9 @@ const Sidebar = ({ isOpen, onToggle }: SidebarProps) => {
   const [isMounted, setIsMounted] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [expandedProjects, setExpandedProjects] = useState<Record<string, boolean>>({
-    'p3': true // Acme Corp expanded by default
+    'p3': true
   });
-  
+
   useEffect(() => {
     setIsMounted(true);
   }, []);
