@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect } from 'react';
 import { Send, Mic, ArrowRight, Plus, PaperclipIcon, Grid, ChevronDown, ChevronUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -938,76 +937,74 @@ export default function ChatInterface() {
               <div className="py-4 space-y-6">
                 <div className="space-y-6">
                   {messages.map((message, index) => (
-                    <div key={message.id} className="space-y-1">
-                      <div className={cn("flex", "justify-start")}>
-                        <div className={cn("flex w-full items-start gap-3")}>
-                          <Avatar className={cn("h-9 w-9 mt-1", 
-                            message.sender === 'user' ? "bg-[#3F3434]" : "bg-[#4842E3]")}>
-                            {message.sender === 'user' ? (
-                              <AvatarImage src="/lovable-uploads/88f6b600-3104-4ccb-aa6a-0f902d40cc0d.png" alt="User" />
-                            ) : (
-                              <AvatarImage src="/lovable-uploads/18aaacb4-ea38-497c-84d2-0b68c031c3f3.png" alt="AI" />
-                            )}
-                            <AvatarFallback className={message.sender === 'user' ? "text-white" : "text-white"}>
-                              {message.sender === 'user' ? 'You' : 'MA'}
-                            </AvatarFallback>
-                          </Avatar>
-                          
-                          <div className="space-y-1 w-full max-w-4xl">
-                            <div className="font-medium text-gray-800">
-                              {message.sender === 'user' ? 'You' : 'Matrix Agent'}
-                            </div>
-                            
-                            <div className="text-gray-800">
-                              <div className="whitespace-pre-wrap">
-                                {message.content}
-                              </div>
-                            </div>
-                            
-                            {message.moduleType && (
-                              <div className="mt-3">
-                                <ModuleRenderer type={message.moduleType} data={message.moduleData} />
-                              </div>
-                            )}
-                            
-                            {message.isResearch && index === messages.length - 1 && (
-                              <div className="mt-4 p-3 bg-white rounded-lg border border-gray-200 flex items-center justify-between">
-                                <div className="text-sm font-medium text-gray-700">12 steps completed</div>
-                                <Button variant="ghost" size="icon" className="h-6 w-6">
-                                  <ChevronDown className="h-4 w-4" />
-                                </Button>
-                              </div>
-                            )}
-                            
-                            {message.suppliers && message.suppliers.length > 0 && message.sender === 'ai' && (
-                              <div className="mt-4">
-                                <h3 className="font-medium text-gray-800 mb-2">Key Questions for Meeting with Project Alpha</h3>
-                                <ol className="list-decimal pl-5 space-y-2">
-                                  <li className="text-gray-700">What are the key drivers behind the recent changes in your cost structure?</li>
-                                  <li className="text-gray-700">How do you plan to address the challenge of supplier concentration risk?</li>
-                                  <li className="text-gray-700">What are the specific metrics you use to measure customer engagement and satisfaction?</li>
-                                  <li className="text-gray-700">Can you detail the steps being taken to ensure smooth leadership transitions?</li>
-                                  <li className="text-gray-700">What is your strategy for leveraging technology to stay ahead of market trends?</li>
-                                </ol>
-                              </div>
-                            )}
-                            
-                            {message.actions && message.actions.length > 0 && (
-                              <div className="flex flex-wrap gap-2 mt-3">
-                                {message.actions.map((action, i) => (
-                                  <Button 
-                                    key={i} 
-                                    size="sm" 
-                                    variant="outline" 
-                                    onClick={action.onClick} 
-                                    className="rounded-full text-xs font-normal"
-                                  >
-                                    {action.label}
-                                  </Button>
-                                ))}
-                              </div>
-                            )}
+                    <div key={message.id} className="mb-6">
+                      <div className="flex items-start gap-3">
+                        <Avatar className={cn("h-9 w-9", 
+                          message.sender === 'user' ? "bg-[#3F3434]" : "bg-[#4842E3]")}>
+                          {message.sender === 'user' ? (
+                            <AvatarImage src="/lovable-uploads/88f6b600-3104-4ccb-aa6a-0f902d40cc0d.png" alt="User" />
+                          ) : (
+                            <AvatarImage src="/lovable-uploads/18aaacb4-ea38-497c-84d2-0b68c031c3f3.png" alt="AI" />
+                          )}
+                          <AvatarFallback className="text-white">
+                            {message.sender === 'user' ? 'You' : 'MA'}
+                          </AvatarFallback>
+                        </Avatar>
+                        
+                        <div className="space-y-1 w-full max-w-4xl">
+                          <div className="font-medium text-gray-800">
+                            {message.sender === 'user' ? 'You' : 'Matrix Agent'}
                           </div>
+                          
+                          <div className="text-gray-800">
+                            <div className="whitespace-pre-wrap">
+                              {message.content}
+                            </div>
+                          </div>
+                          
+                          {message.moduleType && (
+                            <div className="mt-3">
+                              <ModuleRenderer type={message.moduleType} data={message.moduleData} />
+                            </div>
+                          )}
+                          
+                          {message.isResearch && index === messages.length - 1 && (
+                            <div className="mt-4 p-3 bg-white rounded-lg border border-gray-200 flex items-center justify-between">
+                              <div className="text-sm font-medium text-gray-700">12 steps completed</div>
+                              <Button variant="ghost" size="icon" className="h-6 w-6">
+                                <ChevronDown className="h-4 w-4" />
+                              </Button>
+                            </div>
+                          )}
+                          
+                          {message.suppliers && message.suppliers.length > 0 && message.sender === 'ai' && (
+                            <div className="mt-4">
+                              <h3 className="font-medium text-gray-800 mb-2">Key Questions for Meeting with Project Alpha</h3>
+                              <ol className="list-decimal pl-5 space-y-2">
+                                <li className="text-gray-700">What are the key drivers behind the recent changes in your cost structure?</li>
+                                <li className="text-gray-700">How do you plan to address the challenge of supplier concentration risk?</li>
+                                <li className="text-gray-700">What are the specific metrics you use to measure customer engagement and satisfaction?</li>
+                                <li className="text-gray-700">Can you detail the steps being taken to ensure smooth leadership transitions?</li>
+                                <li className="text-gray-700">What is your strategy for leveraging technology to stay ahead of market trends?</li>
+                              </ol>
+                            </div>
+                          )}
+                          
+                          {message.actions && message.actions.length > 0 && (
+                            <div className="flex flex-wrap gap-2 mt-3">
+                              {message.actions.map((action, i) => (
+                                <Button 
+                                  key={i} 
+                                  size="sm" 
+                                  variant="outline" 
+                                  onClick={action.onClick} 
+                                  className="rounded-full text-xs font-normal"
+                                >
+                                  {action.label}
+                                </Button>
+                              ))}
+                            </div>
+                          )}
                         </div>
                       </div>
                     </div>
