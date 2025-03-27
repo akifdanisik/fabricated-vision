@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
@@ -26,6 +27,9 @@ const mockSuppliers: Supplier[] = [
     id: '1',
     name: 'PharmaCorp',
     category: 'Active Ingredients',
+    categories: [
+      { id: 'apis', name: 'Active Ingredients', color: 'blue' }
+    ],
     performance: 85,
     riskLevel: 'low',
     items: 12,
@@ -40,6 +44,9 @@ const mockSuppliers: Supplier[] = [
     id: '2',
     name: 'BioTech Materials',
     category: 'Excipients',
+    categories: [
+      { id: 'excipients', name: 'Excipients', color: 'green' }
+    ],
     performance: 78,
     riskLevel: 'low',
     items: 24,
@@ -54,6 +61,9 @@ const mockSuppliers: Supplier[] = [
     id: '3',
     name: 'ChemSource Inc.',
     category: 'Chemicals',
+    categories: [
+      { id: 'chemicals', name: 'Chemicals', color: 'purple' }
+    ],
     performance: 92,
     riskLevel: 'low',
     items: 18,

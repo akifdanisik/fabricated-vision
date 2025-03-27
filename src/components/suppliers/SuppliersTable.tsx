@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { 
   Table, 
@@ -124,37 +125,39 @@ export default function SuppliersTable({
 
   return (
     <div className={cn('space-y-4', className)}>
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div className="relative w-full max-w-md">
-          <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-          <Input
-            type="search"
-            placeholder="Search suppliers..."
-            className="pl-8 w-full"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
+      {!compact && (
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div className="relative w-full max-w-md">
+            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+            <Input
+              type="search"
+              placeholder="Search suppliers..."
+              className="pl-8 w-full"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+          </div>
+          
+          <div className="flex flex-wrap items-center gap-2">
+            <CategoryFilter onFilterChange={handleCategoryFilterChange} showLabel={false} />
+            
+            <Button variant="outline" size="sm" className="h-9 gap-1">
+              <RefreshCw className="h-4 w-4" />
+              <span>Refresh</span>
+            </Button>
+            
+            <Button variant="outline" size="sm" className="h-9 gap-1">
+              <Download className="h-4 w-4" />
+              <span>Export</span>
+            </Button>
+            
+            <Button size="sm" className="h-9 gap-1">
+              <Plus className="h-4 w-4" />
+              <span>Add Supplier</span>
+            </Button>
+          </div>
         </div>
-        
-        <div className="flex flex-wrap items-center gap-2">
-          <CategoryFilter onFilterChange={handleCategoryFilterChange} showLabel={false} />
-          
-          <Button variant="outline" size="sm" className="h-9 gap-1">
-            <RefreshCw className="h-4 w-4" />
-            <span>Refresh</span>
-          </Button>
-          
-          <Button variant="outline" size="sm" className="h-9 gap-1">
-            <Download className="h-4 w-4" />
-            <span>Export</span>
-          </Button>
-          
-          <Button size="sm" className="h-9 gap-1">
-            <Plus className="h-4 w-4" />
-            <span>Add Supplier</span>
-          </Button>
-        </div>
-      </div>
+      )}
       
       <div className="rounded-lg border shadow-sm">
         <Table>
