@@ -122,24 +122,17 @@ const Sidebar = ({ isOpen, isCompleteClosed = false, onToggle }: SidebarProps) =
   if (isCompleteClosed) {
     return (
       <div className="fixed inset-y-0 left-0 z-50 w-0 transition-all duration-300 ease-in-out-expo">
-        <div className="absolute top-4 left-2 flex flex-col items-center gap-2">
-          <img 
-            src="/lovable-uploads/79e90311-567a-4b29-9552-9031b821f498.png" 
-            alt="Fabricated Logo" 
-            className="h-10 w-10 mb-1"
-          />
-          <Button 
-            variant="ghost" 
-            size="icon" 
-            onClick={onToggle}
-            className={cn(
-              "h-8 w-8 rounded-full bg-white shadow-md border border-gray-200",
-              "flex items-center justify-center text-gray-600 hover:text-gray-900"
-            )}
-          >
-            <Menu className="h-5 w-5" />
-          </Button>
-        </div>
+        <Button 
+          variant="ghost" 
+          size="icon" 
+          onClick={onToggle}
+          className={cn(
+            "absolute top-4 left-2 h-8 w-8 rounded-full bg-white shadow-md border border-gray-200",
+            "flex items-center justify-center text-gray-600 hover:text-gray-900"
+          )}
+        >
+          <Menu className="h-5 w-5" />
+        </Button>
       </div>
     );
   }
