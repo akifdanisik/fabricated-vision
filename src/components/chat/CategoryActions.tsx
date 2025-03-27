@@ -1,7 +1,8 @@
 
-import { predefinedCategories } from '@/components/categories/CategoryBadge';
+import { Category, predefinedCategories } from '@/components/categories/CategoryBadge';
 import ActionPreview, { ActionItem } from '@/components/chat/ActionPreview';
 import { useNavigate } from 'react-router-dom';
+import { Package, Tag, FileText, ShieldCheck, BarChart3 } from 'lucide-react';
 
 interface CategoryActionsProps {
   category?: string;
@@ -88,7 +89,7 @@ const CategoryActions = ({ category }: CategoryActionsProps) => {
       id: 'category-management',
       title: 'Manage Categories',
       description: 'View and manage all procurement categories',
-      icon: 'box', 
+      icon: 'box', // Changed from 'tag' to 'box' which is a valid icon type
       actionLabel: 'Go to Categories',
       onClick: () => navigate('/categories'),
       category: 'Management'
