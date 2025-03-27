@@ -1,14 +1,12 @@
 
 import Layout from '@/components/layout/Layout';
 import ChatInterface from '@/components/chat/ChatInterface';
-import { useState } from 'react';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import RecentConversations from '@/components/chat/RecentConversations';
-import WorkflowSuggestions from '@/components/workflow/WorkflowSuggestions';
-import { Badge } from '@/components/ui/badge';
-import { Bell, Check, Lightbulb, MessageSquare, Settings, User } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
+import { Bell, Settings, User } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Badge } from '@/components/ui/badge';
 import { 
   DropdownMenu, 
   DropdownMenuContent, 
@@ -19,7 +17,15 @@ import {
 } from '@/components/ui/dropdown-menu';
 
 const Chat = () => {
-  const [activeTab, setActiveTab] = useState('chat');
+  const location = useLocation();
+  const [chatId, setChatId] = useState<string | null>(null);
+  
+  useEffect(() => {
+    // Extract chat ID from URL query parameters if present
+    const params = new URLSearchParams(location.search);
+    const id = params.get('id');
+    setChatId(id);
+  }, [location]);
 
   return (
     <Layout fullWidth hideNavbar>
@@ -76,53 +82,10 @@ const Chat = () => {
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
-          
-          <div className="hidden">
-            <Tabs defaultValue="chat" value={activeTab} className="w-auto">
-              <TabsList className="bg-white border rounded-full p-1 shadow-sm">
-                <TabsTrigger 
-                  value="chat" 
-                  onClick={() => setActiveTab('chat')}
-                  className="rounded-full px-4 text-sm data-[state=active]:bg-primary data-[state=active]:text-white"
-                >
-                  <MessageSquare className="h-4 w-4 mr-2" />
-                  Chat
-                </TabsTrigger>
-                <TabsTrigger 
-                  value="suggestions" 
-                  onClick={() => setActiveTab('suggestions')}
-                  className="rounded-full px-4 text-sm data-[state=active]:bg-accent data-[state=active]:text-white"
-                >
-                  <Lightbulb className="h-4 w-4 mr-2" />
-                  Suggestions
-                </TabsTrigger>
-                <TabsTrigger 
-                  value="conversations" 
-                  onClick={() => setActiveTab('conversations')}
-                  className="rounded-full px-4 text-sm data-[state=active]:bg-primary-dark data-[state=active]:text-white"
-                >
-                  <Check className="h-4 w-4 mr-2" />
-                  Completed
-                </TabsTrigger>
-              </TabsList>
-            </Tabs>
-          </div>
         </div>
         
         <div className="flex-1 overflow-hidden bg-white">
-          <Tabs value={activeTab} className="h-full">
-            <TabsContent value="chat" className="h-full m-0 p-0">
-              <ChatInterface />
-            </TabsContent>
-            
-            <TabsContent value="conversations" className="h-full m-0 p-0">
-              <RecentConversations />
-            </TabsContent>
-            
-            <TabsContent value="suggestions" className="h-full m-0 p-0 -mt-[48px]">
-              <WorkflowSuggestions />
-            </TabsContent>
-          </Tabs>
+          <ChatInterface />
         </div>
       </div>
     </Layout>

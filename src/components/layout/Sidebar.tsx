@@ -2,70 +2,124 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { 
-  LayoutDashboard, 
-  Box, 
-  Users, 
-  FileText, 
-  ShieldCheck, 
-  BarChart3, 
-  Settings, 
+  MessageSquare, 
   ChevronRight, 
   ChevronLeft,
-  MessageSquare,
-  Workflow,
-  Brain,
-  Package,
-  Calculator,
-  FileSpreadsheet,
-  Building2,
-  Award,
-  GroupIcon,
-  Scale
+  PlusCircle,
+  Search,
+  FileIcon,
+  Folder,
+  ChevronDown,
+  Square
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
+import { Input } from "@/components/ui/input";
+import { 
+  Collapsible, 
+  CollapsibleContent, 
+  CollapsibleTrigger 
+} from "@/components/ui/collapsible";
 
 interface SidebarProps {
   isOpen: boolean;
   onToggle: () => void;
 }
 
-interface NavItem {
+// Mock data for chat history
+interface ChatItem {
+  id: string;
   title: string;
-  icon: any;
-  path: string;
-  priority?: boolean;
+  date: Date;
+  type: 'chat' | 'project';
+  parentId?: string;
 }
 
-const navItems: NavItem[] = [
-  { title: "Dashboard", icon: LayoutDashboard, path: "/" },
-  { title: "Chat", icon: MessageSquare, path: "/chat", priority: true },
-  { title: "Procurement Methods", icon: Scale, path: "/procurement-methods", priority: true },
-  { title: "Quantification", icon: Calculator, path: "/quantification", priority: true },
-  { title: "Reconciliation", icon: FileSpreadsheet, path: "/reconciliation", priority: true },
-  { title: "Workflows", icon: Workflow, path: "/workflows" },
-  { title: "Live Deals", icon: Package, path: "/live-deals" },
-  { title: "Inventory", icon: Box, path: "/inventory" },
-  { title: "Suppliers", icon: Users, path: "/suppliers" },
-  { title: "Group Purchasing", icon: Building2, path: "/group-purchasing" },
-  { title: "Quality Assurance", icon: Award, path: "/quality-assurance" },
-  { title: "Contracts", icon: FileText, path: "/contracts" },
-  { title: "Compliance", icon: ShieldCheck, path: "/compliance" },
-  { title: "Reports", icon: BarChart3, path: "/reports" },
+const mockChats: ChatItem[] = [
+  { id: '1', title: 'First Screen Project Alpha', date: new Date(), type: 'chat' },
+  { id: '2', title: 'Q324 Portfolio Review', date: new Date(), type: 'chat' },
+  { id: '3', title: 'Hannibal Revenue', date: new Date(Date.now() - 86400000), type: 'chat' },
+  { id: '4', title: 'Commercial Contracts', date: new Date(Date.now() - 86400000), type: 'chat' },
+  { id: '5', title: 'Patent Prior Act', date: new Date(Date.now() - 86400000), type: 'chat' },
+  { id: '6', title: 'Deal Terms', date: new Date(Date.now() - 86400000), type: 'chat' },
+];
+
+// Mock data for projects
+interface Project {
+  id: string;
+  title: string;
+  chats: ChatItem[];
+}
+
+const mockProjects: Project[] = [
+  { 
+    id: 'p1', 
+    title: 'Project Alpha', 
+    chats: [] 
+  },
+  { 
+    id: 'p2', 
+    title: 'Co', 
+    chats: [] 
+  },
+  { 
+    id: 'p3', 
+    title: 'Acme Corp', 
+    chats: [
+      { id: 'p3c1', title: 'Acme Revenue', date: new Date(Date.now() - 3 * 86400000), type: 'chat', parentId: 'p3' },
+      { id: 'p3c2', title: 'Acme Investment Risks', date: new Date(Date.now() - 4 * 86400000), type: 'chat', parentId: 'p3' }
+    ] 
+  },
+  { 
+    id: 'p4', 
+    title: 'Nordic Telecoms', 
+    chats: [] 
+  },
+  { 
+    id: 'p5', 
+    title: 'Lease Agreements', 
+    chats: [] 
+  }
 ];
 
 const Sidebar = ({ isOpen, onToggle }: SidebarProps) => {
   const location = useLocation();
   const [isMounted, setIsMounted] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [expandedProjects, setExpandedProjects] = useState<Record<string, boolean>>({
+    'p3': true // Acme Corp expanded by default
+  });
   
   useEffect(() => {
     setIsMounted(true);
   }, []);
 
-  const priorityItems = navItems.filter(item => item.priority);
-  const standardItems = navItems.filter(item => !item.priority);
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  
+  const yesterday = new Date(today);
+  yesterday.setDate(yesterday.getDate() - 1);
+  
+  const todayChats = mockChats.filter(chat => {
+    const chatDate = new Date(chat.date);
+    chatDate.setHours(0, 0, 0, 0);
+    return chatDate.getTime() === today.getTime();
+  });
+  
+  const yesterdayChats = mockChats.filter(chat => {
+    const chatDate = new Date(chat.date);
+    chatDate.setHours(0, 0, 0, 0);
+    return chatDate.getTime() === yesterday.getTime();
+  });
+
+  const toggleProject = (projectId: string) => {
+    setExpandedProjects(prev => ({
+      ...prev,
+      [projectId]: !prev[projectId]
+    }));
+  };
 
   return (
     <div
@@ -100,115 +154,130 @@ const Sidebar = ({ isOpen, onToggle }: SidebarProps) => {
         </Link>
       </div>
       
-      <ScrollArea className="flex-1 pt-3">
-        <nav className="grid gap-1 px-3 py-2">
-          {priorityItems.map((item, index) => {
-            const isActive = location.pathname === item.path;
-            
-            return (
-              <Link
-                key={item.path}
-                to={item.path}
-                className={cn(
-                  "group flex items-center gap-3 rounded-xl px-3 py-2.5 transition-all",
-                  isActive 
-                    ? "bg-primary text-white" 
-                    : "text-slate-700 hover:bg-gray-100 hover:text-slate-900",
-                  !isOpen && "justify-center py-2.5"
-                )}
-                style={{ animationDelay: `${index * 50}ms` }}
-              >
-                <item.icon className={cn("h-5 w-5 shrink-0", isActive && "text-white")} />
-                <span
-                  className={cn(
-                    "text-sm font-medium transition-all",
-                    isOpen ? "opacity-100" : "w-0 opacity-0"
-                  )}
-                >
-                  {item.title}
-                </span>
-              </Link>
-            );
-          })}
-        </nav>
-        
-        <Separator className={cn("my-2 bg-gray-200", !isOpen && "mx-2")} />
-        
-        <nav className="grid gap-1 px-3 py-2">
-          {standardItems.map((item, index) => {
-            const isActive = location.pathname === item.path;
-            
-            return (
-              <Link
-                key={item.path}
-                to={item.path}
-                className={cn(
-                  "group flex items-center gap-3 rounded-xl px-3 py-2.5 transition-all",
-                  isActive 
-                    ? "bg-primary text-white" 
-                    : "text-slate-700 hover:bg-gray-100 hover:text-slate-900",
-                  !isOpen && "justify-center py-2.5"
-                )}
-                style={{ animationDelay: `${index * 50}ms` }}
-              >
-                <item.icon className={cn("h-5 w-5 shrink-0", isActive && "text-white")} />
-                <span
-                  className={cn(
-                    "text-sm font-medium transition-all",
-                    isOpen ? "opacity-100" : "w-0 opacity-0"
-                  )}
-                >
-                  {item.title}
-                </span>
-              </Link>
-            );
-          })}
-        </nav>
-        
-        <Separator className={cn("my-2 bg-gray-200", !isOpen && "mx-2")} />
-        
-        <div className="px-3 py-2">
-          <Link
-            to="/settings"
-            className={cn(
-              "flex items-center gap-3 rounded-xl px-3 py-2.5 text-slate-700 transition-all hover:bg-gray-100 hover:text-slate-900",
-              !isOpen && "justify-center py-2.5",
-              location.pathname === "/settings" && "bg-primary text-white"
-            )}
-          >
-            <Settings className={cn("h-5 w-5 shrink-0", location.pathname === "/settings" && "text-white")} />
-            <span
-              className={cn(
-                "text-sm font-medium transition-all",
-                isOpen ? "opacity-100" : "w-0 opacity-0"
-              )}
+      {isOpen && (
+        <div className="px-3 pt-3">
+          <Link to="/chat" className="w-full">
+            <Button 
+              variant="outline" 
+              className="w-full justify-start gap-2 border-dashed text-slate-600 hover:text-slate-900"
             >
-              Settings
-            </span>
+              <PlusCircle className="h-4 w-4" />
+              New conversation
+            </Button>
           </Link>
         </div>
-      </ScrollArea>
+      )}
       
-      <div className={cn(
-        "border-t border-gray-200 p-4",
-        !isOpen && "p-2"
-      )}>
-        <div
-          className={cn(
-            "flex items-center gap-3 rounded-xl bg-gray-100 p-2.5 text-xs text-slate-700",
-            !isOpen && "justify-center"
-          )}
-        >
-          {isOpen ? (
-            <div className="text-center w-full flex items-center justify-center gap-2">
-              <Brain className="h-4 w-4 text-primary" />
-              <p className="text-xs font-medium">Fabricated AI</p>
-            </div>
-          ) : (
-            <Brain className="h-4 w-4 text-primary" />
-          )}
+      {isOpen && (
+        <div className="px-3 pt-3">
+          <div className="relative">
+            <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground pointer-events-none" />
+            <Input 
+              placeholder="Search chats" 
+              className="pl-8 h-9 text-sm" 
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+          </div>
         </div>
-      </div>
+      )}
+      
+      <ScrollArea className="flex-1 pt-3">
+        {!isOpen ? (
+          <nav className="grid gap-1 px-3 py-2">
+            <Link
+              to="/chat"
+              className={cn(
+                "group flex items-center gap-3 rounded-xl px-3 py-2.5 transition-all justify-center py-2.5",
+                location.pathname === "/chat" 
+                  ? "bg-primary text-white" 
+                  : "text-slate-700 hover:bg-gray-100 hover:text-slate-900"
+              )}
+            >
+              <MessageSquare className={cn("h-5 w-5 shrink-0", location.pathname === "/chat" && "text-white")} />
+            </Link>
+          </nav>
+        ) : (
+          <div className="px-3 py-1">
+            {todayChats.length > 0 && (
+              <>
+                <h3 className="text-xs font-medium text-slate-500 py-2">Today</h3>
+                <nav className="grid gap-1">
+                  {todayChats.map(chat => (
+                    <Link
+                      key={chat.id}
+                      to={`/chat?id=${chat.id}`}
+                      className="flex items-center gap-2 px-2 py-1.5 rounded-md text-sm hover:bg-gray-100"
+                    >
+                      <Square className="h-4 w-4 text-slate-400" />
+                      <span className="truncate">{chat.title}</span>
+                    </Link>
+                  ))}
+                </nav>
+              </>
+            )}
+            
+            {yesterdayChats.length > 0 && (
+              <>
+                <h3 className="text-xs font-medium text-slate-500 py-2 mt-1">Yesterday</h3>
+                <nav className="grid gap-1">
+                  {yesterdayChats.map(chat => (
+                    <Link
+                      key={chat.id}
+                      to={`/chat?id=${chat.id}`}
+                      className="flex items-center gap-2 px-2 py-1.5 rounded-md text-sm hover:bg-gray-100"
+                    >
+                      <Square className="h-4 w-4 text-slate-400" />
+                      <span className="truncate">{chat.title}</span>
+                    </Link>
+                  ))}
+                </nav>
+              </>
+            )}
+            
+            <h3 className="text-xs font-medium text-slate-500 py-2 mt-1">Projects</h3>
+            <nav className="grid gap-1">
+              {mockProjects.map(project => (
+                <div key={project.id}>
+                  <Collapsible
+                    open={expandedProjects[project.id]}
+                    onOpenChange={() => toggleProject(project.id)}
+                  >
+                    <CollapsibleTrigger asChild>
+                      <button 
+                        className="flex items-center gap-2 w-full px-2 py-1.5 rounded-md text-sm hover:bg-gray-100 text-left"
+                      >
+                        <Folder className="h-4 w-4 text-slate-400" />
+                        <span className="truncate">{project.title}</span>
+                        <ChevronDown 
+                          className={cn(
+                            "ml-auto h-4 w-4 text-slate-400 transition-transform", 
+                            expandedProjects[project.id] ? "transform rotate-180" : ""
+                          )} 
+                        />
+                      </button>
+                    </CollapsibleTrigger>
+                    <CollapsibleContent>
+                      <div className="pl-4 border-l border-slate-200 ml-3 mt-1">
+                        {project.chats.map(chat => (
+                          <Link
+                            key={chat.id}
+                            to={`/chat?id=${chat.id}`}
+                            className="flex items-center gap-2 px-2 py-1.5 rounded-md text-sm hover:bg-gray-100"
+                          >
+                            <Square className="h-4 w-4 text-slate-400" />
+                            <span className="truncate">{chat.title}</span>
+                          </Link>
+                        ))}
+                      </div>
+                    </CollapsibleContent>
+                  </Collapsible>
+                </div>
+              ))}
+            </nav>
+          </div>
+        )}
+      </ScrollArea>
       
       <Button 
         variant="ghost" 
