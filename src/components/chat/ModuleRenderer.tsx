@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
@@ -13,7 +12,7 @@ import { BarChart, Bar, LineChart, Line, PieChart, Pie, Cell, ResponsiveContaine
 import { Progress } from '@/components/ui/progress';
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
 import InventoryTable from '@/components/inventory/InventoryTable';
-import SuppliersTable from '@/components/suppliers/SuppliersTable';
+import SuppliersTable, { Supplier } from '@/components/suppliers/SuppliersTable';
 import CategoryManager from '@/components/categories/CategoryManager';
 
 interface ModuleRendererProps {
@@ -21,12 +20,58 @@ interface ModuleRendererProps {
   data: Record<string, any>;
 }
 
+// Mock supplier data for the suppliers module
+const mockSuppliers: Supplier[] = [
+  {
+    id: '1',
+    name: 'PharmaCorp',
+    category: 'Active Ingredients',
+    performance: 85,
+    riskLevel: 'low',
+    items: 12,
+    contact: {
+      name: 'Alex Johnson',
+      email: 'alex.johnson@pharmaco.com',
+    },
+    location: 'Boston, USA',
+    initials: 'PC',
+  },
+  {
+    id: '2',
+    name: 'BioTech Materials',
+    category: 'Excipients',
+    performance: 78,
+    riskLevel: 'low',
+    items: 24,
+    contact: {
+      name: 'Maria Garcia',
+      email: 'mgarcia@biotechmat.com',
+    },
+    location: 'Barcelona, Spain',
+    initials: 'BM',
+  },
+  {
+    id: '3',
+    name: 'ChemSource Inc.',
+    category: 'Chemicals',
+    performance: 92,
+    riskLevel: 'low',
+    items: 18,
+    contact: {
+      name: 'David Lee',
+      email: 'd.lee@chemsource.com',
+    },
+    location: 'Singapore',
+    initials: 'CS',
+  },
+];
+
 // Add dummy props to prevent TS errors. The actual components will use their props internally.
 const EnhancedComplianceOverview = (props: any) => <ComplianceOverview {...props} />;
 const EnhancedDocumentManagement = (props: any) => <DocumentManagement {...props} />;
 const EnhancedAuditReadiness = (props: any) => <AuditReadiness {...props} />;
 const EnhancedInventoryTable = (props: any) => <InventoryTable {...props} />;
-const EnhancedSuppliersTable = (props: any) => <SuppliersTable {...props} />;
+const EnhancedSuppliersTable = (props: any) => <SuppliersTable suppliers={mockSuppliers} {...props} />;
 const EnhancedCategoryManager = (props: any) => <CategoryManager {...props} />;
 
 const ModuleRenderer: React.FC<ModuleRendererProps> = ({ type, data }) => {

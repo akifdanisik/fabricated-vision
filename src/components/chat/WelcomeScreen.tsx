@@ -68,12 +68,15 @@ const WelcomeModule: React.FC<WelcomeModuleProps> = ({
   );
 };
 
-interface WelcomeScreenProps {
+export interface WelcomeScreenProps {
   onSelectQuickStart: (prompt: string) => void;
   userName?: string;
 }
 
-const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onSelectQuickStart, userName = "User" }) => {
+const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ 
+  onSelectQuickStart, 
+  userName = "User" 
+}) => {
   return (
     <div className="flex flex-col items-center justify-center h-full px-4 py-10">
       <div className="text-center mb-12">

@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { 
   Table, 
@@ -56,20 +55,27 @@ export interface Supplier {
 }
 
 interface SuppliersTableProps {
-  suppliers: Supplier[];
+  suppliers?: Supplier[];
   className?: string;
   onSelectSupplier?: (supplier: Supplier) => void;
+  compact?: boolean;
+  filterByGMP?: boolean;
+  filterByCategories?: Category[];
 }
 
 export default function SuppliersTable({ 
-  suppliers, 
+  suppliers = [], // Add default empty array here
   className,
-  onSelectSupplier 
+  onSelectSupplier,
+  compact,
+  filterByGMP,
+  filterByCategories
 }: SuppliersTableProps) {
   const [searchQuery, setSearchQuery] = useState('');
   const [categoryFilter, setCategoryFilter] = useState<Category[]>([]);
   
-  const filteredSuppliers = suppliers.filter(supplier => {
+  // Ensure suppliers is an array before filtering
+  const filteredSuppliers = Array.isArray(suppliers) ? suppliers.filter(supplier => {
     const matchesSearch = 
       supplier.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       supplier.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -80,8 +86,18 @@ export default function SuppliersTable({
       (supplier.categories?.some(cat => categoryFilter.some(fc => fc.id === cat.id)) || 
        categoryFilter.some(cat => cat.name === supplier.category || cat.id === supplier.category));
     
-    return matchesSearch && matchesCategory;
-  });
+    const matchesGMP = !filterByGMP || 
+      (supplier.riskLevel === 'low' && supplier.performance > 80);
+    
+    const matchesFilterCategories = !filterByCategories?.length || 
+      (supplier.categories?.some(cat => 
+        filterByCategories.some(fc => fc.id === cat.id)
+      ) || filterByCategories.some(cat => 
+        cat.name === supplier.category || cat.id === supplier.category
+      ));
+    
+    return matchesSearch && matchesCategory && matchesGMP && matchesFilterCategories;
+  }) : [];
   
   const getRiskBadge = (risk: Supplier['riskLevel']) => {
     switch (risk) {
