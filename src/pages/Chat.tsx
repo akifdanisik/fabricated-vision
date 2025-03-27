@@ -1,4 +1,3 @@
-
 import Layout from '@/components/layout/Layout';
 import ChatInterface from '@/components/chat/ChatInterface';
 import { useEffect, useState } from 'react';
@@ -22,7 +21,6 @@ const Chat = () => {
   const [chatId, setChatId] = useState<string | null>(null);
   
   useEffect(() => {
-    // Extract chat ID from URL query parameters if present
     const params = new URLSearchParams(location.search);
     const id = params.get('id');
     setChatId(id);
@@ -30,7 +28,7 @@ const Chat = () => {
 
   return (
     <Layout fullWidth hideNavbar>
-      <div className="flex flex-col h-[calc(100vh-0px)] bg-white">
+      <div className="flex flex-col h-[calc(100vh-0px)] bg-[#f3f3f3]">
         <div className="flex justify-end items-center px-6 py-3 border-b bg-white">
           <div className="flex items-center gap-2">
             <Button variant="ghost" size="icon" className="relative rounded-full text-gray-500 hover:bg-gray-100 hover:text-gray-900">
@@ -90,7 +88,6 @@ const Chat = () => {
         </div>
       </div>
       
-      {/* Add the Toaster component here, in the Chat component */}
       <Toaster />
     </Layout>
   );
