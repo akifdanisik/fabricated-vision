@@ -1,7 +1,7 @@
 
 import Layout from '@/components/layout/Layout';
 import { useState, useRef, useEffect } from 'react';
-import { ChevronDown, FileText, Upload, Download, Sliders, SlidersHorizontal } from 'lucide-react';
+import { ChevronDown, ChevronUp, FileText, Upload, Download, Sliders, SlidersHorizontal } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -10,9 +10,12 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { ResearchDocument } from '@/components/chat/ResearchDataPanel';
+import { Slider } from '@/components/ui/slider';
 
 const Chat = () => {
   const [input, setInput] = useState('');
+  const [tableScale, setTableScale] = useState(100);
+  const [tableHeight, setTableHeight] = useState(300); // Default height in pixels
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [documents, setDocuments] = useState<ResearchDocument[]>([
     {
@@ -90,6 +93,16 @@ const Chat = () => {
     'Product': 'bg-red-100 text-red-800',
     'Customer': 'bg-amber-100 text-amber-800',
     'Public Report': 'bg-green-100 text-green-800',
+  };
+
+  // Function to expand the table height
+  const expandTable = () => {
+    setTableHeight(Math.min(tableHeight + 100, 600));
+  };
+
+  // Function to collapse the table height
+  const collapseTable = () => {
+    setTableHeight(Math.max(tableHeight - 100, 100));
   };
 
   return (
@@ -183,16 +196,51 @@ const Chat = () => {
           </Card>
         </div>
         
-        {/* Table Area */}
-        <div className="border-t bg-white">
+        {/* Table Area with Height Control */}
+        <div className="border-t bg-white" style={{ height: `${tableHeight}px`, transition: 'height 0.3s ease-in-out' }}>
           <div className="px-6 py-3 flex justify-between items-center">
             <div className="flex items-center gap-3">
               <Button variant="outline" size="sm" className="flex items-center gap-2 text-gray-700">
                 <SlidersHorizontal className="h-4 w-4" />
                 <span>Display</span>
               </Button>
+              
+              <div className="flex items-center gap-2 ml-4">
+                <span className="text-sm text-gray-500">Scale:</span>
+                <div className="w-32">
+                  <Slider 
+                    value={[tableScale]} 
+                    min={50} 
+                    max={150} 
+                    step={5} 
+                    onValueChange={(values) => setTableScale(values[0])}
+                  />
+                </div>
+                <span className="text-sm text-gray-500">{tableScale}%</span>
+              </div>
             </div>
+            
             <div className="flex items-center gap-3">
+              <div className="flex flex-col mr-2">
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  onClick={expandTable} 
+                  className="px-2 py-1"
+                  title="Expand table"
+                >
+                  <ChevronUp className="h-4 w-4" />
+                </Button>
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  onClick={collapseTable} 
+                  className="px-2 py-1"
+                  title="Collapse table"
+                >
+                  <ChevronDown className="h-4 w-4" />
+                </Button>
+              </div>
               <Button variant="outline" size="sm" className="flex items-center gap-2">
                 <FileText className="h-4 w-4" />
                 <span>Add documents</span>
@@ -203,7 +251,7 @@ const Chat = () => {
             </div>
           </div>
           
-          <div className="overflow-x-auto">
+          <div className="overflow-x-auto overflow-y-auto" style={{ maxHeight: `${tableHeight - 80}px`, transform: `scale(${tableScale/100})`, transformOrigin: 'top left' }}>
             <Table>
               <TableHeader>
                 <TableRow className="bg-gray-50">
@@ -258,6 +306,7 @@ const Chat = () => {
             </Button>
           </div>
         </div>
+        <div ref={messagesEndRef} />
       </div>
     </Layout>
   );
