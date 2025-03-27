@@ -1,3 +1,4 @@
+
 import { useState, useRef, useEffect } from 'react';
 import { Send, Mic, ArrowRight, Plus, PaperclipIcon, Grid } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -728,7 +729,8 @@ export default function ChatInterface() {
         },
       ];
 
-      const numSuppliers = 10;
+      // Fix: Change const to let to allow reassignment
+      let numSuppliers = 10;
       const numMatch = userInput.match(/top\s+(\d+)/i);
       if (numMatch && numMatch[1]) {
         numSuppliers = Math.min(parseInt(numMatch[1], 10), topSuppliers.length);
