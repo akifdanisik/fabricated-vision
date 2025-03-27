@@ -1,6 +1,5 @@
-
 import { useState, useRef, useEffect } from 'react';
-import { Send, Mic, ArrowRight, Plus, PaperclipIcon, Grid } from 'lucide-react';
+import { Send, Mic, PlusCircle, Search, Grid } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -9,8 +8,7 @@ import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from '@/componen
 import ActionPreview, { ActionItem } from './ActionPreview';
 import ModuleSelector, { ModuleItem } from './ModuleSelector';
 import WelcomeScreen from './WelcomeScreen';
-import { Badge } from '@/components/ui/badge';
-import { toast } from 'sonner';
+import { toast } from '@/hooks/use-toast';
 import CategoryActions from './CategoryActions';
 import ModuleRenderer from './ModuleRenderer';
 import ResearchDataPanel, { ResearchDocument } from './ResearchDataPanel';
@@ -213,7 +211,10 @@ export default function ChatInterface() {
           },
           { 
             label: 'Download full report', 
-            onClick: () => toast.info('Report download started')
+            onClick: () => toast({
+              title: "Download Started",
+              description: "Your report download has started"
+            })
           }
         ]
       };
@@ -243,7 +244,10 @@ export default function ChatInterface() {
     }
     
     if (activeModules.some(m => m.id === moduleId)) {
-      toast.info(`${moduleItem.title} is already active`);
+      toast({
+        title: "Module already active",
+        description: `${moduleItem.title} is already active`
+      });
       setModuleSelectOpen(false);
       return;
     }
@@ -269,7 +273,10 @@ export default function ChatInterface() {
       updateModulePreviewActions(moduleItem);
     }, 500);
     
-    toast.success(`${moduleItem.title} module activated`);
+    toast({
+      title: "Module Activated",
+      description: `${moduleItem.title} module has been activated`
+    });
   };
 
   const updateModulePreviewActions = (module: ModuleItem) => {
@@ -1027,7 +1034,7 @@ export default function ChatInterface() {
         moduleType: 'supplier',
         moduleData: {}
       };
-    } else if (lowerCaseInput.includes('inventory') || lowerCaseInput.includes('stock')) {
+    } else if (lowercaseInput.includes('inventory') || lowercaseInput.includes('stock')) {
       return {
         id: Date.now().toString(),
         content: 'Here\'s the inventory information you requested.',
@@ -1046,31 +1053,35 @@ export default function ChatInterface() {
     };
   };
 
-  // Define available modules
+  // Define available modules with the category property
   const availableModules: ModuleItem[] = [
     {
       id: 'supplier-assessment',
       title: 'Supplier Assessment',
       description: 'Evaluate and compare suppliers across performance metrics and risk factors.',
-      icon: 'chart'
+      icon: 'chart',
+      category: 'analysis'
     },
     {
       id: 'inventory-analysis',
       title: 'Inventory Analysis',
       description: 'Analyze inventory levels, turnover rates, and optimization opportunities.',
-      icon: 'package'
+      icon: 'package',
+      category: 'data'
     },
     {
       id: 'contract-risk',
       title: 'Contract Risk',
       description: 'Identify and mitigate risks in supplier contracts and agreements.',
-      icon: 'shield'
+      icon: 'shield',
+      category: 'security'
     },
     {
       id: 'market-research',
       title: 'Market Research',
       description: 'Access market data, pricing trends, and competitive intelligence.',
-      icon: 'globe'
+      icon: 'search',
+      category: 'analysis'
     }
   ];
 
@@ -1080,7 +1091,10 @@ export default function ChatInterface() {
         <ResizablePanel defaultSize={65} minSize={50} className="flex flex-col">
           <div className="flex-1 overflow-auto px-4">
             {showWelcomeScreen ? (
-              <WelcomeScreen onQuickPrompt={handleQuickPrompt} />
+              <WelcomeScreen 
+                onSelectQuickStart={handleQuickPrompt} 
+                userName="John"
+              />
             ) : (
               <div className="py-4 space-y-6">
                 {messages.map((message) => (
@@ -1224,7 +1238,7 @@ export default function ChatInterface() {
         isOpen={moduleSelectOpen} 
         onClose={() => setModuleSelectOpen(false)}
         modules={availableModules}
-        onSelect={handleSelectModule}
+        onSelectModule={handleSelectModule}
       />
     </div>
   );

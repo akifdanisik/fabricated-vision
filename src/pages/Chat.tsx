@@ -15,6 +15,7 @@ import {
   DropdownMenuSeparator, 
   DropdownMenuTrigger 
 } from '@/components/ui/dropdown-menu';
+import { Toaster } from '@/components/ui/toaster';
 
 const Chat = () => {
   const location = useLocation();
@@ -88,6 +89,9 @@ const Chat = () => {
           <ChatInterface />
         </div>
       </div>
+      
+      {/* Add the Toaster component here, in the Chat component */}
+      <Toaster />
     </Layout>
   );
 };
