@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { Send, Mic, ArrowRight, Plus, PaperclipIcon, Grid } from 'lucide-react';
+import { Send, Mic, ArrowRight, Plus, PaperclipIcon, Grid, ChevronDown, ChevronUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -16,6 +16,8 @@ import ResearchDataPanel, { ResearchDocument } from './ResearchDataPanel';
 import ResultsTable from './ResultsTable';
 import { Supplier } from '@/components/suppliers/SuppliersTable';
 import { predefinedCategories } from '@/components/categories/CategoryBadge';
+import { Card, CardContent } from '@/components/ui/card';
+
 interface Message {
   id: string;
   content: string;
@@ -30,6 +32,7 @@ interface Message {
   isResearch?: boolean;
   suppliers?: Supplier[];
 }
+
 export default function ChatInterface() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
@@ -52,11 +55,15 @@ export default function ChatInterface() {
   const [supplierResults, setSupplierResults] = useState<Supplier[]>([]);
   const [showResultsTable, setShowResultsTable] = useState(false);
   const [resultsTableTitle, setResultsTableTitle] = useState("Top Suppliers");
+  const [tableHeight, setTableHeight] = useState<number>(300);
+  const [isTableExpanded, setIsTableExpanded] = useState<boolean>(false);
+
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({
       behavior: 'smooth'
     });
   }, [messages]);
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!input.trim()) return;
@@ -96,10 +103,12 @@ export default function ChatInterface() {
       updatePreviewActions(input.toLowerCase());
     }, 1000);
   };
+
   const checkIfResearchQuestion = (input: string): boolean => {
     const lowerCaseInput = input.toLowerCase();
     return lowerCaseInput.includes('research') || lowerCaseInput.includes('analyze') || lowerCaseInput.includes('find information') || lowerCaseInput.includes('look up') || lowerCaseInput.includes('market data') || lowerCaseInput.includes('expert') || lowerCaseInput.includes('report');
   };
+
   const simulateResearch = (query: string) => {
     setTimeout(() => {
       const mockDocuments: ResearchDocument[] = [{
@@ -171,6 +180,7 @@ export default function ChatInterface() {
       setMessages(prev => [...prev, researchSummaryMessage]);
     }, 3000);
   };
+
   const handleQuickPrompt = (prompt: string) => {
     setInput(prompt);
     setTimeout(() => {
@@ -179,9 +189,11 @@ export default function ChatInterface() {
       } as React.FormEvent);
     }, 100);
   };
+
   const toggleRecording = () => {
     setIsRecording(!isRecording);
   };
+
   const handleSelectModule = (moduleId: string) => {
     const moduleItem = availableModules.find(m => m.id === moduleId);
     if (!moduleItem) return;
@@ -211,6 +223,7 @@ export default function ChatInterface() {
     }, 500);
     toast.success(`${moduleItem.title} module activated`);
   };
+
   const updateModulePreviewActions = (module: ModuleItem) => {
     if (module.id === 'contract-risk') {
       setPreviewTitle('Smart Contract Risk Management');
@@ -274,6 +287,7 @@ export default function ChatInterface() {
       }]);
     }
   };
+
   const updatePreviewActions = (query: string) => {
     if (query.includes('supplier') || query.includes('vendor')) {
       setPreviewTitle('Supplier Management');
@@ -407,6 +421,7 @@ export default function ChatInterface() {
       }
     }
   };
+
   const handleConversationFlow = (userInput: string, context: {
     type: string;
     step: number;
@@ -415,7 +430,6 @@ export default function ChatInterface() {
     if (context.type === 'rfq') {
       switch (context.step) {
         case 1:
-          // Asked for quantity
           const updatedData = {
             ...context.data,
             quantity: userInput
@@ -442,7 +456,6 @@ export default function ChatInterface() {
             }]
           };
         case 2:
-          // Asked for timeline
           const timelineData = {
             ...context.data,
             timeline: userInput
@@ -469,7 +482,6 @@ export default function ChatInterface() {
             }]
           };
         case 3:
-          // Asked for quality specs
           setConversationContext(null);
           return {
             id: Date.now().toString(),
@@ -492,6 +504,7 @@ export default function ChatInterface() {
     setConversationContext(null);
     return generateAIResponse(userInput, false);
   };
+
   const generateAIResponse = (userInput: string, isResearchRequest: boolean): Message => {
     const lowercaseInput = userInput.toLowerCase();
     if (isResearchRequest) {
@@ -647,7 +660,6 @@ export default function ChatInterface() {
         initials: 'PS'
       }];
 
-      // Fix: Change const to let to allow reassignment
       let numSuppliers = 10;
       const numMatch = userInput.match(/top\s+(\d+)/i);
       if (numMatch && numMatch[1]) {
@@ -856,6 +868,7 @@ export default function ChatInterface() {
       }]
     };
   };
+
   const handleModuleRequest = (userInput: string): Message => {
     const lowerCaseInput = userInput.toLowerCase();
     if (lowerCaseInput.includes('supplier') || lowerCaseInput.includes('vendor')) {
@@ -884,6 +897,7 @@ export default function ChatInterface() {
       timestamp: new Date()
     };
   };
+
   const availableModules: ModuleItem[] = [{
     id: 'supplier-assessment',
     title: 'Supplier Assessment',
@@ -909,38 +923,101 @@ export default function ChatInterface() {
     icon: 'globe',
     category: 'data'
   }];
+
+  const toggleTableHeight = () => {
+    setIsTableExpanded(!isTableExpanded);
+    setTableHeight(isTableExpanded ? 300 : 600);
+  };
+
   return <div className="flex flex-col h-full">
       <ResizablePanelGroup direction="horizontal">
         <ResizablePanel defaultSize={65} minSize={50} className="flex flex-col">
           <div className="flex-1 overflow-auto px-4">
-            {showWelcomeScreen ? <WelcomeScreen onSelectQuickStart={handleQuickPrompt} /> : <div className="py-4 space-y-6">
-                {messages.map(message => <div key={message.id} className={cn("flex w-full mx-auto", message.sender === 'user' ? "justify-end" : "justify-start")}>
-                    <div className={cn("flex items-start max-w-[80%] group", message.sender === 'user' ? "flex-row-reverse" : "flex-row")}>
-                      <Avatar className={cn("h-8 w-8 mt-1", message.sender === 'user' ? "ml-3" : "mr-3", message.sender === 'user' ? "bg-primary" : "bg-gray-100")}>
-                        <AvatarFallback className={message.sender === 'user' ? "text-white" : "text-gray-500"}>
-                          {message.sender === 'user' ? 'U' : 'A'}
-                        </AvatarFallback>
-                      </Avatar>
-                      
-                      <div>
-                        <div className={cn("rounded-xl whitespace-pre-wrap py-3 px-4", message.sender === 'user' ? "bg-primary text-white rounded-tr-none" : "bg-gray-100 text-gray-800 rounded-tl-none")}>
-                          {message.content}
+            {showWelcomeScreen ? <WelcomeScreen onSelectQuickStart={handleQuickPrompt} /> : 
+              <div className="py-4 space-y-6">
+                <Card className="bg-white border-gray-100 shadow-sm overflow-hidden">
+                  <CardContent className="p-5 space-y-6">
+                    {messages.map((message, index) => (
+                      <div key={message.id} className="space-y-3">
+                        <div className="flex items-start gap-3">
+                          <Avatar className={cn("h-8 w-8", 
+                            message.sender === 'user' ? "bg-primary" : "bg-blue-600")}>
+                            {message.sender === 'user' ? (
+                              <AvatarImage src="public/lovable-uploads/88f6b600-3104-4ccb-aa6a-0f902d40cc0d.png" alt="User" />
+                            ) : (
+                              <AvatarImage src="" alt="AI" />
+                            )}
+                            <AvatarFallback className={message.sender === 'user' ? "text-white" : "text-white"}>
+                              {message.sender === 'user' ? 'You' : 'AI'}
+                            </AvatarFallback>
+                          </Avatar>
+                          
+                          <div className="flex-1">
+                            <div className="font-medium text-gray-800">
+                              {message.sender === 'user' ? 'You' : 'Matrix Agent'}
+                            </div>
+                            <div className="text-gray-600 mt-1 whitespace-pre-wrap">
+                              {message.content}
+                            </div>
+                            
+                            {message.moduleType && (
+                              <div className="mt-3">
+                                <ModuleRenderer type={message.moduleType} data={message.moduleData} />
+                              </div>
+                            )}
+                            
+                            {message.isResearch && index === messages.length - 1 && (
+                              <div className="mt-2 p-3 bg-gray-50 rounded-lg border border-gray-100">
+                                <div className="flex items-center justify-between">
+                                  <div className="text-sm font-medium text-gray-700">12 steps completed</div>
+                                  <Button variant="ghost" size="icon" className="h-6 w-6">
+                                    <ChevronDown className="h-4 w-4" />
+                                  </Button>
+                                </div>
+                              </div>
+                            )}
+                            
+                            {message.suppliers && message.suppliers.length > 0 && (
+                              <div className="mt-4">
+                                <h3 className="font-medium text-gray-800 mb-2">Key Questions for Meeting with Project Alpha</h3>
+                                <ol className="list-decimal pl-5 space-y-2">
+                                  <li className="text-gray-700">What are the key drivers behind the recent changes in your cost structure?</li>
+                                  <li className="text-gray-700">How do you plan to address the challenge of supplier concentration risk?</li>
+                                  <li className="text-gray-700">What are the specific metrics you use to measure customer engagement and satisfaction?</li>
+                                  <li className="text-gray-700">Can you detail the steps being taken to ensure smooth leadership transitions?</li>
+                                  <li className="text-gray-700">What is your strategy for leveraging technology to stay ahead of market trends?</li>
+                                </ol>
+                              </div>
+                            )}
+                            
+                            {message.actions && message.actions.length > 0 && (
+                              <div className="flex flex-wrap gap-2 mt-3">
+                                {message.actions.map((action, i) => (
+                                  <Button 
+                                    key={i} 
+                                    size="sm" 
+                                    variant="outline" 
+                                    onClick={action.onClick} 
+                                    className="rounded-full text-xs font-normal"
+                                  >
+                                    {action.label}
+                                  </Button>
+                                ))}
+                              </div>
+                            )}
+                          </div>
                         </div>
                         
-                        {message.moduleType && <div className="mt-3">
-                            <ModuleRenderer type={message.moduleType} data={message.moduleData} />
-                          </div>}
-                        
-                        {message.actions && message.actions.length > 0 && <div className="flex flex-wrap gap-2 mt-2">
-                            {message.actions.map((action, i) => <Button key={i} size="sm" variant="outline" onClick={action.onClick} className="rounded-full text-xs font-normal">
-                                {action.label}
-                              </Button>)}
-                          </div>}
+                        {index < messages.length - 1 && (
+                          <div className="border-t border-gray-100 my-4"></div>
+                        )}
                       </div>
-                    </div>
-                  </div>)}
-                <div ref={messagesEndRef} />
-              </div>}
+                    ))}
+                    <div ref={messagesEndRef} />
+                  </CardContent>
+                </Card>
+              </div>
+            }
           </div>
           
           <div className="p-4 border-t">
@@ -950,9 +1027,20 @@ export default function ChatInterface() {
               </Button>
               
               <div className="relative flex-1">
-                <Input value={input} onChange={e => setInput(e.target.value)} placeholder="Ask anything about suppliers, inventory, or orders..." className="pr-32 rounded-full bg-gray-100 border-0 focus-visible:ring-gray-300" />
+                <Input 
+                  value={input} 
+                  onChange={e => setInput(e.target.value)} 
+                  placeholder="Ask anything..." 
+                  className="pr-32 rounded-full bg-gray-100 border-0 focus-visible:ring-gray-300" 
+                />
                 <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1">
-                  <Button type="button" variant="ghost" size="icon" className={cn("h-8 w-8 rounded-full", isRecording ? "text-red-500" : "text-gray-400")} onClick={toggleRecording}>
+                  <Button 
+                    type="button" 
+                    variant="ghost" 
+                    size="icon" 
+                    className={cn("h-8 w-8 rounded-full", isRecording ? "text-red-500" : "text-gray-400")} 
+                    onClick={toggleRecording}
+                  >
                     <Mic className="h-4 w-4" />
                   </Button>
                 </div>
@@ -964,16 +1052,42 @@ export default function ChatInterface() {
             </form>
           </div>
         </ResizablePanel>
-        
-        
-        
-        
       </ResizablePanelGroup>
       
-      {showResultsTable && <ResultsTable isVisible={showResultsTable} suppliers={supplierResults} onClose={() => setShowResultsTable(false)} title={resultsTableTitle} />}
+      {showResultsTable && (
+        <div className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-gray-200 shadow-md transition-all duration-300 ease-in-out"
+             style={{ height: `${tableHeight}px` }}>
+          <div className="flex justify-between items-center p-3 border-b">
+            <h3 className="font-medium text-gray-800">{resultsTableTitle}</h3>
+            <Button variant="ghost" size="sm" onClick={toggleTableHeight} className="h-6 w-6 p-0">
+              {isTableExpanded ? <ChevronDown className="h-4 w-4" /> : <ChevronUp className="h-4 w-4" />}
+            </Button>
+          </div>
+          <div className="p-4 overflow-auto" style={{ height: `${tableHeight - 50}px` }}>
+            <ResultsTable 
+              isVisible={showResultsTable} 
+              suppliers={supplierResults} 
+              onClose={() => setShowResultsTable(false)} 
+              title={resultsTableTitle} 
+            />
+          </div>
+        </div>
+      )}
       
-      {showResearchPanel && <ResearchDataPanel isVisible={showResearchPanel} documents={researchData} isLoading={isResearching} onClose={() => setShowResearchPanel(false)} />}
+      {showResearchPanel && (
+        <ResearchDataPanel 
+          isVisible={showResearchPanel} 
+          documents={researchData} 
+          isLoading={isResearching} 
+          onClose={() => setShowResearchPanel(false)} 
+        />
+      )}
       
-      <ModuleSelector isOpen={moduleSelectOpen} onClose={() => setModuleSelectOpen(false)} modules={availableModules} onSelectModule={handleSelectModule} />
+      <ModuleSelector 
+        isOpen={moduleSelectOpen} 
+        onClose={() => setModuleSelectOpen(false)} 
+        modules={availableModules} 
+        onSelectModule={handleSelectModule} 
+      />
     </div>;
 }
