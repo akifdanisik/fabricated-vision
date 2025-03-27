@@ -1168,12 +1168,14 @@ export default function ChatInterface() {
         <ResizableHandle withHandle />
         
         <ResizablePanel defaultSize={35} minSize={30}>
-          <ActionPreview 
-            title={previewTitle}
-            description={previewDescription}
-            actions={previewActions}
-            className="h-full"
-          />
+          {previewActions.length > 0 && (
+            <ActionPreview
+              title={previewTitle}
+              description={previewDescription}
+              actions={previewActions}
+              className="h-full"
+            />
+          )}
         </ResizablePanel>
       </ResizablePanelGroup>
       
