@@ -3,7 +3,7 @@ import Layout from '@/components/layout/Layout';
 import ChatInterface from '@/components/chat/ChatInterface';
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { Bell, Settings, User, PanelRight } from 'lucide-react';
+import { Bell, Settings, User } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
@@ -20,44 +20,17 @@ import { Toaster } from '@/components/ui/toaster';
 const Chat = () => {
   const location = useLocation();
   const [chatId, setChatId] = useState<string | null>(null);
-  const [actionsOpen, setActionsOpen] = useState(true);
   
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const id = params.get('id');
     setChatId(id);
-
-    // Try to restore the actions panel state from localStorage
-    const savedState = localStorage.getItem('actionsPanel');
-    if (savedState !== null) {
-      setActionsOpen(savedState === 'true');
-    }
   }, [location]);
-
-  // Save panel state to localStorage when it changes
-  useEffect(() => {
-    localStorage.setItem('actionsPanel', String(actionsOpen));
-  }, [actionsOpen]);
-
-  const toggleActionsPanel = () => {
-    setActionsOpen(!actionsOpen);
-  };
 
   return (
     <Layout fullWidth hideNavbar>
       <div className="flex flex-col h-[calc(100vh-0px)] bg-[#f3f3f3]">
-        <div className="flex justify-between items-center px-6 py-3 border-b bg-white">
-          <div>
-            <Button 
-              variant="ghost" 
-              size="icon" 
-              className="rounded-full text-gray-500 hover:bg-gray-100 hover:text-gray-900"
-              onClick={toggleActionsPanel}
-              title={actionsOpen ? "Close actions panel" : "Open actions panel"}
-            >
-              <PanelRight className={`h-5 w-5 transition-transform ${!actionsOpen ? 'rotate-180' : ''}`} />
-            </Button>
-          </div>
+        <div className="flex justify-end items-center px-6 py-3 border-b bg-white">
           <div className="flex items-center gap-2">
             <Button variant="ghost" size="icon" className="relative rounded-full text-gray-500 hover:bg-gray-100 hover:text-gray-900">
               <Bell className="h-5 w-5" />
@@ -112,7 +85,7 @@ const Chat = () => {
         </div>
         
         <div className="flex-1 overflow-hidden bg-[#f3f3f3]">
-          <ChatInterface actionsOpen={actionsOpen} />
+          <ChatInterface />
         </div>
       </div>
       
