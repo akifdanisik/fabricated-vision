@@ -25,69 +25,11 @@ export interface ModuleItem {
 }
 
 interface ModuleSelectorProps {
-  open: boolean;
-  setOpen: (open: boolean) => void;
-  onSelectModule: (module: ModuleItem) => void;
+  isOpen: boolean;
+  onClose: () => void;
+  modules: ModuleItem[];
+  onSelectModule: (moduleId: string) => void;
 }
-
-const availableModules: ModuleItem[] = [
-  {
-    id: 'contract-risk',
-    title: 'Smart Contract Risk Management',
-    description: 'Analyze and identify risks in smart contracts',
-    icon: 'shield',
-    category: 'security'
-  },
-  {
-    id: 'data-analysis',
-    title: 'Market Data Analysis',
-    description: 'Analyze market data and trends for procurement',
-    icon: 'database',
-    category: 'data'
-  },
-  {
-    id: 'supplier-assessment',
-    title: 'Supplier Assessment',
-    description: 'Evaluate suppliers based on performance metrics',
-    icon: 'package',
-    category: 'analysis'
-  },
-  {
-    id: 'code-generator',
-    title: 'Code Generator',
-    description: 'Generate code snippets for integration',
-    icon: 'code',
-    category: 'development'
-  },
-  {
-    id: 'compliance-checker',
-    title: 'Compliance Checker',
-    description: 'Verify compliance with regulations',
-    icon: 'alertTriangle',
-    category: 'security'
-  },
-  {
-    id: 'research-assistant',
-    title: 'Research Assistant',
-    description: 'Search and summarize relevant information',
-    icon: 'search',
-    category: 'analysis'
-  },
-  {
-    id: 'ai-lab',
-    title: 'AI Laboratory',
-    description: 'Experiment with AI models and algorithms',
-    icon: 'beaker',
-    category: 'development'
-  },
-  {
-    id: 'insight-engine',
-    title: 'Insight Engine',
-    description: 'Generate insights from your procurement data',
-    icon: 'sparkles',
-    category: 'data'
-  }
-];
 
 const getIconComponent = (iconName: string) => {
   switch(iconName) {
@@ -103,9 +45,9 @@ const getIconComponent = (iconName: string) => {
   }
 };
 
-export const ModuleSelector = ({ open, setOpen, onSelectModule }: ModuleSelectorProps) => {
+export const ModuleSelector = ({ isOpen, onClose, modules, onSelectModule }: ModuleSelectorProps) => {
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-[700px] p-0 gap-0">
         <DialogHeader className="p-6 pb-2">
           <DialogTitle className="text-xl font-semibold">Select AI Module</DialogTitle>
@@ -135,11 +77,11 @@ export const ModuleSelector = ({ open, setOpen, onSelectModule }: ModuleSelector
           
           <TabsContent value="all" className="p-6 pt-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {availableModules.map((module) => (
+              {modules.map((module) => (
                 <div 
                   key={module.id}
                   className="border rounded-xl p-4 cursor-pointer hover:shadow-md transition-all flex items-start gap-4"
-                  onClick={() => onSelectModule(module)}
+                  onClick={() => onSelectModule(module.id)}
                 >
                   <div className={cn(
                     "p-3 rounded-full flex-shrink-0",
@@ -162,13 +104,13 @@ export const ModuleSelector = ({ open, setOpen, onSelectModule }: ModuleSelector
           {['analysis', 'data', 'development', 'security'].map((category) => (
             <TabsContent key={category} value={category} className="p-6 pt-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {availableModules
+                {modules
                   .filter(module => module.category === category)
                   .map((module) => (
                     <div 
                       key={module.id}
                       className="border rounded-xl p-4 cursor-pointer hover:shadow-md transition-all flex items-start gap-4"
-                      onClick={() => onSelectModule(module)}
+                      onClick={() => onSelectModule(module.id)}
                     >
                       <div className={cn(
                         "p-3 rounded-full flex-shrink-0",
@@ -195,4 +137,3 @@ export const ModuleSelector = ({ open, setOpen, onSelectModule }: ModuleSelector
 };
 
 export default ModuleSelector;
-

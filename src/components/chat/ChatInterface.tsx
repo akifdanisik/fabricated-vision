@@ -863,19 +863,22 @@ export default function ChatInterface() {
       id: 'contract-risk',
       title: 'Contract Risk Analysis',
       description: 'AI-powered contract risk assessment',
-      icon: 'shield'
+      icon: 'shield',
+      category: 'security'
     },
     {
       id: 'supplier-assessment',
       title: 'Supplier Assessment',
       description: 'Evaluate and compare suppliers',
-      icon: 'chart'
+      icon: 'chart',
+      category: 'analysis'
     },
     {
       id: 'inventory-optimization',
       title: 'Inventory Optimization',
       description: 'Optimize inventory levels',
-      icon: 'package'
+      icon: 'package',
+      category: 'data'
     }
   ];
 

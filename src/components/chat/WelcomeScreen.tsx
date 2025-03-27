@@ -69,11 +69,11 @@ const WelcomeModule: React.FC<WelcomeModuleProps> = ({
 };
 
 interface WelcomeScreenProps {
-  onModuleSelect: (module: string) => void;
+  onSelectQuickStart: (prompt: string) => void;
   userName?: string;
 }
 
-const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onModuleSelect, userName = "User" }) => {
+const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onSelectQuickStart, userName = "User" }) => {
   return (
     <div className="flex flex-col items-center justify-center h-full px-4 py-10">
       <div className="text-center mb-12">
@@ -89,25 +89,25 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onModuleSelect, userName 
           title="Analyze Smart Contracts"
           description="Get a risk assessment and security analysis for your smart contracts"
           icon={<FileText size={24} />}
-          onClick={() => onModuleSelect("contract-risk")}
+          onClick={() => onSelectQuickStart("I want to analyze a smart contract for risks")}
         />
         <WelcomeModule
           title="Create Market Analysis"
           description="Generate market insights based on your procurement data"
           icon={<BarChart3 size={24} />}
-          onClick={() => onModuleSelect("data-analysis")}
+          onClick={() => onSelectQuickStart("Create a market analysis report for pharmaceutical APIs")}
         />
         <WelcomeModule
           title="Draft Procurement Docs"
           description="Create professional procurement documents and contracts"
           icon={<PenLine size={24} />}
-          onClick={() => onModuleSelect("research-assistant")}
+          onClick={() => onSelectQuickStart("Help me draft a procurement document for medical supplies")}
         />
         <WelcomeModule
           title="Generate Integration Code"
           description="Create code for integrating with procurement systems"
           icon={<Code size={24} />}
-          onClick={() => onModuleSelect("code-generator")}
+          onClick={() => onSelectQuickStart("Generate code for integrating with our inventory system")}
         />
       </div>
     </div>
