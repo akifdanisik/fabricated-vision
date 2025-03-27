@@ -63,7 +63,7 @@ const Dashboard = () => {
         <div className="flex flex-col items-start space-y-4">
           <div>
             <p className="text-gray-500 text-sm">{formattedDate}</p>
-            <h1 className="text-3xl font-semibold text-gray-900">Welcome back, John!</h1>
+            <h1 className="text-3xl font-semibold text-gray-900">Welcome back, Ayşa!</h1>
           </div>
         </div>
         

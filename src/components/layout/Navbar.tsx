@@ -97,9 +97,9 @@ const Navbar = ({
               <Button variant="ghost" className="flex items-center gap-2 px-3 py-2 rounded-full hover:bg-gray-100">
                 <Avatar className="h-8 w-8 border border-gray-200">
                   <AvatarImage src="" alt="User" />
-                  <AvatarFallback className="text-sm bg-gray-100 text-gray-700">JD</AvatarFallback>
+                  <AvatarFallback className="text-sm bg-gray-100 text-gray-700">AD</AvatarFallback>
                 </Avatar>
-                <span className="hidden md:block text-sm font-medium">John Doe</span>
+                <span className="hidden md:block text-sm font-medium">Ayşa Doe</span>
                 <ChevronDown className="h-4 w-4 text-gray-500" />
               </Button>
             </DropdownMenuTrigger>
@@ -107,11 +107,11 @@ const Navbar = ({
               <DropdownMenuLabel className="flex items-center gap-2">
                 <Avatar className="h-8 w-8">
                   <AvatarImage src="" alt="User" />
-                  <AvatarFallback className="bg-gray-100 text-gray-700">JD</AvatarFallback>
+                  <AvatarFallback className="bg-gray-100 text-gray-700">AD</AvatarFallback>
                 </Avatar>
                 <div>
-                  <p className="text-sm font-medium">John Doe</p>
-                  <p className="text-xs text-gray-500">john.doe@example.com</p>
+                  <p className="text-sm font-medium">Ayşa Doe</p>
+                  <p className="text-xs text-gray-500">aysa.doe@example.com</p>
                 </div>
               </DropdownMenuLabel>
               <DropdownMenuSeparator className="bg-gray-100" />
