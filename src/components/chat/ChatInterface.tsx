@@ -935,29 +935,36 @@ export default function ChatInterface() {
           <div className="flex-1 overflow-auto px-4">
             {showWelcomeScreen ? <WelcomeScreen onSelectQuickStart={handleQuickPrompt} /> : 
               <div className="py-4 space-y-6">
-                <Card className="bg-white border-gray-100 shadow-sm overflow-hidden">
-                  <CardContent className="p-5 space-y-6">
-                    {messages.map((message, index) => (
-                      <div key={message.id} className="space-y-3">
-                        <div className="flex items-start gap-3">
-                          <Avatar className={cn("h-8 w-8", 
+                <div className="space-y-6">
+                  {messages.map((message, index) => (
+                    <div key={message.id} className="space-y-3">
+                      <div className={cn("flex", message.sender === 'user' ? "justify-end" : "justify-start")}>
+                        <div className={cn("flex max-w-[85%] items-start gap-3", message.sender === 'user' ? "flex-row-reverse" : "")}>
+                          <Avatar className={cn("h-10 w-10 mt-1", 
                             message.sender === 'user' ? "bg-primary" : "bg-blue-600")}>
                             {message.sender === 'user' ? (
                               <AvatarImage src="public/lovable-uploads/88f6b600-3104-4ccb-aa6a-0f902d40cc0d.png" alt="User" />
                             ) : (
-                              <AvatarImage src="" alt="AI" />
+                              <AvatarImage src="public/lovable-uploads/7174010c-0ec1-43b7-8132-e983b4472a9d.png" alt="AI" />
                             )}
                             <AvatarFallback className={message.sender === 'user' ? "text-white" : "text-white"}>
                               {message.sender === 'user' ? 'You' : 'AI'}
                             </AvatarFallback>
                           </Avatar>
                           
-                          <div className="flex-1">
+                          <div className={cn("space-y-3", message.sender === 'user' ? "text-right" : "")}>
                             <div className="font-medium text-gray-800">
                               {message.sender === 'user' ? 'You' : 'Matrix Agent'}
                             </div>
-                            <div className="text-gray-600 mt-1 whitespace-pre-wrap">
-                              {message.content}
+                            <div className={cn(
+                              "rounded-2xl px-4 py-3",
+                              message.sender === 'user' 
+                                ? "bg-white border border-gray-200 text-gray-800" 
+                                : "bg-white border border-gray-200 text-gray-800"
+                            )}>
+                              <div className="whitespace-pre-wrap text-left">
+                                {message.content}
+                              </div>
                             </div>
                             
                             {message.moduleType && (
@@ -967,7 +974,7 @@ export default function ChatInterface() {
                             )}
                             
                             {message.isResearch && index === messages.length - 1 && (
-                              <div className="mt-2 p-3 bg-gray-50 rounded-lg border border-gray-100">
+                              <div className="mt-2 p-3 bg-white rounded-lg border border-gray-200">
                                 <div className="flex items-center justify-between">
                                   <div className="text-sm font-medium text-gray-700">12 steps completed</div>
                                   <Button variant="ghost" size="icon" className="h-6 w-6">
@@ -977,8 +984,8 @@ export default function ChatInterface() {
                               </div>
                             )}
                             
-                            {message.suppliers && message.suppliers.length > 0 && (
-                              <div className="mt-4">
+                            {message.suppliers && message.suppliers.length > 0 && message.sender === 'ai' && (
+                              <div className="mt-4 text-left">
                                 <h3 className="font-medium text-gray-800 mb-2">Key Questions for Meeting with Project Alpha</h3>
                                 <ol className="list-decimal pl-5 space-y-2">
                                   <li className="text-gray-700">What are the key drivers behind the recent changes in your cost structure?</li>
@@ -991,7 +998,7 @@ export default function ChatInterface() {
                             )}
                             
                             {message.actions && message.actions.length > 0 && (
-                              <div className="flex flex-wrap gap-2 mt-3">
+                              <div className={cn("flex flex-wrap gap-2 mt-3", message.sender === 'user' ? "justify-end" : "justify-start")}>
                                 {message.actions.map((action, i) => (
                                   <Button 
                                     key={i} 
@@ -1007,15 +1014,11 @@ export default function ChatInterface() {
                             )}
                           </div>
                         </div>
-                        
-                        {index < messages.length - 1 && (
-                          <div className="border-t border-gray-100 my-4"></div>
-                        )}
                       </div>
-                    ))}
-                    <div ref={messagesEndRef} />
-                  </CardContent>
-                </Card>
+                    </div>
+                  ))}
+                  <div ref={messagesEndRef} />
+                </div>
               </div>
             }
           </div>
