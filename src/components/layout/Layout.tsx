@@ -66,7 +66,7 @@ const Layout = ({ children, fullWidth = false, hideNavbar = false }: LayoutProps
       <div 
         className={cn(
           "flex flex-1 flex-col transition-all duration-300 ease-in-out-expo",
-          isSidebarOpen ? (isSidebarClosed ? "md:ml-0" : "md:ml-64") : "md:ml-[70px]",
+          isSidebarOpen ? (isSidebarClosed ? "md:ml-14" : "md:ml-64") : "md:ml-[70px]",
           isMounted ? "opacity-100" : "opacity-0"
         )}
       >

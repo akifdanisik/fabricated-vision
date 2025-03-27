@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { MessageSquare, ChevronRight, ChevronLeft, Search, Folder, ChevronDown, Square, Menu, AlignLeft } from "lucide-react";
@@ -136,13 +137,13 @@ const Sidebar = ({
 
   if (isCompleteClosed) {
     return (
-      <div className="fixed inset-y-0 left-0 z-50 w-0 transition-all duration-300 ease-in-out-expo">
-        <div className="absolute top-4 left-4 flex flex-col items-center gap-2">
-          <Link to="/" className="flex items-center justify-center mb-4">
-            <img src="/lovable-uploads/8909c790-d73e-4ca4-99fb-106aa9109740.png" alt="Fabricated Logo" className="h-12 w-auto max-w-[55px] object-contain" />
-          </Link>
-          
-          <Button variant="ghost" size="icon" onClick={onToggle} className={cn("h-10 w-10 rounded-full bg-white shadow-md border border-gray-200", "flex items-center justify-center text-gray-600 hover:text-gray-900")}>
+      <div className="fixed inset-y-0 left-0 z-50 w-14 transition-all duration-300 ease-in-out-expo flex flex-col items-center bg-white border-r border-gray-200 shadow-sm">
+        <Link to="/" className="flex items-center justify-center h-16 w-full border-b border-gray-200">
+          <img src="/lovable-uploads/8909c790-d73e-4ca4-99fb-106aa9109740.png" alt="Fabricated Logo" className="h-10 w-auto max-w-[40px] object-contain" />
+        </Link>
+        
+        <div className="mt-4">
+          <Button variant="ghost" size="icon" onClick={onToggle} className="h-10 w-10 rounded-full bg-white shadow-md border border-gray-200 flex items-center justify-center text-gray-600 hover:text-gray-900">
             <AlignLeft className="h-5 w-5" />
           </Button>
         </div>
