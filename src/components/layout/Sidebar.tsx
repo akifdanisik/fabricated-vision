@@ -10,8 +10,7 @@ import {
   FileIcon,
   Folder,
   ChevronDown,
-  Square,
-  Edit
+  Square
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -132,15 +131,15 @@ const Sidebar = ({ isOpen, onToggle }: SidebarProps) => {
     >
       <div className={cn(
         "flex h-16 items-center border-b border-gray-200",
-        isOpen ? "justify-between px-6" : "justify-center px-2"
+        isOpen ? "justify-center px-6" : "justify-center px-2"
       )}>
         <Link to="/" className="flex items-center justify-center py-4">
           {isOpen ? (
-            <div className="flex items-center justify-center">
+            <div className="flex items-center justify-center w-full">
               <img 
                 src="/lovable-uploads/42466f5f-6d74-466e-af4c-1fc0de255379.png" 
                 alt="Fabricated Logo" 
-                className="h-10 w-auto" 
+                className="h-14 w-auto mx-auto" 
               />
             </div>
           ) : (
@@ -148,34 +147,12 @@ const Sidebar = ({ isOpen, onToggle }: SidebarProps) => {
               <img 
                 src="/lovable-uploads/8909c790-d73e-4ca4-99fb-106aa9109740.png" 
                 alt="Fabricated Logo" 
-                className="h-8 w-auto max-w-[55px] object-contain" 
+                className="h-12 w-auto max-w-[55px] object-contain" 
               />
             </div>
           )}
         </Link>
-        
-        {isOpen && (
-          <div className="flex items-center space-x-2">
-            <Button variant="ghost" size="icon" className="rounded-full text-gray-600 hover:bg-gray-100">
-              <Search className="h-5 w-5" />
-            </Button>
-            <Button variant="ghost" size="icon" className="rounded-full text-gray-600 hover:bg-gray-100">
-              <Edit className="h-5 w-5" />
-            </Button>
-          </div>
-        )}
       </div>
-      
-      {!isOpen && (
-        <div className="flex flex-col items-center gap-2 mt-4">
-          <Button variant="ghost" size="icon" className="rounded-full text-gray-600 hover:bg-gray-100">
-            <Search className="h-5 w-5" />
-          </Button>
-          <Button variant="ghost" size="icon" className="rounded-full text-gray-600 hover:bg-gray-100">
-            <Edit className="h-5 w-5" />
-          </Button>
-        </div>
-      )}
       
       {isOpen && (
         <div className="px-3 pt-3">
