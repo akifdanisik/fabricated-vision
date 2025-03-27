@@ -1,3 +1,4 @@
+
 import { useState, useRef, useEffect } from 'react';
 import { Send, Mic, ArrowRight, Plus, PaperclipIcon, Grid } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -844,3 +845,226 @@ export default function ChatInterface() {
             onClick: () => handleQuickPrompt('I want to add a new supplier')
           }
         ]
+      };
+    }
+    
+    // Default fallback response
+    return {
+      id: Date.now().toString(),
+      content: "I understand you're asking for specific information. Could you please try rephrasing your request? I can help with inventory, suppliers, compliance, and analytics data.",
+      sender: 'ai',
+      timestamp: new Date()
+    };
+  };
+
+  // Get available modules for the module selector
+  const availableModules: ModuleItem[] = [
+    {
+      id: 'contract-risk',
+      title: 'Contract Risk Analysis',
+      description: 'AI-powered contract risk assessment',
+      icon: 'shield'
+    },
+    {
+      id: 'supplier-assessment',
+      title: 'Supplier Assessment',
+      description: 'Evaluate and compare suppliers',
+      icon: 'chart'
+    },
+    {
+      id: 'inventory-optimization',
+      title: 'Inventory Optimization',
+      description: 'Optimize inventory levels',
+      icon: 'package'
+    }
+  ];
+
+  return (
+    <ResizablePanelGroup
+      direction="horizontal"
+      className="h-full rounded-lg "
+    >
+      <ResizablePanel defaultSize={70} minSize={50} className="relative">
+        <div className="flex flex-col h-full">
+          {/* Main Chat Area */}
+          <div className="flex-1 overflow-y-auto p-4">
+            {showWelcomeScreen ? (
+              <WelcomeScreen onSelectQuickStart={handleQuickPrompt} />
+            ) : (
+              <div className="space-y-4 pb-20">
+                {messages.map((message) => (
+                  <div
+                    key={message.id}
+                    className={cn(
+                      "flex w-max max-w-[85%] animate-in fade-in-5 zoom-in-98 slide-in-from-bottom-5 duration-200 mb-5 mx-2",
+                      message.sender === "user" ? "ml-auto" : "mr-auto"
+                    )}
+                  >
+                    {message.sender === "ai" && (
+                      <Avatar className="h-8 w-8 mr-2">
+                        <AvatarImage src="/lovable-uploads/0f378f40-c5be-494e-a251-1513b467af1d.png" />
+                        <AvatarFallback className="bg-primary-light text-primary-dark">AI</AvatarFallback>
+                      </Avatar>
+                    )}
+                    <div className="flex flex-col">
+                      <div
+                        className={cn(
+                          "rounded-lg px-4 py-2 max-w-prose",
+                          message.sender === "user"
+                            ? "bg-primary text-primary-foreground"
+                            : "bg-muted"
+                        )}
+                      >
+                        <div className="prose prose-sm">
+                          {message.content.split('\n').map((paragraph, i) => (
+                            <p key={i} className={i > 0 ? 'mt-2' : undefined}>
+                              {paragraph}
+                            </p>
+                          ))}
+                        </div>
+                      </div>
+                      
+                      {message.actions && message.actions.length > 0 && (
+                        <div className="flex flex-wrap gap-2 mt-2">
+                          {message.actions.map((action, index) => (
+                            <Button 
+                              key={index} 
+                              variant="secondary" 
+                              size="sm" 
+                              className="text-xs"
+                              onClick={action.onClick}
+                            >
+                              {action.label}
+                            </Button>
+                          ))}
+                        </div>
+                      )}
+                      
+                      {message.moduleType && (
+                        <div className="mt-3">
+                          <ModuleRenderer type={message.moduleType} data={message.moduleData} />
+                        </div>
+                      )}
+                    </div>
+                    
+                    {message.sender === "user" && (
+                      <Avatar className="h-8 w-8 ml-2">
+                        <AvatarImage src="" />
+                        <AvatarFallback className="bg-gray-100 text-gray-700">JD</AvatarFallback>
+                      </Avatar>
+                    )}
+                  </div>
+                ))}
+                <div ref={messagesEndRef} />
+              </div>
+            )}
+          </div>
+          
+          {/* Research Data Panel */}
+          <ResearchDataPanel 
+            isVisible={showResearchPanel} 
+            documents={researchData} 
+            onClose={() => setShowResearchPanel(false)}
+            isLoading={isResearching}
+          />
+          
+          {/* Chat Input Area */}
+          <div className="absolute bottom-0 left-0 right-0 p-4 bg-white border-t">
+            <form onSubmit={handleSubmit} className="flex items-center gap-2">
+              <Button
+                type="button"
+                size="icon"
+                variant="outline"
+                className="flex-shrink-0"
+                onClick={() => setModuleSelectOpen(true)}
+              >
+                <Plus className="h-4 w-4" />
+                <span className="sr-only">Add Module</span>
+              </Button>
+              
+              <div className="relative flex-1">
+                <Input
+                  placeholder="Type your message..."
+                  className="pr-10"
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                />
+              </div>
+              
+              <Button
+                type="button"
+                size="icon"
+                variant="ghost"
+                disabled={isRecording}
+                className={cn(
+                  "flex-shrink-0",
+                  isRecording && "text-red-500"
+                )}
+                onClick={toggleRecording}
+              >
+                <Mic className="h-4 w-4" />
+                <span className="sr-only">
+                  {isRecording ? "Stop Recording" : "Start Recording"}
+                </span>
+                {isRecording && (
+                  <span className="absolute top-0 right-0 h-2 w-2 rounded-full bg-red-500" />
+                )}
+              </Button>
+              
+              <Button
+                type="submit"
+                size="icon"
+                disabled={!input.trim()}
+                className="flex-shrink-0"
+              >
+                <Send className="h-4 w-4" />
+                <span className="sr-only">Send</span>
+              </Button>
+            </form>
+            
+            {/* Active Modules Indicators */}
+            {activeModules.length > 0 && (
+              <div className="mt-2 flex gap-1 flex-wrap">
+                {activeModules.map((module) => (
+                  <Badge 
+                    key={module.id} 
+                    variant="outline" 
+                    className="text-xs bg-primary-light/30 flex items-center gap-1"
+                  >
+                    {module.title}
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-3 w-3 ml-1 rounded-full"
+                      onClick={() => removeModule(module.id)}
+                    >
+                      <span className="sr-only">Remove</span>
+                      <span aria-hidden="true" className="text-xs">×</span>
+                    </Button>
+                  </Badge>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      </ResizablePanel>
+      
+      <ResizableHandle withHandle />
+      
+      <ResizablePanel defaultSize={30} minSize={25}>
+        <ActionPreview
+          title={previewTitle}
+          description={previewDescription}
+          actions={previewActions}
+        />
+      </ResizablePanel>
+      
+      <ModuleSelector
+        isOpen={moduleSelectOpen}
+        onClose={() => setModuleSelectOpen(false)}
+        modules={availableModules}
+        onSelectModule={handleSelectModule}
+      />
+    </ResizablePanelGroup>
+  );
+}
