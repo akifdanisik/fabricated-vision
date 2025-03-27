@@ -1,12 +1,15 @@
+
 import { useState, useEffect } from 'react';
 import Layout from '@/components/layout/Layout';
 import SuppliersTable, { Supplier } from '@/components/suppliers/SuppliersTable';
 import SupplierProfile from '@/components/suppliers/SupplierProfile';
 import SupplierEvaluation from '@/components/suppliers/SupplierEvaluation';
+import SupplierIntelligenceTable, { SupplierIntelligenceData } from '@/components/suppliers/SupplierIntelligenceTable';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Category, predefinedCategories } from '@/components/categories/CategoryBadge';
 import CategoryBadge from '@/components/categories/CategoryBadge';
+import { sampleSupplierIntelligenceData } from '@/data/supplierIntelligenceData';
 
 const Suppliers = () => {
   const [loading, setLoading] = useState(true);
@@ -166,6 +169,7 @@ const Suppliers = () => {
             <Tabs value={activeTab} onValueChange={setActiveTab}>
               <TabsList className="mb-6">
                 <TabsTrigger value="list">Supplier List</TabsTrigger>
+                <TabsTrigger value="intelligence">Supplier Intelligence</TabsTrigger>
                 <TabsTrigger value="profile" disabled={!selectedSupplier}>Supplier Profile</TabsTrigger>
                 <TabsTrigger value="evaluation">AI Evaluations</TabsTrigger>
                 <TabsTrigger value="categories">Categories</TabsTrigger>
@@ -175,6 +179,13 @@ const Suppliers = () => {
                 <SuppliersTable 
                   suppliers={suppliersData} 
                   onSelectSupplier={handleSupplierSelect}
+                />
+              </TabsContent>
+              
+              <TabsContent value="intelligence" className="mt-0">
+                <SupplierIntelligenceTable 
+                  suppliers={sampleSupplierIntelligenceData}
+                  onSelectSupplier={(supplier) => console.log('Selected intelligence supplier:', supplier)}
                 />
               </TabsContent>
               
