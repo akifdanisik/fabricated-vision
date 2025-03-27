@@ -1,7 +1,7 @@
 
 import Layout from '@/components/layout/Layout';
 import { useState, useRef, useEffect } from 'react';
-import { ChevronDown, FileText, Upload, Download, Sliders, SlidersHorizontal, ZoomIn, ZoomOut } from 'lucide-react';
+import { ChevronDown, FileText, Upload, Download, Sliders, SlidersHorizontal } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -10,12 +10,10 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { ResearchDocument } from '@/components/chat/ResearchDataPanel';
-import { Slider } from '@/components/ui/slider';
 
 const Chat = () => {
   const [input, setInput] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const [tableScale, setTableScale] = useState(100);
   const [documents, setDocuments] = useState<ResearchDocument[]>([
     {
       id: '1',
@@ -92,10 +90,6 @@ const Chat = () => {
     'Product': 'bg-red-100 text-red-800',
     'Customer': 'bg-amber-100 text-amber-800',
     'Public Report': 'bg-green-100 text-green-800',
-  };
-
-  const handleScaleChange = (value: number[]) => {
-    setTableScale(value[0]);
   };
 
   return (
@@ -197,21 +191,6 @@ const Chat = () => {
                 <SlidersHorizontal className="h-4 w-4" />
                 <span>Display</span>
               </Button>
-              
-              {/* Table Scale Controls */}
-              <div className="flex items-center gap-2 ml-2">
-                <ZoomOut className="h-4 w-4 text-gray-500" />
-                <Slider
-                  value={[tableScale]}
-                  min={50}
-                  max={150}
-                  step={5}
-                  onValueChange={handleScaleChange}
-                  className="w-32"
-                />
-                <ZoomIn className="h-4 w-4 text-gray-500" />
-                <span className="text-xs text-gray-500 ml-1">{tableScale}%</span>
-              </div>
             </div>
             <div className="flex items-center gap-3">
               <Button variant="outline" size="sm" className="flex items-center gap-2">
@@ -225,54 +204,52 @@ const Chat = () => {
           </div>
           
           <div className="overflow-x-auto">
-            <div style={{ transform: `scale(${tableScale / 100})`, transformOrigin: 'top left', transition: 'transform 0.2s ease-in-out' }}>
-              <Table>
-                <TableHeader>
-                  <TableRow className="bg-gray-50">
-                    <TableHead className="w-8">#</TableHead>
-                    <TableHead className="w-8"></TableHead>
-                    <TableHead className="w-[250px]">Document</TableHead>
-                    <TableHead className="w-[120px]">Date</TableHead>
-                    <TableHead className="w-[150px]">Document Type</TableHead>
-                    <TableHead>Investment Risks</TableHead>
-                    <TableHead>Market Considerations</TableHead>
+            <Table>
+              <TableHeader>
+                <TableRow className="bg-gray-50">
+                  <TableHead className="w-8">#</TableHead>
+                  <TableHead className="w-8"></TableHead>
+                  <TableHead className="w-[250px]">Document</TableHead>
+                  <TableHead className="w-[120px]">Date</TableHead>
+                  <TableHead className="w-[150px]">Document Type</TableHead>
+                  <TableHead>Investment Risks</TableHead>
+                  <TableHead>Market Considerations</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {documents.map((doc, index) => (
+                  <TableRow key={doc.id} className="h-[40px]">
+                    <TableCell className="text-gray-500">{index + 1}</TableCell>
+                    <TableCell>
+                      <div className="flex justify-center">
+                        <Button variant="ghost" size="sm" className="h-5 w-5 p-0">
+                          <span className="sr-only">Expand</span>
+                          ≡
+                        </Button>
+                      </div>
+                    </TableCell>
+                    <TableCell className="font-medium flex items-center gap-2">
+                      <FileText className="h-4 w-4 text-gray-400" />
+                      {doc.title}
+                    </TableCell>
+                    <TableCell className="text-sm text-gray-500">
+                      {doc.date}
+                    </TableCell>
+                    <TableCell>
+                      <Badge className={cn("font-normal", documentTypeColors[doc.documentType] || "bg-gray-100")}>
+                        {doc.documentType}
+                      </Badge>
+                    </TableCell>
+                    <TableCell className="text-sm max-w-[300px] truncate">
+                      {doc.risks}
+                    </TableCell>
+                    <TableCell className="text-sm max-w-[300px] truncate">
+                      {doc.considerations}
+                    </TableCell>
                   </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {documents.map((doc, index) => (
-                    <TableRow key={doc.id} className="h-[40px]">
-                      <TableCell className="text-gray-500">{index + 1}</TableCell>
-                      <TableCell>
-                        <div className="flex justify-center">
-                          <Button variant="ghost" size="sm" className="h-5 w-5 p-0">
-                            <span className="sr-only">Expand</span>
-                            ≡
-                          </Button>
-                        </div>
-                      </TableCell>
-                      <TableCell className="font-medium flex items-center gap-2">
-                        <FileText className="h-4 w-4 text-gray-400" />
-                        {doc.title}
-                      </TableCell>
-                      <TableCell className="text-sm text-gray-500">
-                        {doc.date}
-                      </TableCell>
-                      <TableCell>
-                        <Badge className={cn("font-normal", documentTypeColors[doc.documentType] || "bg-gray-100")}>
-                          {doc.documentType}
-                        </Badge>
-                      </TableCell>
-                      <TableCell className="text-sm max-w-[300px] truncate">
-                        {doc.risks}
-                      </TableCell>
-                      <TableCell className="text-sm max-w-[300px] truncate">
-                        {doc.considerations}
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </div>
+                ))}
+              </TableBody>
+            </Table>
           </div>
           
           <div className="p-2 border-t flex items-center justify-start">
