@@ -1,3 +1,4 @@
+
 import { useState, useRef, useEffect } from 'react';
 import { Send, Mic, ArrowRight, Plus, PaperclipIcon, Grid, ChevronDown, ChevronUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -938,14 +939,14 @@ export default function ChatInterface() {
                 <div className="space-y-6">
                   {messages.map((message, index) => (
                     <div key={message.id} className="space-y-1">
-                      <div className={cn("flex", message.sender === 'user' ? "justify-start" : "justify-start")}>
+                      <div className={cn("flex", "justify-start")}>
                         <div className={cn("flex w-full items-start gap-3")}>
                           <Avatar className={cn("h-9 w-9 mt-1", 
                             message.sender === 'user' ? "bg-[#3F3434]" : "bg-[#4842E3]")}>
                             {message.sender === 'user' ? (
-                              <AvatarImage src="public/lovable-uploads/88f6b600-3104-4ccb-aa6a-0f902d40cc0d.png" alt="User" />
+                              <AvatarImage src="/lovable-uploads/88f6b600-3104-4ccb-aa6a-0f902d40cc0d.png" alt="User" />
                             ) : (
-                              <AvatarImage src="public/lovable-uploads/18aaacb4-ea38-497c-84d2-0b68c031c3f3.png" alt="AI" />
+                              <AvatarImage src="/lovable-uploads/18aaacb4-ea38-497c-84d2-0b68c031c3f3.png" alt="AI" />
                             )}
                             <AvatarFallback className={message.sender === 'user' ? "text-white" : "text-white"}>
                               {message.sender === 'user' ? 'You' : 'MA'}
