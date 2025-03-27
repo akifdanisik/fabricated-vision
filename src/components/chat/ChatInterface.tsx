@@ -45,19 +45,16 @@ export default function ChatInterface() {
   const [moduleSelectOpen, setModuleSelectOpen] = useState(false);
   const [activeModules, setActiveModules] = useState<ModuleItem[]>([]);
   
-  // Track conversation context for multi-turn interactions
   const [conversationContext, setConversationContext] = useState<{
     type: string;
     step: number;
     data: Record<string, any>;
   } | null>(null);
 
-  // Research data state
   const [researchData, setResearchData] = useState<ResearchDocument[]>([]);
   const [showResearchPanel, setShowResearchPanel] = useState(false);
   const [isResearching, setIsResearching] = useState(false);
 
-  // Add new state for supplier results
   const [supplierResults, setSupplierResults] = useState<Supplier[]>([]);
   const [showResultsTable, setShowResultsTable] = useState(false);
   const [resultsTableTitle, setResultsTableTitle] = useState("Top Suppliers");
@@ -70,7 +67,6 @@ export default function ChatInterface() {
     e.preventDefault();
     if (!input.trim()) return;
 
-    // Hide welcome screen on first message
     if (showWelcomeScreen) {
       setShowWelcomeScreen(false);
     }
@@ -85,7 +81,6 @@ export default function ChatInterface() {
     setMessages(prev => [...prev, userMessage]);
     setInput('');
 
-    // Check if it's a research question
     const isResearchQuestion = checkIfResearchQuestion(input);
     if (isResearchQuestion) {
       setIsResearching(true);
@@ -93,12 +88,10 @@ export default function ChatInterface() {
     }
 
     setTimeout(() => {
-      // Check if we're in a multi-turn conversation flow
       if (conversationContext) {
         const aiResponse = handleConversationFlow(input, conversationContext);
         setMessages(prev => [...prev, aiResponse]);
       } else {
-        // Handle module requests
         const lowerCaseInput = input.toLowerCase();
         if (lowerCaseInput.includes('show') || lowerCaseInput.includes('display') || lowerCaseInput.includes('get')) {
           const moduleResponse = handleModuleRequest(input);
@@ -108,7 +101,6 @@ export default function ChatInterface() {
           setMessages(prev => [...prev, aiResponse]);
           
           if (isResearchQuestion) {
-            // Simulate getting research data
             simulateResearch(input);
           }
         }
@@ -132,9 +124,7 @@ export default function ChatInterface() {
   };
 
   const simulateResearch = (query: string) => {
-    // Simulate loading time for research
     setTimeout(() => {
-      // Generate mock research data based on the query
       const mockDocuments: ResearchDocument[] = [
         {
           id: '1',
@@ -197,7 +187,6 @@ export default function ChatInterface() {
       setResearchData(mockDocuments);
       setIsResearching(false);
       
-      // Add a follow-up message with research summary
       const researchSummaryMessage: Message = {
         id: Date.now().toString(),
         content: "I've analyzed 7 documents related to your query. Key insights include:\n\n- Financial documents show increasing costs\n- Expert opinions are divided on technology defensibility\n- The estimated market size (TAM) is approximately $72B\n- Several product integration risks have been identified\n\nYou can review the detailed research data in the panel below.",
@@ -536,8 +525,7 @@ export default function ChatInterface() {
             ]
           };
         case 3: // Asked for quality specs
-          // Complete the RFQ process
-          setConversationContext(null); // End the conversation flow
+          setConversationContext(null);
           return {
             id: Date.now().toString(),
             content: `Great! I've created an RFQ for ${context.data.product} with the following details:\n\nQuantity: ${context.data.quantity}\nTimeline: ${context.data.timeline}\nSpecifications: ${userInput}\n\nThe RFQ has been sent to the top 3 matching suppliers. You'll receive responses within 48 hours.`,
@@ -554,13 +542,12 @@ export default function ChatInterface() {
       }
     }
     
-    // If we don't recognize the context type, revert to normal responses
     setConversationContext(null);
     return generateAIResponse(userInput, false);
   };
 
   const generateAIResponse = (userInput: string, isResearchRequest: boolean): Message => {
-    const lowercaseInput = userInput.toLowerCase();
+    const lowerCaseInput = userInput.toLowerCase();
     
     if (isResearchRequest) {
       return {
@@ -572,9 +559,7 @@ export default function ChatInterface() {
       };
     }
     
-    // Check if the query is about suppliers
-    if (lowercaseInput.includes('top') && (lowercaseInput.includes('supplier') || lowercaseInput.includes('vendor'))) {
-      // Generate mock supplier data for top suppliers
+    if (lowerCaseInput.includes('top') && (lowerCaseInput.includes('supplier') || lowerCaseInput.includes('vendor'))) {
       const topSuppliers: Supplier[] = [
         {
           id: '1',
@@ -751,24 +736,18 @@ export default function ChatInterface() {
         },
       ];
 
-      // Determine how many suppliers to display
-      let numSuppliers = 10; // Default to 10
-      
-      // Try to extract a number from the query
+      let numSuppliers = 10;
       const numMatch = userInput.match(/top\s+(\d+)/i);
       if (numMatch && numMatch[1]) {
         numSuppliers = Math.min(parseInt(numMatch[1], 10), topSuppliers.length);
       }
       
-      // Get the top N suppliers
       const displayedSuppliers = topSuppliers.slice(0, numSuppliers);
       
-      // Update the state for the results table
       setSupplierResults(displayedSuppliers);
       setShowResultsTable(true);
       setResultsTableTitle(`Top ${numSuppliers} Suppliers`);
       
-      // Return the response with suppliers data
       return {
         id: Date.now().toString(),
         content: `Here are the top ${numSuppliers} suppliers based on performance metrics, risk assessment, and operational reliability:\n\n1. PharmaCorp (95/100) - Low risk, 32 items\n2. BioTech Materials (92/100) - Low risk, 28 items\n3. ChemSource Inc. (90/100) - Low risk, 24 items${numSuppliers > 3 ? '\n... and more shown in the table below.' : ''}`,
@@ -790,8 +769,7 @@ export default function ChatInterface() {
           }
         ]
       };
-    } else if (lowercaseInput.includes('find supplier') && lowercaseInput.includes('paracetamol') && lowercaseInput.includes('gmp')) {
-      // Generate supplier data for Paracetamol API suppliers with GMP certification
+    } else if (lowerCaseInput.includes('find supplier') && lowerCaseInput.includes('paracetamol') && lowerCaseInput.includes('gmp')) {
       const paracetamolSuppliers: Supplier[] = [
         {
           id: '1',
@@ -881,7 +859,6 @@ export default function ChatInterface() {
         }
       ];
       
-      // Update the state for the results table
       setSupplierResults(paracetamolSuppliers);
       setShowResultsTable(true);
       setResultsTableTitle('GMP Certified Paracetamol API Suppliers');
@@ -900,7 +877,6 @@ export default function ChatInterface() {
           { 
             label: 'Create RFQ', 
             onClick: () => {
-              // Start the RFQ conversation flow
               setConversationContext({ 
                 type: 'rfq', 
                 step: 1, 
@@ -915,9 +891,7 @@ export default function ChatInterface() {
           }
         ]
       };
-    } else if (lowercaseInput.includes('compare') && lowercaseInput.includes('supplier')) {
-      // Handle supplier comparison
-      // Generate mock data for supplier comparison
+    } else if (lowerCaseInput.includes('compare') && lowerCaseInput.includes('supplier')) {
       const suppliersToCompare: Supplier[] = [
         {
           id: '1',
@@ -974,7 +948,6 @@ export default function ChatInterface() {
         }
       ];
       
-      // Update the state for the results table
       setSupplierResults(suppliersToCompare);
       setShowResultsTable(true);
       setResultsTableTitle('Supplier Comparison');
@@ -1002,7 +975,6 @@ export default function ChatInterface() {
       };
     }
     
-    // Handle other types of queries with a default response
     return {
       id: Date.now().toString(),
       content: `I can help you with information about suppliers, inventory, and procurement. Here are some things you can ask me about:\n\n- Top suppliers in various categories\n- Supplier performance metrics\n- Creating purchase orders\n- Inventory levels\n- Market research on ingredients\n\nHow can I assist you today?`,
@@ -1021,7 +993,6 @@ export default function ChatInterface() {
     };
   };
 
-  // Function to handle module requests
   const handleModuleRequest = (userInput: string): Message => {
     const lowerCaseInput = userInput.toLowerCase();
     
@@ -1034,7 +1005,7 @@ export default function ChatInterface() {
         moduleType: 'supplier',
         moduleData: {}
       };
-    } else if (lowercaseInput.includes('inventory') || lowercaseInput.includes('stock')) {
+    } else if (lowerCaseInput.includes('inventory') || lowerCaseInput.includes('stock')) {
       return {
         id: Date.now().toString(),
         content: 'Here\'s the inventory information you requested.',
@@ -1053,7 +1024,6 @@ export default function ChatInterface() {
     };
   };
 
-  // Define available modules with the category property
   const availableModules: ModuleItem[] = [
     {
       id: 'supplier-assessment',
