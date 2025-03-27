@@ -1,11 +1,9 @@
-
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { 
   MessageSquare, 
   ChevronRight, 
   ChevronLeft,
-  PlusCircle,
   Search,
   FileIcon,
   Folder,
@@ -153,20 +151,6 @@ const Sidebar = ({ isOpen, onToggle }: SidebarProps) => {
           )}
         </Link>
       </div>
-      
-      {isOpen && (
-        <div className="px-3 pt-3">
-          <Link to="/chat" className="w-full">
-            <Button 
-              variant="outline" 
-              className="w-full justify-start gap-2 border-dashed text-slate-600 hover:text-slate-900"
-            >
-              <PlusCircle className="h-4 w-4" />
-              New conversation
-            </Button>
-          </Link>
-        </div>
-      )}
       
       {isOpen && (
         <div className="px-3 pt-3">
