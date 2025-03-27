@@ -12,6 +12,7 @@ import { Badge } from '@/components/ui/badge';
 import { toast } from 'sonner';
 import CategoryActions from './CategoryActions';
 import ModuleRenderer from './ModuleRenderer';
+import ResearchDataPanel, { ResearchDocument } from './ResearchDataPanel';
 
 interface Message {
   id: string;
@@ -24,6 +25,7 @@ interface Message {
     label: string;
     onClick: () => void;
   }[];
+  isResearch?: boolean;
 }
 
 export default function ChatInterface() {
@@ -46,6 +48,11 @@ export default function ChatInterface() {
     step: number;
     data: Record<string, any>;
   } | null>(null);
+
+  // Research data state
+  const [researchData, setResearchData] = useState<ResearchDocument[]>([]);
+  const [showResearchPanel, setShowResearchPanel] = useState(false);
+  const [isResearching, setIsResearching] = useState(false);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -70,6 +77,13 @@ export default function ChatInterface() {
     setMessages(prev => [...prev, userMessage]);
     setInput('');
 
+    // Check if it's a research question
+    const isResearchQuestion = checkIfResearchQuestion(input);
+    if (isResearchQuestion) {
+      setIsResearching(true);
+      setShowResearchPanel(true);
+    }
+
     setTimeout(() => {
       // Check if we're in a multi-turn conversation flow
       if (conversationContext) {
@@ -82,13 +96,120 @@ export default function ChatInterface() {
           const moduleResponse = handleModuleRequest(input);
           setMessages(prev => [...prev, moduleResponse]);
         } else {
-          const aiResponse = generateAIResponse(input);
+          const aiResponse = generateAIResponse(input, isResearchQuestion);
           setMessages(prev => [...prev, aiResponse]);
+          
+          if (isResearchQuestion) {
+            // Simulate getting research data
+            simulateResearch(input);
+          }
         }
       }
       
       updatePreviewActions(input.toLowerCase());
     }, 1000);
+  };
+
+  const checkIfResearchQuestion = (input: string): boolean => {
+    const lowerCaseInput = input.toLowerCase();
+    return (
+      lowerCaseInput.includes('research') || 
+      lowerCaseInput.includes('analyze') || 
+      lowerCaseInput.includes('find information') || 
+      lowerCaseInput.includes('look up') ||
+      lowerCaseInput.includes('market data') ||
+      lowerCaseInput.includes('expert') ||
+      lowerCaseInput.includes('report')
+    );
+  };
+
+  const simulateResearch = (query: string) => {
+    // Simulate loading time for research
+    setTimeout(() => {
+      // Generate mock research data based on the query
+      const mockDocuments: ResearchDocument[] = [
+        {
+          id: '1',
+          title: 'FY2024 P&L',
+          date: 'Jan 18, 2024',
+          documentType: 'Financials',
+          risks: 'There have been increasing costs related to...',
+          considerations: 'Not in document, click to view explanation'
+        },
+        {
+          id: '2',
+          title: 'Project Alpha CIM',
+          date: 'Apr 29, 2024',
+          documentType: 'Marketing Materials',
+          risks: 'Risk factors that are not detailed in the CIM...',
+          considerations: 'Despite the growing TAM described within the...'
+        },
+        {
+          id: '3',
+          title: 'Product Overview Alpha',
+          date: 'Feb 26, 2024',
+          documentType: 'Product',
+          risks: 'Current product lacks detail regarding the most...',
+          considerations: 'Not in document, click to view explanation'
+        },
+        {
+          id: '4',
+          title: 'Product Roadmap',
+          date: 'Feb 26, 2024',
+          documentType: 'Product',
+          risks: 'Several integrations listed within the roadmap...',
+          considerations: 'Roadmap details particularities that align with...'
+        },
+        {
+          id: '5',
+          title: 'Expert Calls Project Alpha',
+          date: 'Mar 12, 2024',
+          documentType: 'Customer',
+          risks: 'Experts hesitate on defensibility of the technology...',
+          considerations: 'Experts differ in opinion regarding the growth...'
+        },
+        {
+          id: '6',
+          title: 'Customer Reference Calls',
+          date: 'Mar 18, 2024',
+          documentType: 'Customer',
+          risks: 'Common negative feedback across customers...',
+          considerations: 'Customers list several tailwinds including the...'
+        },
+        {
+          id: '7',
+          title: 'Market Report',
+          date: 'Mar 30, 2024',
+          documentType: 'Public Report',
+          risks: 'Headwinds raised across this report include...',
+          considerations: 'The TAM is estimated at approximately $72B...'
+        }
+      ];
+      
+      setResearchData(mockDocuments);
+      setIsResearching(false);
+      
+      // Add a follow-up message with research summary
+      const researchSummaryMessage: Message = {
+        id: Date.now().toString(),
+        content: "I've analyzed 7 documents related to your query. Key insights include:\n\n- Financial documents show increasing costs\n- Expert opinions are divided on technology defensibility\n- The estimated market size (TAM) is approximately $72B\n- Several product integration risks have been identified\n\nYou can review the detailed research data in the panel below.",
+        sender: 'ai',
+        timestamp: new Date(),
+        isResearch: true,
+        actions: [
+          { 
+            label: 'Close research panel', 
+            onClick: () => setShowResearchPanel(false)
+          },
+          { 
+            label: 'Download full report', 
+            onClick: () => toast.info('Report download started')
+          }
+        ]
+      };
+      
+      setMessages(prev => [...prev, researchSummaryMessage]);
+    }, 3000);
   };
 
   const handleQuickPrompt = (prompt: string) => {
@@ -412,17 +533,27 @@ export default function ChatInterface() {
           };
         default:
           setConversationContext(null);
-          return generateAIResponse(userInput);
+          return generateAIResponse(userInput, false);
       }
     }
     
     // If we don't recognize the context type, revert to normal responses
     setConversationContext(null);
-    return generateAIResponse(userInput);
+    return generateAIResponse(userInput, false);
   };
 
-  const generateAIResponse = (userInput: string): Message => {
+  const generateAIResponse = (userInput: string, isResearchRequest: boolean): Message => {
     const lowercaseInput = userInput.toLowerCase();
+    
+    if (isResearchRequest) {
+      return {
+        id: Date.now().toString(),
+        content: "I'm currently researching information related to your query. This may take a moment as I search through relevant documents and data sources...",
+        sender: 'ai',
+        timestamp: new Date(),
+        isResearch: true
+      };
+    }
     
     if (lowercaseInput.includes('find supplier') && lowercaseInput.includes('paracetamol') && lowercaseInput.includes('gmp')) {
       return {
@@ -713,284 +844,3 @@ export default function ChatInterface() {
             onClick: () => handleQuickPrompt('I want to add a new supplier')
           }
         ]
-      };
-    }
-    
-    // Inventory module
-    if (lowercaseInput.includes('inventory') || lowercaseInput.includes('stock')) {
-      return {
-        id: Date.now().toString(),
-        content: "Here's the inventory information you requested:",
-        sender: 'ai',
-        timestamp: new Date(),
-        moduleType: 'inventory',
-        moduleData: {},
-        actions: [
-          { 
-            label: 'Create Purchase Order', 
-            onClick: () => handleQuickPrompt('Create a new purchase order')
-          },
-          { 
-            label: 'View Low Stock Items', 
-            onClick: () => handleQuickPrompt('Show items with low stock')
-          }
-        ]
-      };
-    }
-    
-    // Category management
-    if (lowercaseInput.includes('categor') && (lowercaseInput.includes('manage') || lowercaseInput.includes('view'))) {
-      return {
-        id: Date.now().toString(),
-        content: "Here's the category management interface:",
-        sender: 'ai',
-        timestamp: new Date(),
-        moduleType: 'categories',
-        moduleData: {},
-        actions: [
-          { 
-            label: 'Add New Category', 
-            onClick: () => handleQuickPrompt('Add a new procurement category')
-          },
-          { 
-            label: 'View Category Spend', 
-            onClick: () => handleQuickPrompt('Show spending by category')
-          }
-        ]
-      };
-    }
-    
-    // Default fallback
-    return generateAIResponse(userInput);
-  };
-
-  const availableModules: ModuleItem[] = [
-    {
-      id: 'contract-risk',
-      title: 'Smart Contract Risk Management',
-      description: 'Analyze and identify risks in smart contracts',
-      icon: 'shield',
-      category: 'security'
-    },
-    {
-      id: 'data-analysis',
-      title: 'Market Data Analysis',
-      description: 'Analyze market data and trends for procurement',
-      icon: 'database',
-      category: 'data'
-    },
-    {
-      id: 'supplier-assessment',
-      title: 'Supplier Assessment',
-      description: 'Evaluate suppliers based on performance metrics',
-      icon: 'package',
-      category: 'analysis'
-    },
-    {
-      id: 'code-generator',
-      title: 'Code Generator',
-      description: 'Generate code snippets for integration',
-      icon: 'code',
-      category: 'development'
-    },
-    {
-      id: 'compliance-checker',
-      title: 'Compliance Checker',
-      description: 'Verify compliance with regulations',
-      icon: 'alertTriangle',
-      category: 'security'
-    },
-    {
-      id: 'research-assistant',
-      title: 'Research Assistant',
-      description: 'Search and summarize relevant information',
-      icon: 'search',
-      category: 'analysis'
-    },
-    {
-      id: 'ai-lab',
-      title: 'AI Laboratory',
-      description: 'Experiment with AI models and algorithms',
-      icon: 'beaker',
-      category: 'development'
-    },
-    {
-      id: 'insight-engine',
-      title: 'Insight Engine',
-      description: 'Generate insights from your procurement data',
-      icon: 'sparkles',
-      category: 'data'
-    }
-  ];
-
-  return (
-    <ResizablePanelGroup direction="horizontal" className="h-full">
-      <ResizablePanel defaultSize={60} className="h-full">
-        <div className="flex flex-col h-full bg-white">
-          {activeModules.length > 0 && (
-            <div className="px-6 py-2 border-b flex items-center gap-2 overflow-x-auto">
-              <span className="text-xs text-gray-500 flex-shrink-0">Active modules:</span>
-              {activeModules.map(module => (
-                <Badge 
-                  key={module.id} 
-                  variant="outline" 
-                  className="flex items-center gap-1 px-2 py-1"
-                >
-                  {module.title}
-                  <button 
-                    className="ml-1 text-gray-400 hover:text-gray-700"
-                    onClick={() => removeModule(module.id)}
-                  >
-                    ×
-                  </button>
-                </Badge>
-              ))}
-            </div>
-          )}
-          
-          <div className="flex-1 overflow-y-auto px-6 py-6">
-            {showWelcomeScreen ? (
-              <WelcomeScreen onModuleSelect={handleSelectModule} userName="Sam" />
-            ) : (
-              <>
-                {messages.map((message) => (
-                  <div 
-                    key={message.id} 
-                    className={cn(
-                      "mb-6 max-w-3xl",
-                      message.sender === 'user' ? "ml-auto" : ""
-                    )}
-                  >
-                    <div className="flex items-start gap-4">
-                      {message.sender === 'ai' && (
-                        <Avatar className="mt-0.5 h-8 w-8 border">
-                          <AvatarFallback className="bg-primary text-primary-foreground text-xs">AI</AvatarFallback>
-                        </Avatar>
-                      )}
-                      
-                      <div className="flex-1">
-                        <div className={cn(
-                          "prose prose-sm px-4 py-3 rounded-2xl",
-                          message.sender === 'user' 
-                            ? "bg-primary text-primary-foreground ml-auto"
-                            : "bg-accent-light text-gray-900"
-                        )}>
-                          <div className="whitespace-pre-line">{message.content}</div>
-                        </div>
-                        
-                        {message.moduleType && (
-                          <div className="mt-4 rounded-xl overflow-hidden border border-accent-pale/50">
-                            <ModuleRenderer 
-                              type={message.moduleType} 
-                              data={message.moduleData || {}} 
-                            />
-                          </div>
-                        )}
-                        
-                        {message.actions && message.actions.length > 0 && (
-                          <div className="flex flex-wrap gap-2 mt-3">
-                            {message.actions.map((action, index) => (
-                              <Button 
-                                key={index} 
-                                size="sm" 
-                                variant="outline" 
-                                className="text-xs rounded-full bg-white hover:bg-gray-50"
-                                onClick={action.onClick}
-                              >
-                                {action.label}
-                                <ArrowRight className="ml-1 h-3 w-3" />
-                              </Button>
-                            ))}
-                          </div>
-                        )}
-                      </div>
-                      
-                      {message.sender === 'user' && (
-                        <Avatar className="mt-0.5 h-8 w-8 border">
-                          <AvatarFallback>S</AvatarFallback>
-                        </Avatar>
-                      )}
-                    </div>
-                  </div>
-                ))}
-                <div ref={messagesEndRef} />
-              </>
-            )}
-          </div>
-          
-          <div className="border-t p-4">
-            <form onSubmit={handleSubmit} className="flex items-center p-2 gap-2 bg-white border rounded-full">
-              <Button 
-                type="button" 
-                size="icon" 
-                variant="ghost" 
-                className="rounded-full"
-                onClick={() => setModuleSelectOpen(true)}
-              >
-                <Grid className="h-5 w-5" />
-              </Button>
-              
-              <Button 
-                type="button" 
-                size="icon" 
-                variant="ghost" 
-                className="rounded-full"
-              >
-                <PaperclipIcon className="h-5 w-5" />
-              </Button>
-              
-              <Input 
-                value={input} 
-                onChange={(e) => setInput(e.target.value)} 
-                placeholder="Enter a prompt here" 
-                className="flex-1 border-none focus-visible:ring-0 focus-visible:ring-offset-0"
-              />
-              
-              <Button 
-                type="button" 
-                size="icon" 
-                variant="ghost" 
-                className={cn(
-                  "rounded-full",
-                  isRecording && "bg-red-100 text-red-500"
-                )}
-                onClick={toggleRecording}
-              >
-                <Mic className="h-5 w-5" />
-              </Button>
-              
-              <Button 
-                type="submit" 
-                size="icon" 
-                disabled={!input.trim()}
-                className="rounded-full"
-              >
-                <Send className="h-5 w-5" />
-              </Button>
-            </form>
-          </div>
-        </div>
-      </ResizablePanel>
-      
-      <ResizableHandle withHandle />
-      
-      <ResizablePanel defaultSize={40} className="h-full">
-        {previewTitle.toLowerCase().includes('categor') ? (
-          <CategoryActions category={previewTitle.includes('Category') ? previewTitle.split(' ')[0] : undefined} />
-        ) : (
-          <ActionPreview 
-            title={previewTitle}
-            description={previewDescription}
-            actions={previewActions}
-          />
-        )}
-      </ResizablePanel>
-
-      <ModuleSelector 
-        open={moduleSelectOpen} 
-        setOpen={setModuleSelectOpen} 
-        onSelectModule={(module) => handleSelectModule(module.id)} 
-      />
-    </ResizablePanelGroup>
-  );
-}
