@@ -1,6 +1,6 @@
 
 import Layout from '@/components/layout/Layout';
-import { ChatInterface } from '@/components/chat/ChatInterface';
+import ChatInterface from '@/components/chat/ChatInterface';
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Bell, Settings, User } from 'lucide-react';
