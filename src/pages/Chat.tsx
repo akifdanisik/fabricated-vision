@@ -90,7 +90,6 @@ const Chat = () => {
         </div>
       </div>
       
-      {/* Add the Toaster component here, in the Chat component */}
       <Toaster />
     </Layout>
   );
