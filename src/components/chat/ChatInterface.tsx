@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect } from 'react';
 import { Send, Mic, ArrowRight, Plus, PaperclipIcon, Grid } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -14,6 +13,9 @@ import { toast } from 'sonner';
 import CategoryActions from './CategoryActions';
 import ModuleRenderer from './ModuleRenderer';
 import ResearchDataPanel, { ResearchDocument } from './ResearchDataPanel';
+import ResultsTable from './ResultsTable';
+import { Supplier } from '@/components/suppliers/SuppliersTable';
+import { predefinedCategories } from '@/components/categories/CategoryBadge';
 
 interface Message {
   id: string;
@@ -27,6 +29,7 @@ interface Message {
     onClick: () => void;
   }[];
   isResearch?: boolean;
+  suppliers?: Supplier[];
 }
 
 export default function ChatInterface() {
@@ -54,6 +57,11 @@ export default function ChatInterface() {
   const [researchData, setResearchData] = useState<ResearchDocument[]>([]);
   const [showResearchPanel, setShowResearchPanel] = useState(false);
   const [isResearching, setIsResearching] = useState(false);
+
+  // Add new state for supplier results
+  const [supplierResults, setSupplierResults] = useState<Supplier[]>([]);
+  const [showResultsTable, setShowResultsTable] = useState(false);
+  const [resultsTableTitle, setResultsTableTitle] = useState("Top Suppliers");
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -556,12 +564,326 @@ export default function ChatInterface() {
       };
     }
     
-    if (lowercaseInput.includes('find supplier') && lowercaseInput.includes('paracetamol') && lowercaseInput.includes('gmp')) {
+    // Check if the query is about suppliers
+    if (lowercaseInput.includes('top') && (lowercaseInput.includes('supplier') || lowercaseInput.includes('vendor'))) {
+      // Generate mock supplier data for top suppliers
+      const topSuppliers: Supplier[] = [
+        {
+          id: '1',
+          name: 'PharmaCorp',
+          category: 'Active Ingredients',
+          categories: [
+            predefinedCategories.find(c => c.id === 'apis')!
+          ],
+          performance: 95,
+          riskLevel: 'low',
+          items: 32,
+          contact: {
+            name: 'Alex Johnson',
+            email: 'alex.johnson@pharmaco.com',
+            phone: '+1 (555) 123-4567',
+          },
+          location: 'Boston, USA',
+          initials: 'PC',
+        },
+        {
+          id: '2',
+          name: 'BioTech Materials',
+          category: 'Excipients',
+          categories: [
+            predefinedCategories.find(c => c.id === 'excipients')!
+          ],
+          performance: 92,
+          riskLevel: 'low',
+          items: 28,
+          contact: {
+            name: 'Maria Garcia',
+            email: 'mgarcia@biotechmat.com',
+          },
+          location: 'Barcelona, Spain',
+          initials: 'BM',
+        },
+        {
+          id: '3',
+          name: 'ChemSource Inc.',
+          category: 'Excipients',
+          categories: [
+            predefinedCategories.find(c => c.id === 'excipients')!,
+            predefinedCategories.find(c => c.id === 'chemicals')!
+          ],
+          performance: 90,
+          riskLevel: 'low',
+          items: 24,
+          contact: {
+            name: 'David Lee',
+            email: 'd.lee@chemsource.com',
+          },
+          location: 'Singapore',
+          initials: 'CS',
+        },
+        {
+          id: '4',
+          name: 'GlobalPharma Suppliers',
+          category: 'Active Ingredients',
+          categories: [
+            predefinedCategories.find(c => c.id === 'apis')!
+          ],
+          performance: 89,
+          riskLevel: 'low',
+          items: 45,
+          contact: {
+            name: 'Robert Wilson',
+            email: 'rwilson@globalpharm.com',
+          },
+          location: 'London, UK',
+          initials: 'GS',
+        },
+        {
+          id: '5',
+          name: 'MedSource Inc.',
+          category: 'Active Ingredients',
+          categories: [
+            predefinedCategories.find(c => c.id === 'apis')!,
+            predefinedCategories.find(c => c.id === 'chemicals')!
+          ],
+          performance: 87,
+          riskLevel: 'low',
+          items: 19,
+          contact: {
+            name: 'John Smith',
+            email: 'j.smith@medsource.com',
+          },
+          location: 'San Francisco, USA',
+          initials: 'MI',
+        },
+        {
+          id: '6',
+          name: 'PharmaQuality Group',
+          category: 'Active Ingredients',
+          categories: [
+            predefinedCategories.find(c => c.id === 'apis')!
+          ],
+          performance: 86,
+          riskLevel: 'low',
+          items: 30,
+          contact: {
+            name: 'Lisa Chen',
+            email: 'lchen@pharmaquality.com',
+          },
+          location: 'Toronto, Canada',
+          initials: 'PQ',
+        },
+        {
+          id: '7',
+          name: 'EuroMed Suppliers',
+          category: 'Excipients',
+          categories: [
+            predefinedCategories.find(c => c.id === 'excipients')!
+          ],
+          performance: 85,
+          riskLevel: 'low',
+          items: 22,
+          contact: {
+            name: 'Thomas Müller',
+            email: 't.muller@euromed.de',
+          },
+          location: 'Munich, Germany',
+          initials: 'EM',
+        },
+        {
+          id: '8',
+          name: 'AsiaPharma Connect',
+          category: 'Packaging',
+          categories: [
+            predefinedCategories.find(c => c.id === 'packaging')!
+          ],
+          performance: 84,
+          riskLevel: 'low',
+          items: 37,
+          contact: {
+            name: 'Hiroshi Tanaka',
+            email: 'h.tanaka@asiapharma.jp',
+          },
+          location: 'Tokyo, Japan',
+          initials: 'AC',
+        },
+        {
+          id: '9',
+          name: 'Quality Chemicals Ltd',
+          category: 'Chemicals',
+          categories: [
+            predefinedCategories.find(c => c.id === 'chemicals')!
+          ],
+          performance: 83,
+          riskLevel: 'low',
+          items: 41,
+          contact: {
+            name: 'Sarah Johnson',
+            email: 'sjohnson@qualitychem.co.uk',
+          },
+          location: 'Manchester, UK',
+          initials: 'QC',
+        },
+        {
+          id: '10',
+          name: 'PackTech Solutions',
+          category: 'Packaging',
+          categories: [
+            predefinedCategories.find(c => c.id === 'packaging')!
+          ],
+          performance: 82,
+          riskLevel: 'low',
+          items: 32,
+          contact: {
+            name: 'Sarah Miller',
+            email: 'sarah@packtech.com',
+          },
+          location: 'Chicago, USA',
+          initials: 'PS',
+        },
+      ];
+
+      // Determine how many suppliers to display
+      let numSuppliers = 10; // Default to 10
+      
+      // Try to extract a number from the query
+      const numMatch = userInput.match(/top\s+(\d+)/i);
+      if (numMatch && numMatch[1]) {
+        numSuppliers = Math.min(parseInt(numMatch[1], 10), topSuppliers.length);
+      }
+      
+      // Get the top N suppliers
+      const displayedSuppliers = topSuppliers.slice(0, numSuppliers);
+      
+      // Update the state for the results table
+      setSupplierResults(displayedSuppliers);
+      setShowResultsTable(true);
+      setResultsTableTitle(`Top ${numSuppliers} Suppliers`);
+      
+      // Return the response with suppliers data
+      return {
+        id: Date.now().toString(),
+        content: `Here are the top ${numSuppliers} suppliers based on performance metrics, risk assessment, and operational reliability:\n\n1. PharmaCorp (95/100) - Low risk, 32 items\n2. BioTech Materials (92/100) - Low risk, 28 items\n3. ChemSource Inc. (90/100) - Low risk, 24 items${numSuppliers > 3 ? '\n... and more shown in the table below.' : ''}`,
+        sender: 'ai',
+        timestamp: new Date(),
+        suppliers: displayedSuppliers,
+        actions: [
+          { 
+            label: 'Compare top 3', 
+            onClick: () => handleQuickPrompt('Compare top 3 suppliers')
+          },
+          { 
+            label: 'Filter by API suppliers only', 
+            onClick: () => handleQuickPrompt('Show top API suppliers')
+          },
+          { 
+            label: 'View full supplier details', 
+            onClick: () => window.location.href = '/suppliers'
+          }
+        ]
+      };
+    } else if (lowercaseInput.includes('find supplier') && lowercaseInput.includes('paracetamol') && lowercaseInput.includes('gmp')) {
+      // Generate supplier data for Paracetamol API suppliers with GMP certification
+      const paracetamolSuppliers: Supplier[] = [
+        {
+          id: '1',
+          name: 'PharmaCorp',
+          category: 'Active Ingredients',
+          categories: [
+            predefinedCategories.find(c => c.id === 'apis')!
+          ],
+          performance: 95,
+          riskLevel: 'low',
+          items: 12,
+          contact: {
+            name: 'Alex Johnson',
+            email: 'alex.johnson@pharmaco.com',
+            phone: '+1 (555) 123-4567',
+          },
+          location: 'Boston, USA',
+          initials: 'PC',
+        },
+        {
+          id: '2',
+          name: 'BioTech Materials',
+          category: 'Active Ingredients',
+          categories: [
+            predefinedCategories.find(c => c.id === 'apis')!
+          ],
+          performance: 90,
+          riskLevel: 'low',
+          items: 8,
+          contact: {
+            name: 'Maria Garcia',
+            email: 'mgarcia@biotechmat.com',
+          },
+          location: 'Barcelona, Spain',
+          initials: 'BM',
+        },
+        {
+          id: '3',
+          name: 'PharmaQuality Group',
+          category: 'Active Ingredients',
+          categories: [
+            predefinedCategories.find(c => c.id === 'apis')!
+          ],
+          performance: 88,
+          riskLevel: 'low',
+          items: 10,
+          contact: {
+            name: 'Lisa Chen',
+            email: 'lchen@pharmaquality.com',
+          },
+          location: 'Toronto, Canada',
+          initials: 'PQ',
+        },
+        {
+          id: '4',
+          name: 'GlobalPharma Suppliers',
+          category: 'Active Ingredients',
+          categories: [
+            predefinedCategories.find(c => c.id === 'apis')!
+          ],
+          performance: 85,
+          riskLevel: 'low',
+          items: 7,
+          contact: {
+            name: 'Robert Wilson',
+            email: 'rwilson@globalpharm.com',
+          },
+          location: 'London, UK',
+          initials: 'GS',
+        },
+        {
+          id: '5',
+          name: 'MedSource Inc.',
+          category: 'Active Ingredients',
+          categories: [
+            predefinedCategories.find(c => c.id === 'apis')!
+          ],
+          performance: 82,
+          riskLevel: 'low',
+          items: 6,
+          contact: {
+            name: 'John Smith',
+            email: 'j.smith@medsource.com',
+          },
+          location: 'San Francisco, USA',
+          initials: 'MI',
+        }
+      ];
+      
+      // Update the state for the results table
+      setSupplierResults(paracetamolSuppliers);
+      setShowResultsTable(true);
+      setResultsTableTitle('GMP Certified Paracetamol API Suppliers');
+      
       return {
         id: Date.now().toString(),
         content: 'Here are 5 suppliers for Paracetamol API with GMP certification:\n\nSupplier A: $500/kg, 10-week lead time.\nSupplier B: $550/kg, 8-week lead time.\nSupplier C: $480/kg, 12-week lead time (FDA approval pending).\nSupplier D: $530/kg, 9-week lead time (ISO certified).\nSupplier E: $575/kg, 7-week lead time (multiple quality certifications).\n\nWould you like to compare them or create an RFQ?',
         sender: 'ai',
         timestamp: new Date(),
+        suppliers: paracetamolSuppliers,
         actions: [
           { 
             label: 'Compare Suppliers', 
@@ -585,489 +907,4 @@ export default function ChatInterface() {
           }
         ]
       };
-    } else if (lowercaseInput.includes('create') && lowercaseInput.includes('rfq')) {
-      const product = lowercaseInput.includes('paracetamol') ? 'Paracetamol API' : 'the requested product';
-      
-      // Start the RFQ conversation flow
-      setConversationContext({ 
-        type: 'rfq', 
-        step: 1, 
-        data: { product } 
-      });
-      
-      return {
-        id: Date.now().toString(),
-        content: `I'll help you create an RFQ for ${product}. What quantity do you need?`,
-        sender: 'ai',
-        timestamp: new Date(),
-        actions: [
-          { label: '100kg', onClick: () => handleQuickPrompt('100kg') },
-          { label: '250kg', onClick: () => handleQuickPrompt('250kg') },
-          { label: '500kg', onClick: () => handleQuickPrompt('500kg') },
-          { label: 'Custom amount', onClick: () => {} } // This one just lets them type
-        ]
-      };
     } else if (lowercaseInput.includes('compare') && lowercaseInput.includes('supplier')) {
-      return {
-        id: Date.now().toString(),
-        content: 'Comparison of top Paracetamol API suppliers:\n\n| Supplier | Price | Lead Time | Certifications | Min. Order |\n|----------|-------|-----------|---------------|------------|\n| Supplier A | $500/kg | 10 weeks | GMP, ISO | 100kg |\n| Supplier B | $550/kg | 8 weeks | GMP, FDA | 50kg |\n| Supplier C | $480/kg | 12 weeks | GMP* | 200kg |\n\n*FDA approval pending\n\nSupplier B offers the fastest delivery but at a premium price. Supplier C has the lowest price but longest lead time and pending FDA approval.',
-        sender: 'ai',
-        timestamp: new Date(),
-        actions: [
-          { 
-            label: 'Create RFQ with Supplier A', 
-            onClick: () => {
-              setConversationContext({ 
-                type: 'rfq', 
-                step: 1, 
-                data: { product: 'Paracetamol API', supplier: 'Supplier A' } 
-              });
-              handleQuickPrompt('Create RFQ with Supplier A')
-            }
-          },
-          { 
-            label: 'Create RFQ with Supplier B', 
-            onClick: () => {
-              setConversationContext({ 
-                type: 'rfq', 
-                step: 1, 
-                data: { product: 'Paracetamol API', supplier: 'Supplier B' } 
-              });
-              handleQuickPrompt('Create RFQ with Supplier B')
-            }
-          },
-          { 
-            label: 'View quality reports', 
-            onClick: () => handleQuickPrompt('Show quality reports for these suppliers')
-          }
-        ]
-      };
-    } else if (lowercaseInput.includes('profile') && lowercaseInput.includes('supplier')) {
-      return {
-        id: Date.now().toString(),
-        content: 'Here are the detailed profiles of the recommended suppliers:\n\n**Supplier A (PharmaCorp)**\nLocation: Mumbai, India\nEstablished: 1998\nCertifications: GMP, ISO 9001\nProducts: API, Excipients\nCustomers: 200+ globally\nOn-time delivery rate: 92%\n\n**Supplier B (BioTech Materials)**\nLocation: Frankfurt, Germany\nEstablished: 2005\nCertifications: GMP, FDA, ISO 9001\nProducts: API, Custom synthesis\nCustomers: Major pharma in EU/US\nOn-time delivery rate: 96%\n\n**Supplier C (ChemSource)**\nLocation: Shanghai, China\nEstablished: 2010\nCertifications: GMP (FDA approval pending)\nProducts: APIs, Intermediates\nCustomers: Growing customer base in Asia\nOn-time delivery rate: 88%',
-        sender: 'ai',
-        timestamp: new Date(),
-        actions: [
-          { 
-            label: 'Request samples', 
-            onClick: () => handleQuickPrompt('Request samples from these suppliers')
-          },
-          { 
-            label: 'Create RFQ', 
-            onClick: () => {
-              setConversationContext({ 
-                type: 'rfq', 
-                step: 1, 
-                data: { product: 'Paracetamol API' } 
-              });
-              handleQuickPrompt('Create RFQ for Paracetamol API')
-            }
-          },
-          { 
-            label: 'View all suppliers', 
-            onClick: () => window.location.href = '/suppliers'
-          }
-        ]
-      };
-    } else if (lowercaseInput.includes('inventory') || lowercaseInput.includes('stock')) {
-      return {
-        id: Date.now().toString(),
-        content: 'Here\'s the current inventory status of your critical items:\n\n- Paracetamol API: 90kg (Below reorder point)\n- Microcrystalline Cellulose: 2500kg (Sufficient)\n- API-36B: 220kg (Critical low)',
-        sender: 'ai',
-        timestamp: new Date(),
-        actions: [
-          { 
-            label: 'Create reorder', 
-            onClick: () => handleQuickPrompt('Create a reorder for Paracetamol API')
-          },
-          { 
-            label: 'View all inventory', 
-            onClick: () => window.location.href = '/inventory'
-          }
-        ]
-      };
-    } else if (lowercaseInput.includes('supplier') || lowercaseInput.includes('vendor')) {
-      return {
-        id: Date.now().toString(),
-        content: 'Here are your top suppliers:\n\n- PharmaCorp (Performance: 95%)\n- BioTech Materials (Performance: 92%)\n- MedSource Inc. (Performance: 88%)',
-        sender: 'ai',
-        timestamp: new Date(),
-        actions: [
-          { 
-            label: 'Compare suppliers', 
-            onClick: () => handleQuickPrompt('Compare PharmaCorp and BioTech Materials')
-          },
-          { 
-            label: 'View all suppliers', 
-            onClick: () => window.location.href = '/suppliers'
-          },
-          { 
-            label: 'Find GMP certified suppliers', 
-            onClick: () => handleQuickPrompt('Find suppliers with GMP certification')
-          }
-        ]
-      };
-    } else if (lowercaseInput.includes('reorder') || lowercaseInput.includes('order')) {
-      return {
-        id: Date.now().toString(),
-        content: 'I can help you create a reorder. For which product would you like to create a reorder?',
-        sender: 'ai',
-        timestamp: new Date(),
-        actions: [
-          { 
-            label: 'Paracetamol API', 
-            onClick: () => handleQuickPrompt('Create reorder for Paracetamol API, 200kg')
-          },
-          { 
-            label: 'API-36B', 
-            onClick: () => handleQuickPrompt('Create reorder for API-36B, 100kg')
-          }
-        ]
-      };
-    } else if (lowercaseInput.includes('compare')) {
-      return {
-        id: Date.now().toString(),
-        content: 'Comparison between PharmaCorp and BioTech Materials:\n\n- Price: PharmaCorp ($500/kg) vs BioTech ($550/kg)\n- Lead time: PharmaCorp (10 weeks) vs BioTech (8 weeks)\n- Quality rating: PharmaCorp (4.8/5) vs BioTech (4.6/5)',
-        sender: 'ai',
-        timestamp: new Date(),
-        actions: [
-          { 
-            label: 'Create RFQ', 
-            onClick: () => handleQuickPrompt('Create RFQ with PharmaCorp')
-          },
-          { 
-            label: 'View supplier details', 
-            onClick: () => window.location.href = '/suppliers'
-          }
-        ]
-      };
-    } else {
-      return {
-        id: Date.now().toString(),
-        content: 'I understand you\'re looking for assistance. Could you please be more specific about what you need help with? I can help with inventory management, supplier information, creating orders, finding suppliers, and more.',
-        sender: 'ai',
-        timestamp: new Date(),
-        actions: [
-          { 
-            label: 'Check inventory', 
-            onClick: () => handleQuickPrompt('Check inventory status')
-          },
-          { 
-            label: 'Find suppliers', 
-            onClick: () => handleQuickPrompt('Find suppliers with GMP certification')
-          },
-          { 
-            label: 'Create an RFQ', 
-            onClick: () => handleQuickPrompt('Create an RFQ')
-          }
-        ]
-      };
-    }
-  };
-
-  const removeModule = (moduleId: string) => {
-    setActiveModules(prev => prev.filter(m => m.id !== moduleId));
-    toast.info('Module deactivated');
-  };
-
-  const handleModuleRequest = (userInput: string): Message => {
-    const lowercaseInput = userInput.toLowerCase();
-    
-    // Compliance module
-    if (lowercaseInput.includes('compliance') || lowercaseInput.includes('audit')) {
-      return {
-        id: Date.now().toString(),
-        content: "Here's the compliance overview you requested:",
-        sender: 'ai',
-        timestamp: new Date(),
-        moduleType: 'compliance',
-        moduleData: {
-          categoryFilter: true
-        },
-        actions: [
-          { 
-            label: 'View Document Management', 
-            onClick: () => handleQuickPrompt('Show me document management')
-          },
-          { 
-            label: 'See Audit Readiness', 
-            onClick: () => handleQuickPrompt('Display audit readiness status')
-          }
-        ]
-      };
-    }
-    
-    // Spend metrics / Reports module
-    if (lowercaseInput.includes('spend') || lowercaseInput.includes('metrics') || lowercaseInput.includes('analytics') || lowercaseInput.includes('reports')) {
-      return {
-        id: Date.now().toString(),
-        content: "Here are the spend analytics you requested:",
-        sender: 'ai',
-        timestamp: new Date(),
-        moduleType: 'reports',
-        moduleData: {
-          tab: lowercaseInput.includes('categor') ? 'categories' : 
-               lowercaseInput.includes('saving') ? 'savings' : 'spend'
-        },
-        actions: [
-          { 
-            label: 'View by Category', 
-            onClick: () => handleQuickPrompt('Show spend by categories')
-          },
-          { 
-            label: 'Check Cost Savings', 
-            onClick: () => handleQuickPrompt('Display cost savings')
-          }
-        ]
-      };
-    }
-    
-    // Supplier module
-    if (lowercaseInput.includes('supplier') || lowercaseInput.includes('vendor')) {
-      return {
-        id: Date.now().toString(),
-        content: "Here are the supplier details you requested:",
-        sender: 'ai',
-        timestamp: new Date(),
-        moduleType: 'suppliers',
-        moduleData: {
-          filteredByGMP: lowercaseInput.includes('gmp'),
-          categoryFilter: lowercaseInput.includes('categor')
-        },
-        actions: [
-          { 
-            label: 'View Supplier Performance', 
-            onClick: () => handleQuickPrompt('Show supplier performance metrics')
-          },
-          { 
-            label: 'Add New Supplier', 
-            onClick: () => handleQuickPrompt('I want to add a new supplier')
-          }
-        ]
-      };
-    }
-    
-    // Default fallback response
-    return {
-      id: Date.now().toString(),
-      content: "I understand you're asking for specific information. Could you please try rephrasing your request? I can help with inventory, suppliers, compliance, and analytics data.",
-      sender: 'ai',
-      timestamp: new Date()
-    };
-  };
-
-  // Get available modules for the module selector
-  const availableModules: ModuleItem[] = [
-    {
-      id: 'contract-risk',
-      title: 'Contract Risk Analysis',
-      description: 'AI-powered contract risk assessment',
-      icon: 'shield',
-      category: 'security'
-    },
-    {
-      id: 'supplier-assessment',
-      title: 'Supplier Assessment',
-      description: 'Evaluate and compare suppliers',
-      icon: 'chart',
-      category: 'analysis'
-    },
-    {
-      id: 'inventory-optimization',
-      title: 'Inventory Optimization',
-      description: 'Optimize inventory levels',
-      icon: 'package',
-      category: 'data'
-    }
-  ];
-
-  return (
-    <ResizablePanelGroup
-      direction="horizontal"
-      className="h-full rounded-lg "
-    >
-      <ResizablePanel defaultSize={70} minSize={50} className="relative">
-        <div className="flex flex-col h-full">
-          {/* Main Chat Area */}
-          <div className="flex-1 overflow-y-auto p-4">
-            {showWelcomeScreen ? (
-              <WelcomeScreen onSelectQuickStart={handleQuickPrompt} />
-            ) : (
-              <div className="space-y-4 pb-20">
-                {messages.map((message) => (
-                  <div
-                    key={message.id}
-                    className={cn(
-                      "flex w-max max-w-[85%] animate-in fade-in-5 zoom-in-98 slide-in-from-bottom-5 duration-200 mb-5 mx-2",
-                      message.sender === "user" ? "ml-auto" : "mr-auto"
-                    )}
-                  >
-                    {message.sender === "ai" && (
-                      <Avatar className="h-8 w-8 mr-2">
-                        <AvatarImage src="/lovable-uploads/0f378f40-c5be-494e-a251-1513b467af1d.png" />
-                        <AvatarFallback className="bg-primary-light text-primary-dark">AI</AvatarFallback>
-                      </Avatar>
-                    )}
-                    <div className="flex flex-col">
-                      <div
-                        className={cn(
-                          "rounded-lg px-4 py-2 max-w-prose",
-                          message.sender === "user"
-                            ? "bg-primary text-primary-foreground"
-                            : "bg-muted"
-                        )}
-                      >
-                        <div className="prose prose-sm">
-                          {message.content.split('\n').map((paragraph, i) => (
-                            <p key={i} className={i > 0 ? 'mt-2' : undefined}>
-                              {paragraph}
-                            </p>
-                          ))}
-                        </div>
-                      </div>
-                      
-                      {message.actions && message.actions.length > 0 && (
-                        <div className="flex flex-wrap gap-2 mt-2">
-                          {message.actions.map((action, index) => (
-                            <Button 
-                              key={index} 
-                              variant="secondary" 
-                              size="sm" 
-                              className="text-xs"
-                              onClick={action.onClick}
-                            >
-                              {action.label}
-                            </Button>
-                          ))}
-                        </div>
-                      )}
-                      
-                      {message.moduleType && (
-                        <div className="mt-3">
-                          <ModuleRenderer type={message.moduleType} data={message.moduleData} />
-                        </div>
-                      )}
-                    </div>
-                    
-                    {message.sender === "user" && (
-                      <Avatar className="h-8 w-8 ml-2">
-                        <AvatarImage src="" />
-                        <AvatarFallback className="bg-gray-100 text-gray-700">JD</AvatarFallback>
-                      </Avatar>
-                    )}
-                  </div>
-                ))}
-                <div ref={messagesEndRef} />
-              </div>
-            )}
-          </div>
-          
-          {/* Research Data Panel */}
-          <ResearchDataPanel 
-            isVisible={showResearchPanel} 
-            documents={researchData} 
-            onClose={() => setShowResearchPanel(false)}
-            isLoading={isResearching}
-          />
-          
-          {/* Chat Input Area */}
-          <div className="absolute bottom-0 left-0 right-0 p-4 bg-white border-t">
-            <form onSubmit={handleSubmit} className="flex items-center gap-2">
-              <Button
-                type="button"
-                size="icon"
-                variant="outline"
-                className="flex-shrink-0"
-                onClick={() => setModuleSelectOpen(true)}
-              >
-                <Plus className="h-4 w-4" />
-                <span className="sr-only">Add Module</span>
-              </Button>
-              
-              <div className="relative flex-1">
-                <Input
-                  placeholder="Type your message..."
-                  className="pr-10"
-                  value={input}
-                  onChange={(e) => setInput(e.target.value)}
-                />
-              </div>
-              
-              <Button
-                type="button"
-                size="icon"
-                variant="ghost"
-                disabled={isRecording}
-                className={cn(
-                  "flex-shrink-0",
-                  isRecording && "text-red-500"
-                )}
-                onClick={toggleRecording}
-              >
-                <Mic className="h-4 w-4" />
-                <span className="sr-only">
-                  {isRecording ? "Stop Recording" : "Start Recording"}
-                </span>
-                {isRecording && (
-                  <span className="absolute top-0 right-0 h-2 w-2 rounded-full bg-red-500" />
-                )}
-              </Button>
-              
-              <Button
-                type="submit"
-                size="icon"
-                disabled={!input.trim()}
-                className="flex-shrink-0"
-              >
-                <Send className="h-4 w-4" />
-                <span className="sr-only">Send</span>
-              </Button>
-            </form>
-            
-            {/* Active Modules Indicators */}
-            {activeModules.length > 0 && (
-              <div className="mt-2 flex gap-1 flex-wrap">
-                {activeModules.map((module) => (
-                  <Badge 
-                    key={module.id} 
-                    variant="outline" 
-                    className="text-xs bg-primary-light/30 flex items-center gap-1"
-                  >
-                    {module.title}
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      className="h-3 w-3 ml-1 rounded-full"
-                      onClick={() => removeModule(module.id)}
-                    >
-                      <span className="sr-only">Remove</span>
-                      <span aria-hidden="true" className="text-xs">×</span>
-                    </Button>
-                  </Badge>
-                ))}
-              </div>
-            )}
-          </div>
-        </div>
-      </ResizablePanel>
-      
-      <ResizableHandle withHandle />
-      
-      <ResizablePanel defaultSize={30} minSize={25}>
-        <ActionPreview
-          title={previewTitle}
-          description={previewDescription}
-          actions={previewActions}
-        />
-      </ResizablePanel>
-      
-      <ModuleSelector
-        isOpen={moduleSelectOpen}
-        onClose={() => setModuleSelectOpen(false)}
-        modules={availableModules}
-        onSelectModule={handleSelectModule}
-      />
-    </ResizablePanelGroup>
-  );
-}
