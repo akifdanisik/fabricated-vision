@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { MessageSquare, ChevronRight, ChevronLeft, Search, Folder, ChevronDown, Square, Menu, AlignLeft } from "lucide-react";
@@ -189,11 +188,11 @@ const Sidebar = ({
                 <nav className="grid gap-1">
                   {todayChats.map(chat => <div 
                       key={chat.id} 
-                      className="flex items-center gap-2 px-2 py-1.5 rounded-md text-xs hover:bg-gray-100 cursor-pointer"
+                      className="flex items-center gap-2 px-2 py-1.5 rounded-md text-[0.7rem] hover:bg-gray-100 cursor-pointer"
                       onClick={() => handleChatClick(chat.id)}
                     >
                       <Square className="h-3 w-3 text-slate-400" />
-                      <span className="truncate text-[0.65rem]">{chat.title}</span>
+                      <span className="truncate text-[0.75rem]">{chat.title}</span>
                     </div>)}
                 </nav>
               </>}
@@ -203,11 +202,11 @@ const Sidebar = ({
                 <nav className="grid gap-1">
                   {yesterdayChats.map(chat => <div 
                       key={chat.id} 
-                      className="flex items-center gap-2 px-2 py-1.5 rounded-md text-xs hover:bg-gray-100 cursor-pointer"
+                      className="flex items-center gap-2 px-2 py-1.5 rounded-md text-[0.7rem] hover:bg-gray-100 cursor-pointer"
                       onClick={() => handleChatClick(chat.id)}
                     >
                       <Square className="h-3 w-3 text-slate-400" />
-                      <span className="truncate text-[0.65rem]">{chat.title}</span>
+                      <span className="truncate text-[0.75rem]">{chat.title}</span>
                     </div>)}
                 </nav>
               </>}
@@ -217,9 +216,9 @@ const Sidebar = ({
               {mockProjects.map(project => <div key={project.id}>
                   <Collapsible open={expandedProjects[project.id]} onOpenChange={() => toggleProject(project.id)}>
                     <CollapsibleTrigger asChild>
-                      <button className="flex items-center gap-2 w-full px-2 py-1.5 rounded-md text-xs hover:bg-gray-100 text-left">
+                      <button className="flex items-center gap-2 w-full px-2 py-1.5 rounded-md text-[0.7rem] hover:bg-gray-100 text-left">
                         <Folder className="h-3 w-3 text-slate-400" />
-                        <span className="truncate text-[0.65rem]">{project.title}</span>
+                        <span className="truncate text-[0.75rem]">{project.title}</span>
                         <ChevronDown className={cn("ml-auto h-3 w-3 text-slate-400 transition-transform", expandedProjects[project.id] ? "transform rotate-180" : "")} />
                       </button>
                     </CollapsibleTrigger>
@@ -227,11 +226,11 @@ const Sidebar = ({
                       <div className="pl-4 border-l border-slate-200 ml-3 mt-1">
                         {project.chats.map(chat => <div 
                             key={chat.id} 
-                            className="flex items-center gap-2 px-2 py-1.5 rounded-md text-xs hover:bg-gray-100 cursor-pointer"
+                            className="flex items-center gap-2 px-2 py-1.5 rounded-md text-[0.7rem] hover:bg-gray-100 cursor-pointer"
                             onClick={() => handleChatClick(chat.id)}
                           >
                             <Square className="h-3 w-3 text-slate-400" />
-                            <span className="truncate text-[0.65rem]">{chat.title}</span>
+                            <span className="truncate text-[0.75rem]">{chat.title}</span>
                           </div>)}
                       </div>
                     </CollapsibleContent>
@@ -248,4 +247,3 @@ const Sidebar = ({
 };
 
 export default Sidebar;
-
