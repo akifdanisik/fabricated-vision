@@ -189,11 +189,11 @@ const Sidebar = ({
                 <nav className="grid gap-1">
                   {todayChats.map(chat => <div 
                       key={chat.id} 
-                      className="flex items-center gap-2 px-2 py-1.5 rounded-md text-sm hover:bg-gray-100 cursor-pointer"
+                      className="flex items-center gap-2 px-2 py-1.5 rounded-md text-xs hover:bg-gray-100 cursor-pointer"
                       onClick={() => handleChatClick(chat.id)}
                     >
-                      <Square className="h-4 w-4 text-slate-400" />
-                      <span className="truncate">{chat.title}</span>
+                      <Square className="h-3 w-3 text-slate-400" />
+                      <span className="truncate text-[0.65rem]">{chat.title}</span>
                     </div>)}
                 </nav>
               </>}
@@ -203,11 +203,11 @@ const Sidebar = ({
                 <nav className="grid gap-1">
                   {yesterdayChats.map(chat => <div 
                       key={chat.id} 
-                      className="flex items-center gap-2 px-2 py-1.5 rounded-md text-sm hover:bg-gray-100 cursor-pointer"
+                      className="flex items-center gap-2 px-2 py-1.5 rounded-md text-xs hover:bg-gray-100 cursor-pointer"
                       onClick={() => handleChatClick(chat.id)}
                     >
-                      <Square className="h-4 w-4 text-slate-400" />
-                      <span className="truncate">{chat.title}</span>
+                      <Square className="h-3 w-3 text-slate-400" />
+                      <span className="truncate text-[0.65rem]">{chat.title}</span>
                     </div>)}
                 </nav>
               </>}
@@ -217,21 +217,21 @@ const Sidebar = ({
               {mockProjects.map(project => <div key={project.id}>
                   <Collapsible open={expandedProjects[project.id]} onOpenChange={() => toggleProject(project.id)}>
                     <CollapsibleTrigger asChild>
-                      <button className="flex items-center gap-2 w-full px-2 py-1.5 rounded-md text-sm hover:bg-gray-100 text-left">
-                        <Folder className="h-4 w-4 text-slate-400" />
-                        <span className="truncate">{project.title}</span>
-                        <ChevronDown className={cn("ml-auto h-4 w-4 text-slate-400 transition-transform", expandedProjects[project.id] ? "transform rotate-180" : "")} />
+                      <button className="flex items-center gap-2 w-full px-2 py-1.5 rounded-md text-xs hover:bg-gray-100 text-left">
+                        <Folder className="h-3 w-3 text-slate-400" />
+                        <span className="truncate text-[0.65rem]">{project.title}</span>
+                        <ChevronDown className={cn("ml-auto h-3 w-3 text-slate-400 transition-transform", expandedProjects[project.id] ? "transform rotate-180" : "")} />
                       </button>
                     </CollapsibleTrigger>
                     <CollapsibleContent>
                       <div className="pl-4 border-l border-slate-200 ml-3 mt-1">
                         {project.chats.map(chat => <div 
                             key={chat.id} 
-                            className="flex items-center gap-2 px-2 py-1.5 rounded-md text-sm hover:bg-gray-100 cursor-pointer"
+                            className="flex items-center gap-2 px-2 py-1.5 rounded-md text-xs hover:bg-gray-100 cursor-pointer"
                             onClick={() => handleChatClick(chat.id)}
                           >
-                            <Square className="h-4 w-4 text-slate-400" />
-                            <span className="truncate">{chat.title}</span>
+                            <Square className="h-3 w-3 text-slate-400" />
+                            <span className="truncate text-[0.65rem]">{chat.title}</span>
                           </div>)}
                       </div>
                     </CollapsibleContent>
@@ -248,3 +248,4 @@ const Sidebar = ({
 };
 
 export default Sidebar;
+
