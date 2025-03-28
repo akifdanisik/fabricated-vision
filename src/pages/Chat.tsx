@@ -3,7 +3,7 @@ import Layout from '@/components/layout/Layout';
 import ChatInterface from '@/components/chat/ChatInterface';
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { Bell, Settings, User } from 'lucide-react';
+import { Bell, Settings, User, Edit } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
@@ -30,9 +30,21 @@ const Chat = () => {
   return (
     <Layout fullWidth hideNavbar>
       <div className="flex flex-col h-[calc(100vh-0px)] bg-[#f3f3f3]">
-        <div className="flex justify-end items-center px-6 py-3 border-b bg-white">
+        <div className="flex justify-between items-center px-6 py-3 border-b bg-white">
+          <div className="flex items-center">
+            <Button variant="ghost" size="icon" className="h-10 w-10 rounded-full mr-2">
+              <Avatar className="h-8 w-8">
+                <AvatarFallback className="bg-emerald-600 text-white">J</AvatarFallback>
+              </Avatar>
+            </Button>
+          </div>
+          
           <div className="flex items-center gap-2">
-            <Button variant="ghost" size="icon" className="relative rounded-full text-gray-500 hover:bg-gray-100 hover:text-gray-900">
+            <Button variant="ghost" size="icon" className="rounded-full h-10 w-10 text-gray-600 hover:bg-gray-100">
+              <Edit className="h-5 w-5" />
+            </Button>
+            
+            <Button variant="ghost" size="icon" className="relative rounded-full h-10 w-10 text-gray-600 hover:bg-gray-100">
               <Bell className="h-5 w-5" />
               <Badge 
                 className="absolute -top-1 -right-1 h-4 w-4 p-0 flex items-center justify-center text-xs"
@@ -42,7 +54,7 @@ const Chat = () => {
               </Badge>
             </Button>
             
-            <Button variant="ghost" size="icon" className="rounded-full text-gray-500 hover:bg-gray-100 hover:text-gray-900">
+            <Button variant="ghost" size="icon" className="rounded-full h-10 w-10 text-gray-600 hover:bg-gray-100">
               <Settings className="h-5 w-5" />
             </Button>
             
@@ -51,7 +63,7 @@ const Chat = () => {
                 <Button variant="ghost" className="flex items-center gap-2 px-3 py-2 rounded-full hover:bg-gray-100">
                   <Avatar className="h-8 w-8 border border-gray-200">
                     <AvatarImage src="" alt="User" />
-                    <AvatarFallback className="text-sm bg-gray-100 text-gray-700">JD</AvatarFallback>
+                    <AvatarFallback className="text-sm bg-blue-100 text-blue-800">JD</AvatarFallback>
                   </Avatar>
                 </Button>
               </DropdownMenuTrigger>
@@ -59,7 +71,7 @@ const Chat = () => {
                 <DropdownMenuLabel className="flex items-center gap-2">
                   <Avatar className="h-8 w-8">
                     <AvatarImage src="" alt="User" />
-                    <AvatarFallback className="bg-gray-100 text-gray-700">JD</AvatarFallback>
+                    <AvatarFallback className="bg-blue-100 text-blue-800">JD</AvatarFallback>
                   </Avatar>
                   <div>
                     <p className="text-sm font-medium">John Doe</p>

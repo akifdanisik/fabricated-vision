@@ -1,5 +1,6 @@
+
 import { useState, useRef, useEffect } from 'react';
-import { Send, Mic, PlusCircle, Search, Grid } from 'lucide-react';
+import { Send, Mic, PlusCircle, Search, Grid, RefreshCw, Volume2, AlertCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -1066,65 +1067,107 @@ export default function ChatInterface() {
                 userName="John"
               />
             ) : (
-              <div className="py-4 space-y-6">
+              <div className="py-4 space-y-6 max-w-4xl mx-auto">
                 {messages.map((message) => (
                   <div 
                     key={message.id} 
                     className={cn(
-                      "flex w-full mx-auto",
-                      message.sender === 'user' ? "justify-end" : "justify-start"
+                      "w-full",
+                      message.sender === 'user' ? "mb-6" : "mb-8"
                     )}
                   >
-                    <div className={cn(
-                      "flex items-start max-w-[80%] group",
-                      message.sender === 'user' ? "flex-row-reverse" : "flex-row"
-                    )}>
-                      <Avatar className={cn(
-                        "h-8 w-8 mt-1",
-                        message.sender === 'user' ? "ml-3" : "mr-3",
-                        message.sender === 'user' ? "bg-primary" : "bg-gray-100"
-                      )}>
-                        <AvatarFallback className={message.sender === 'user' ? "text-white" : "text-gray-500"}>
-                          {message.sender === 'user' ? 'U' : 'A'}
-                        </AvatarFallback>
-                      </Avatar>
-                      
-                      <div>
-                        <div className={cn(
-                          "rounded-xl whitespace-pre-wrap py-3 px-4",
-                          message.sender === 'user' 
-                            ? "bg-primary text-white rounded-tr-none" 
-                            : "bg-gray-100 text-gray-800 rounded-tl-none"
-                        )}>
+                    {message.sender === 'user' && (
+                      <div className="flex items-start mb-2">
+                        <Avatar className="h-9 w-9 mr-3 bg-emerald-600">
+                          <AvatarFallback className="text-white font-medium">J</AvatarFallback>
+                        </Avatar>
+                        <div className="flex-1 bg-[#e9e9e9] rounded-3xl px-5 py-4 text-gray-800">
                           {message.content}
                         </div>
-                        
-                        {message.moduleType && (
-                          <div className="mt-3">
-                            <ModuleRenderer 
-                              type={message.moduleType} 
-                              data={message.moduleData} 
-                            />
-                          </div>
-                        )}
-                        
-                        {message.actions && message.actions.length > 0 && (
-                          <div className="flex flex-wrap gap-2 mt-2">
-                            {message.actions.map((action, i) => (
-                              <Button 
-                                key={i} 
-                                size="sm" 
-                                variant="outline" 
-                                onClick={action.onClick}
-                                className="rounded-full text-xs font-normal"
-                              >
-                                {action.label}
-                              </Button>
-                            ))}
-                          </div>
-                        )}
+                        <div className="ml-3">
+                          <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full text-gray-500 hover:bg-gray-200">
+                            <PlusCircle className="h-5 w-5" />
+                          </Button>
+                        </div>
                       </div>
-                    </div>
+                    )}
+                    
+                    {message.sender === 'ai' && (
+                      <div className="w-full">
+                        <div className="flex items-start mb-1">
+                          <div className="flex items-center justify-center h-9 w-9 mr-3 bg-indigo-100 rounded-full">
+                            <svg width="24" height="24" viewBox="0 0 192 192" xmlns="http://www.w3.org/2000/svg">
+                              <path fill="#4285F4" d="M96 8C47.4 8 8 47.4 8 96s39.4 88 88 88 88-39.4 88-88S144.6 8 96 8z"/>
+                              <path fill="#669DF6" d="M96 168c39.8 0 72-32.2 72-72s-32.2-72-72-72-72 32.2-72 72 32.2 72 72 72z"/>
+                              <path fill="#AECBFA" d="M96 140c24.3 0 44-19.7 44-44S120.3 52 96 52 52 71.7 52 96s19.7 44 44 44z"/>
+                            </svg>
+                          </div>
+                          
+                          <div className="flex-1">
+                            {message.isResearch ? (
+                              <div className="bg-[#f5f5f5] rounded-3xl px-5 py-4 border border-gray-200">
+                                <div className="flex items-start">
+                                  <AlertCircle className="h-5 w-5 text-gray-500 mr-2 mt-0.5" />
+                                  <p className="text-sm">{message.content}</p>
+                                </div>
+                              </div>
+                            ) : (
+                              <div className="bg-[#f5f5f5] rounded-3xl px-5 py-4 border border-gray-200">
+                                <div className="whitespace-pre-wrap">{message.content}</div>
+                                
+                                {message.moduleType && (
+                                  <div className="mt-3">
+                                    <ModuleRenderer 
+                                      type={message.moduleType} 
+                                      data={message.moduleData} 
+                                    />
+                                  </div>
+                                )}
+                                
+                                {message.suppliers && message.suppliers.length > 0 && (
+                                  <div className="mt-4 pt-4 border-t border-gray-200">
+                                    <h3 className="text-sm font-medium mb-2">Supplier Information</h3>
+                                    <div className="grid grid-cols-1 gap-2">
+                                      {message.suppliers.slice(0, 3).map(supplier => (
+                                        <div key={supplier.id} className="text-sm bg-gray-100 p-3 rounded-lg">
+                                          <div className="font-medium">{supplier.name}</div>
+                                          <div className="text-gray-600">{supplier.category} • Performance: {supplier.performance}/100</div>
+                                        </div>
+                                      ))}
+                                    </div>
+                                  </div>
+                                )}
+                              </div>
+                            )}
+                            
+                            {message.actions && message.actions.length > 0 && (
+                              <div className="flex flex-wrap gap-2 mt-3">
+                                {message.actions.map((action, i) => (
+                                  <Button 
+                                    key={i} 
+                                    size="sm" 
+                                    variant="outline" 
+                                    onClick={action.onClick}
+                                    className="rounded-full text-xs font-normal bg-white hover:bg-gray-100"
+                                  >
+                                    {action.label}
+                                  </Button>
+                                ))}
+                              </div>
+                            )}
+                          </div>
+
+                          <div className="ml-3 flex flex-col items-center gap-2">
+                            <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full text-gray-500 hover:bg-gray-200">
+                              <RefreshCw className="h-4 w-4" />
+                            </Button>
+                            <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full text-gray-500 hover:bg-gray-200">
+                              <Volume2 className="h-4 w-4" />
+                            </Button>
+                          </div>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 ))}
                 <div ref={messagesEndRef} />
@@ -1132,45 +1175,56 @@ export default function ChatInterface() {
             )}
           </div>
           
-          <div className="p-4 border-t">
-            <form onSubmit={handleSubmit} className="flex items-center gap-2">
-              <Button 
-                type="button" 
-                variant="ghost" 
-                size="icon" 
-                className="rounded-full"
-                onClick={() => setModuleSelectOpen(true)}
-              >
-                <Grid className="h-5 w-5 text-gray-500" />
-              </Button>
-              
-              <div className="relative flex-1">
-                <Input
-                  value={input}
-                  onChange={(e) => setInput(e.target.value)}
-                  placeholder="Ask anything about suppliers, inventory, or orders..."
-                  className="pr-32 rounded-full bg-gray-100 border-0 focus-visible:ring-gray-300"
-                />
-                <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1">
+          <div className="p-4 border-t bg-[#f3f3f3]">
+            <div className="max-w-4xl mx-auto">
+              <form onSubmit={handleSubmit} className="relative">
+                <div className="flex items-center">
                   <Button 
                     type="button" 
                     variant="ghost" 
                     size="icon" 
-                    className={cn(
-                      "h-8 w-8 rounded-full",
-                      isRecording ? "text-red-500" : "text-gray-400"
-                    )}
-                    onClick={toggleRecording}
+                    className="absolute left-4 top-1/2 transform -translate-y-1/2 h-10 w-10 rounded-full z-10 text-gray-500 hover:bg-gray-200"
+                    onClick={() => setModuleSelectOpen(true)}
                   >
-                    <Mic className="h-4 w-4" />
+                    <Grid className="h-5 w-5" />
                   </Button>
+                  
+                  <Input
+                    value={input}
+                    onChange={(e) => setInput(e.target.value)}
+                    placeholder="Enter a prompt here"
+                    className="pl-16 pr-36 py-6 h-[60px] rounded-full border-gray-300 bg-white shadow-sm focus-visible:ring-gray-400 text-base"
+                  />
+                  
+                  <div className="absolute right-4 top-1/2 transform -translate-y-1/2 flex items-center gap-1">
+                    <Button 
+                      type="button" 
+                      variant="ghost" 
+                      size="icon" 
+                      className={cn(
+                        "h-10 w-10 rounded-full",
+                        isRecording ? "text-red-500" : "text-gray-500 hover:bg-gray-200"
+                      )}
+                      onClick={toggleRecording}
+                    >
+                      <Mic className="h-5 w-5" />
+                    </Button>
+                    
+                    <Button 
+                      type="submit" 
+                      size="icon" 
+                      className="h-10 w-10 rounded-full bg-[#e9e9e9] hover:bg-gray-300 text-gray-700"
+                    >
+                      <Send className="h-5 w-5" />
+                    </Button>
+                  </div>
                 </div>
-              </div>
+              </form>
               
-              <Button type="submit" size="icon" className="rounded-full">
-                <Send className="h-4 w-4" />
-              </Button>
-            </form>
+              <div className="text-center text-xs text-gray-500 mt-2">
+                Lovable may display inaccurate or offensive information that doesn't represent the product's views.
+              </div>
+            </div>
           </div>
         </ResizablePanel>
         
