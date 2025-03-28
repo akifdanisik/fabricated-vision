@@ -129,6 +129,10 @@ const RecentConversations = () => {
     navigate(`/chat?id=${id}`);
   };
   
+  const handleConversationClick = (id: string) => {
+    navigate(`/chat?id=${id}`);
+  };
+  
   return (
     <Card className="h-full overflow-hidden">
       <CardHeader className="p-4 border-b">
@@ -141,6 +145,7 @@ const RecentConversations = () => {
               <div 
                 key={conversation.id} 
                 className="p-3 rounded-lg border hover:bg-accent/50 transition-colors cursor-pointer"
+                onClick={() => handleConversationClick(conversation.id)}
               >
                 <div className="flex justify-between items-start">
                   <div className="flex items-center gap-2">
@@ -173,7 +178,10 @@ const RecentConversations = () => {
                     size="sm" 
                     variant="outline" 
                     className="h-7 text-xs"
-                    onClick={() => handleContinueChat(conversation.id)}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleContinueChat(conversation.id);
+                    }}
                   >
                     Continue <ArrowRight className="ml-1 h-3 w-3" />
                   </Button>
