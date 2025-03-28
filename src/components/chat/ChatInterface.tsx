@@ -31,12 +31,38 @@ interface Message {
   suppliers?: Supplier[];
 }
 
-export default function ChatInterface() {
+interface ChatData {
+  title: string;
+  messages: {
+    id: string;
+    content: string;
+    sender: 'user' | 'ai';
+    timestamp: Date;
+  }[];
+}
+
+interface ChatInterfaceProps {
+  chatId: string | null;
+  selectedChat: ChatData | null;
+}
+
+export default function ChatInterface({ chatId, selectedChat }: ChatInterfaceProps) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [isRecording, setIsRecording] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [showWelcomeScreen, setShowWelcomeScreen] = useState(true);
+
+  // Initialize messages with selected chat data if available
+  useEffect(() => {
+    if (selectedChat && selectedChat.messages) {
+      setMessages(selectedChat.messages.map(msg => ({
+        ...msg,
+        timestamp: new Date(msg.timestamp)
+      })));
+      setShowWelcomeScreen(false);
+    }
+  }, [selectedChat]);
 
   const [previewActions, setPreviewActions] = useState<ActionItem[]>([]);
   const [previewTitle, setPreviewTitle] = useState('Suggested Actions');
@@ -896,320 +922,3 @@ export default function ChatInterface() {
         {
           id: '1',
           name: 'PharmaCorp',
-          category: 'Active Ingredients',
-          categories: [
-            predefinedCategories.find(c => c.id === 'apis')!
-          ],
-          performance: 95,
-          riskLevel: 'low',
-          items: 32,
-          contact: {
-            name: 'Alex Johnson',
-            email: 'alex.johnson@pharmaco.com',
-            phone: '+1 (555) 123-4567',
-          },
-          location: 'Boston, USA',
-          initials: 'PC',
-        },
-        {
-          id: '2',
-          name: 'BioTech Materials',
-          category: 'Excipients',
-          categories: [
-            predefinedCategories.find(c => c.id === 'excipients')!
-          ],
-          performance: 92,
-          riskLevel: 'low',
-          items: 28,
-          contact: {
-            name: 'Maria Garcia',
-            email: 'mgarcia@biotechmat.com',
-          },
-          location: 'Barcelona, Spain',
-          initials: 'BM',
-        },
-        {
-          id: '3',
-          name: 'ChemSource Inc.',
-          category: 'Excipients',
-          categories: [
-            predefinedCategories.find(c => c.id === 'excipients')!,
-            predefinedCategories.find(c => c.id === 'chemicals')!
-          ],
-          performance: 90,
-          riskLevel: 'low',
-          items: 24,
-          contact: {
-            name: 'David Lee',
-            email: 'd.lee@chemsource.com',
-          },
-          location: 'Singapore',
-          initials: 'CS',
-        }
-      ];
-      
-      setSupplierResults(suppliersToCompare);
-      setShowResultsTable(true);
-      setResultsTableTitle('Supplier Comparison');
-      
-      return {
-        id: Date.now().toString(),
-        content: 'Here\'s a comparison of the selected suppliers:\n\nPharmaCorp:\n- Performance: 95/100\n- Risk Level: Low\n- Location: Boston, USA\n- Items: 32\n\nBioTech Materials:\n- Performance: 92/100\n- Risk Level: Low\n- Location: Barcelona, Spain\n- Items: 28\n\nChemSource Inc.:\n- Performance: 90/100\n- Risk Level: Low\n- Location: Singapore\n- Items: 24\n\nPharmaCorp has the highest performance score and offers the most comprehensive product catalog, while BioTech Materials and ChemSource provide good alternatives with slightly lower performance metrics.',
-        sender: 'ai',
-        timestamp: new Date(),
-        suppliers: suppliersToCompare,
-        actions: [
-          { 
-            label: 'Contact PharmaCorp', 
-            onClick: () => handleQuickPrompt('I want to contact PharmaCorp')
-          },
-          { 
-            label: 'View full comparison report', 
-            onClick: () => window.location.href = '/suppliers/compare'
-          },
-          { 
-            label: 'Create RFQ with these suppliers', 
-            onClick: () => handleQuickPrompt('Create RFQ with PharmaCorp, BioTech Materials, and ChemSource')
-          }
-        ]
-      };
-    }
-    
-    return {
-      id: Date.now().toString(),
-      content: `I can help you with information about suppliers, inventory, and procurement. Here are some things you can ask me about:\n\n- Top suppliers in various categories\n- Supplier performance metrics\n- Creating purchase orders\n- Inventory levels\n- Market research on ingredients\n\nHow can I assist you today?`,
-      sender: 'ai',
-      timestamp: new Date(),
-      actions: [
-        { 
-          label: 'Show top suppliers', 
-          onClick: () => handleQuickPrompt('Show me the top 5 suppliers')
-        },
-        { 
-          label: 'Find GMP certified suppliers', 
-          onClick: () => handleQuickPrompt('Find suppliers with GMP certification for Paracetamol API')
-        }
-      ]
-    };
-  };
-
-  const handleModuleRequest = (userInput: string): Message => {
-    const lowerCaseInput = userInput.toLowerCase();
-    
-    if (lowerCaseInput.includes('supplier') || lowerCaseInput.includes('vendor')) {
-      return {
-        id: Date.now().toString(),
-        content: 'Here\'s the supplier information you requested.',
-        sender: 'ai',
-        timestamp: new Date(),
-        moduleType: 'supplier',
-        moduleData: {}
-      };
-    } else if (lowerCaseInput.includes('inventory') || lowerCaseInput.includes('stock')) {
-      return {
-        id: Date.now().toString(),
-        content: 'Here\'s the inventory information you requested.',
-        sender: 'ai',
-        timestamp: new Date(),
-        moduleType: 'inventory',
-        moduleData: {}
-      };
-    }
-    
-    return {
-      id: Date.now().toString(),
-      content: 'I\'m not sure what information you\'re looking for. Could you be more specific?',
-      sender: 'ai',
-      timestamp: new Date()
-    };
-  };
-
-  const availableModules: ModuleItem[] = [
-    {
-      id: 'supplier-assessment',
-      title: 'Supplier Assessment',
-      description: 'Evaluate and compare suppliers across performance metrics and risk factors.',
-      icon: 'chart',
-      category: 'analysis'
-    },
-    {
-      id: 'inventory-analysis',
-      title: 'Inventory Analysis',
-      description: 'Analyze inventory levels, turnover rates, and optimization opportunities.',
-      icon: 'package',
-      category: 'data'
-    },
-    {
-      id: 'contract-risk',
-      title: 'Contract Risk',
-      description: 'Identify and mitigate risks in supplier contracts and agreements.',
-      icon: 'shield',
-      category: 'security'
-    },
-    {
-      id: 'market-research',
-      title: 'Market Research',
-      description: 'Access market data, pricing trends, and competitive intelligence.',
-      icon: 'search',
-      category: 'analysis'
-    }
-  ];
-
-  return (
-    <div className="flex flex-col h-full">
-      <ResizablePanelGroup direction="horizontal">
-        <ResizablePanel defaultSize={65} minSize={50} className="flex flex-col bg-[#f3f3f3]">
-          <div className="flex-1 overflow-auto px-4 bg-[#f3f3f3]">
-            {showWelcomeScreen ? (
-              <WelcomeScreen 
-                onSelectQuickStart={handleQuickPrompt} 
-                userName="John"
-              />
-            ) : (
-              <div className="py-4 space-y-6">
-                {messages.map((message) => (
-                  <div 
-                    key={message.id} 
-                    className={cn(
-                      "flex w-full mx-auto",
-                      message.sender === 'user' ? "justify-end" : "justify-start"
-                    )}
-                  >
-                    <div className={cn(
-                      "flex items-start max-w-[80%] group",
-                      message.sender === 'user' ? "flex-row-reverse" : "flex-row"
-                    )}>
-                      <Avatar className={cn(
-                        "h-8 w-8 mt-1",
-                        message.sender === 'user' ? "ml-3" : "mr-3",
-                        message.sender === 'user' ? "bg-primary" : "bg-gray-100"
-                      )}>
-                        <AvatarFallback className={message.sender === 'user' ? "text-white" : "text-gray-500"}>
-                          {message.sender === 'user' ? 'U' : 'A'}
-                        </AvatarFallback>
-                      </Avatar>
-                      
-                      <div>
-                        <div className={cn(
-                          "rounded-xl whitespace-pre-wrap py-3 px-4",
-                          message.sender === 'user' 
-                            ? "bg-primary text-white rounded-tr-none" 
-                            : "bg-gray-100 text-gray-800 rounded-tl-none"
-                        )}>
-                          {message.content}
-                        </div>
-                        
-                        {message.moduleType && (
-                          <div className="mt-3">
-                            <ModuleRenderer 
-                              type={message.moduleType} 
-                              data={message.moduleData} 
-                            />
-                          </div>
-                        )}
-                        
-                        {message.actions && message.actions.length > 0 && (
-                          <div className="flex flex-wrap gap-2 mt-2">
-                            {message.actions.map((action, i) => (
-                              <Button 
-                                key={i} 
-                                size="sm" 
-                                variant="outline" 
-                                onClick={action.onClick}
-                                className="rounded-full text-xs font-normal"
-                              >
-                                {action.label}
-                              </Button>
-                            ))}
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                ))}
-                <div ref={messagesEndRef} />
-              </div>
-            )}
-          </div>
-          
-          <div className="p-4 border-t">
-            <form onSubmit={handleSubmit} className="flex items-center gap-2">
-              <Button 
-                type="button" 
-                variant="ghost" 
-                size="icon" 
-                className="rounded-full"
-                onClick={() => setModuleSelectOpen(true)}
-              >
-                <Grid className="h-5 w-5 text-gray-500" />
-              </Button>
-              
-              <div className="relative flex-1">
-                <Input
-                  value={input}
-                  onChange={(e) => setInput(e.target.value)}
-                  placeholder="Ask anything about suppliers, inventory, or orders..."
-                  className="pr-32 rounded-full bg-gray-100 border-0 focus-visible:ring-gray-300"
-                />
-                <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1">
-                  <Button 
-                    type="button" 
-                    variant="ghost" 
-                    size="icon" 
-                    className={cn(
-                      "h-8 w-8 rounded-full",
-                      isRecording ? "text-red-500" : "text-gray-400"
-                    )}
-                    onClick={toggleRecording}
-                  >
-                    <Mic className="h-4 w-4" />
-                  </Button>
-                </div>
-              </div>
-              
-              <Button type="submit" size="icon" className="rounded-full">
-                <Send className="h-4 w-4" />
-              </Button>
-            </form>
-          </div>
-        </ResizablePanel>
-        
-        <ResizableHandle withHandle />
-        
-        <ResizablePanel defaultSize={35} minSize={30}>
-          <ActionPreview 
-            title={previewTitle}
-            description={previewDescription}
-            actions={previewActions}
-            className="h-full"
-          />
-        </ResizablePanel>
-      </ResizablePanelGroup>
-      
-      {showResultsTable && (
-        <ResultsTable 
-          isVisible={showResultsTable} 
-          suppliers={supplierResults}
-          onClose={() => setShowResultsTable(false)}
-          title={resultsTableTitle}
-        />
-      )}
-      
-      {showResearchPanel && (
-        <ResearchDataPanel 
-          isVisible={showResearchPanel}
-          documents={researchData}
-          isLoading={isResearching}
-          onClose={() => setShowResearchPanel(false)}
-        />
-      )}
-      
-      <ModuleSelector 
-        isOpen={moduleSelectOpen} 
-        onClose={() => setModuleSelectOpen(false)}
-        modules={availableModules}
-        onSelectModule={handleSelectModule}
-      />
-    </div>
-  );
-}
