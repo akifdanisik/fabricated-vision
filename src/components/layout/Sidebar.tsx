@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { MessageSquare, ChevronRight, ChevronLeft, Search, Folder, ChevronDown, Square, Menu, AlignLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -25,32 +25,32 @@ interface ChatItem {
 
 const mockChats: ChatItem[] = [{
   id: '1',
-  title: 'First Screen Project Alpha',
+  title: 'FDA Compliance for API Suppliers',
   date: new Date(),
   type: 'chat'
 }, {
   id: '2',
-  title: 'Q324 Portfolio Review',
+  title: 'Market Price Trends: MCC',
   date: new Date(),
   type: 'chat'
 }, {
   id: '3',
-  title: 'Hannibal Revenue',
+  title: 'Urgent Backup Suppliers',
   date: new Date(Date.now() - 86400000),
   type: 'chat'
 }, {
   id: '4',
-  title: 'Commercial Contracts',
+  title: 'MedSource Assessment',
   date: new Date(Date.now() - 86400000),
   type: 'chat'
 }, {
   id: '5',
-  title: 'Patent Prior Act',
+  title: 'Contract Force Majeure Analysis',
   date: new Date(Date.now() - 86400000),
   type: 'chat'
 }, {
   id: '6',
-  title: 'Deal Terms',
+  title: 'Raw Material Shortages',
   date: new Date(Date.now() - 86400000),
   type: 'chat'
 }];
@@ -63,35 +63,35 @@ interface Project {
 
 const mockProjects: Project[] = [{
   id: 'p1',
-  title: 'Project Alpha',
+  title: 'Supplier Evaluations',
   chats: []
 }, {
   id: 'p2',
-  title: 'Co',
+  title: 'Cost Optimization',
   chats: []
 }, {
   id: 'p3',
-  title: 'Acme Corp',
+  title: 'Compliance Docs',
   chats: [{
     id: 'p3c1',
-    title: 'Acme Revenue',
+    title: 'GMP Certifications',
     date: new Date(Date.now() - 3 * 86400000),
     type: 'chat',
     parentId: 'p3'
   }, {
     id: 'p3c2',
-    title: 'Acme Investment Risks',
+    title: 'FDA Inspection Reports',
     date: new Date(Date.now() - 4 * 86400000),
     type: 'chat',
     parentId: 'p3'
   }]
 }, {
   id: 'p4',
-  title: 'Nordic Telecoms',
+  title: 'Market Research',
   chats: []
 }, {
   id: 'p5',
-  title: 'Lease Agreements',
+  title: 'Innovation Tracking',
   chats: []
 }];
 
@@ -101,6 +101,7 @@ const Sidebar = ({
   onToggle
 }: SidebarProps) => {
   const location = useLocation();
+  const navigate = useNavigate();
   const [isMounted, setIsMounted] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [expandedProjects, setExpandedProjects] = useState<Record<string, boolean>>({
@@ -133,6 +134,10 @@ const Sidebar = ({
       ...prev,
       [projectId]: !prev[projectId]
     }));
+  };
+  
+  const handleChatClick = (chatId: string) => {
+    navigate(`/chat?id=${chatId}`);
   };
 
   if (isCompleteClosed) {
@@ -182,20 +187,28 @@ const Sidebar = ({
             {todayChats.length > 0 && <>
                 <h3 className="text-xs font-medium text-slate-500 py-2">Today</h3>
                 <nav className="grid gap-1">
-                  {todayChats.map(chat => <Link key={chat.id} to={`/chat?id=${chat.id}`} className="flex items-center gap-2 px-2 py-1.5 rounded-md text-sm hover:bg-gray-100">
+                  {todayChats.map(chat => <div 
+                      key={chat.id} 
+                      className="flex items-center gap-2 px-2 py-1.5 rounded-md text-sm hover:bg-gray-100 cursor-pointer"
+                      onClick={() => handleChatClick(chat.id)}
+                    >
                       <Square className="h-4 w-4 text-slate-400" />
                       <span className="truncate">{chat.title}</span>
-                    </Link>)}
+                    </div>)}
                 </nav>
               </>}
             
             {yesterdayChats.length > 0 && <>
                 <h3 className="text-xs font-medium text-slate-500 py-2 mt-1">Yesterday</h3>
                 <nav className="grid gap-1">
-                  {yesterdayChats.map(chat => <Link key={chat.id} to={`/chat?id=${chat.id}`} className="flex items-center gap-2 px-2 py-1.5 rounded-md text-sm hover:bg-gray-100">
+                  {yesterdayChats.map(chat => <div 
+                      key={chat.id} 
+                      className="flex items-center gap-2 px-2 py-1.5 rounded-md text-sm hover:bg-gray-100 cursor-pointer"
+                      onClick={() => handleChatClick(chat.id)}
+                    >
                       <Square className="h-4 w-4 text-slate-400" />
                       <span className="truncate">{chat.title}</span>
-                    </Link>)}
+                    </div>)}
                 </nav>
               </>}
             
@@ -212,10 +225,14 @@ const Sidebar = ({
                     </CollapsibleTrigger>
                     <CollapsibleContent>
                       <div className="pl-4 border-l border-slate-200 ml-3 mt-1">
-                        {project.chats.map(chat => <Link key={chat.id} to={`/chat?id=${chat.id}`} className="flex items-center gap-2 px-2 py-1.5 rounded-md text-sm hover:bg-gray-100">
+                        {project.chats.map(chat => <div 
+                            key={chat.id} 
+                            className="flex items-center gap-2 px-2 py-1.5 rounded-md text-sm hover:bg-gray-100 cursor-pointer"
+                            onClick={() => handleChatClick(chat.id)}
+                          >
                             <Square className="h-4 w-4 text-slate-400" />
                             <span className="truncate">{chat.title}</span>
-                          </Link>)}
+                          </div>)}
                       </div>
                     </CollapsibleContent>
                   </Collapsible>
