@@ -1,5 +1,6 @@
+
 import { useState, useRef, useEffect } from 'react';
-import { Send, Mic, PlusCircle, Search, Grid } from 'lucide-react';
+import { Send, Mic, PlusCircle, Search, Grid, Eye, ThumbsUp, ThumbsDown, RefreshCw, Copy, FileText } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -1138,6 +1139,57 @@ export default function ChatInterface() {
                                 {action.label}
                               </Button>
                             ))}
+                          </div>
+                        )}
+                        
+                        {/* Add message action icons for AI responses */}
+                        {message.sender === 'ai' && (
+                          <div className="flex items-center gap-3 mt-1.5">
+                            <button 
+                              className="text-gray-400 hover:text-gray-600 transition-colors"
+                              title="View"
+                              onClick={() => toast({ title: "View Response", description: "Expanded view coming soon" })}
+                            >
+                              <Eye className="h-4 w-4" />
+                            </button>
+                            <button 
+                              className="text-gray-400 hover:text-green-600 transition-colors"
+                              title="Thumbs Up"
+                              onClick={() => toast({ title: "Feedback Received", description: "You liked this response" })}
+                            >
+                              <ThumbsUp className="h-4 w-4" />
+                            </button>
+                            <button 
+                              className="text-gray-400 hover:text-red-600 transition-colors"
+                              title="Thumbs Down"
+                              onClick={() => toast({ title: "Feedback Received", description: "You disliked this response" })}
+                            >
+                              <ThumbsDown className="h-4 w-4" />
+                            </button>
+                            <button 
+                              className="text-gray-400 hover:text-blue-600 transition-colors"
+                              title="Regenerate"
+                              onClick={() => toast({ title: "Regenerating", description: "Generating a new response" })}
+                            >
+                              <RefreshCw className="h-4 w-4" />
+                            </button>
+                            <button 
+                              className="text-gray-400 hover:text-purple-600 transition-colors"
+                              title="Copy"
+                              onClick={() => {
+                                navigator.clipboard.writeText(message.content);
+                                toast({ title: "Copied", description: "Response copied to clipboard" });
+                              }}
+                            >
+                              <Copy className="h-4 w-4" />
+                            </button>
+                            <button 
+                              className="text-gray-400 hover:text-yellow-600 transition-colors"
+                              title="Save"
+                              onClick={() => toast({ title: "Saved", description: "Response saved for later" })}
+                            >
+                              <FileText className="h-4 w-4" />
+                            </button>
                           </div>
                         )}
                       </div>

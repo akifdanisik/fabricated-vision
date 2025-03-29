@@ -3,7 +3,7 @@ import Layout from '@/components/layout/Layout';
 import ChatInterface from '@/components/chat/ChatInterface';
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { Bell, Settings, User } from 'lucide-react';
+import { Bell, Settings, User, Eye, ThumbsUp, ThumbsDown, RefreshCw, Copy, FileText } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
