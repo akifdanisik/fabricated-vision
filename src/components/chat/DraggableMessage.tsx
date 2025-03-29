@@ -18,7 +18,10 @@ const DraggableMessage: React.FC<DraggableMessageProps> = ({
   const [isDragging, setIsDragging] = useState(false);
 
   const handleDragStart = (e: React.DragEvent<HTMLDivElement>, text: string) => {
-    e.dataTransfer.setData('text/plain', text);
+    e.dataTransfer.setData('text/plain', JSON.stringify({
+      type: 'message_content',
+      content: text
+    }));
     e.dataTransfer.effectAllowed = 'copy';
     setIsDragging(true);
     if (onDragStart) onDragStart();
