@@ -75,7 +75,7 @@ export default function ResearchDataPanel({
           <FileText className="h-4 w-4 text-gray-500" />
           <h3 className="text-sm font-medium">{title}</h3>
           <Badge variant="outline" className="ml-2 text-xs bg-gray-100">
-            {documents.length > 0 ? `${documents.length} documents` : suppliers.length > 0 ? `${suppliers.length} suppliers` : '0 items'}
+            {activeTab === 'documents' ? `${documents.length} documents` : `${suppliers.length} suppliers`}
           </Badge>
         </div>
         <div className="flex items-center gap-2">
@@ -109,10 +109,16 @@ export default function ResearchDataPanel({
               <TabsTrigger value="documents" className="flex items-center gap-1">
                 <FileText className="h-4 w-4" />
                 <span>Documents</span>
+                <Badge variant="outline" className="ml-1 text-xs bg-gray-100">
+                  {documents.length}
+                </Badge>
               </TabsTrigger>
               <TabsTrigger value="suppliers" className="flex items-center gap-1">
                 <Users className="h-4 w-4" />
                 <span>Suppliers</span>
+                <Badge variant="outline" className="ml-1 text-xs bg-gray-100">
+                  {suppliers.length}
+                </Badge>
               </TabsTrigger>
             </TabsList>
             
