@@ -16,6 +16,8 @@ import {
   DropdownMenuTrigger 
 } from '@/components/ui/dropdown-menu';
 import { Toaster } from '@/components/ui/toaster';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import RelatedDocumentsTab from '@/components/chat/RelatedDocumentsTab';
 
 const Chat = () => {
   const location = useLocation();
