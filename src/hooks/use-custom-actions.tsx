@@ -14,16 +14,16 @@ export function useCustomActions() {
   const addCustomAction = (content: string) => {
     // Determine a title (first line or first few words)
     let title = content.split('\n')[0];
-    if (title.length > 30) {
-      title = title.substring(0, 30) + '...';
+    if (title.length > 25) {
+      title = title.substring(0, 25) + '...';
     }
     
     const newAction: CustomAction = {
       id: uuidv4(),
       title: title,
-      description: content.length > 100 ? content.substring(0, 100) + '...' : content,
+      description: content.length > 60 ? content.substring(0, 60) + '...' : content,
       icon: 'package', // Default icon
-      actionLabel: 'Use this',
+      actionLabel: 'Use',
       onClick: () => {
         toast({
           title: "Action executed",

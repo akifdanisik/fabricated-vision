@@ -46,15 +46,15 @@ const DraggableMessage: React.FC<DraggableMessageProps> = ({
           onDragStart={(e) => handleDragStart(e, paragraph)} 
           onDragEnd={handleDragEnd}
           className={cn(
-            "relative mb-2 p-2 rounded cursor-grab",
+            "relative mb-1.5 p-1.5 rounded cursor-grab",
             isDragging ? "bg-primary/10" : "hover:bg-accent-pale/20",
             className
           )}
         >
-          <div className="absolute left-0 top-1/2 -ml-6 transform -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity">
-            <GripVertical className="h-4 w-4 text-muted-foreground" />
+          <div className="absolute left-0 top-1/2 -ml-5 transform -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity">
+            <GripVertical className="h-3.5 w-3.5 text-muted-foreground" />
           </div>
-          <p>{paragraph}</p>
+          <p className="text-sm">{paragraph}</p>
         </div>
       ))}
     </div>
