@@ -27,18 +27,9 @@ const Chat = () => {
     setChatId(id);
   }, [location]);
 
-  // Handle drag over events for the entire chat page
-  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    e.dataTransfer.dropEffect = 'copy';
-  };
-
   return (
     <Layout fullWidth hideNavbar>
-      <div 
-        className="flex flex-col h-[calc(100vh-0px)] bg-[#f3f3f3]"
-        onDragOver={handleDragOver}
-      >
+      <div className="flex flex-col h-[calc(100vh-0px)] bg-[#f3f3f3]">
         <div className="flex justify-end items-center px-6 py-3 border-b bg-white">
           <div className="flex items-center gap-2">
             <Button variant="ghost" size="icon" className="relative rounded-full text-gray-500 hover:bg-gray-100 hover:text-gray-900">

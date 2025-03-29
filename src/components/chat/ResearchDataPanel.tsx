@@ -1,11 +1,10 @@
 
 import { useState } from 'react';
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { FileText, ChevronDown, ChevronUp, Calendar, GripVertical } from 'lucide-react';
+import { FileText, ChevronDown, ChevronUp, Calendar, ExternalLink } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import { toast } from '@/hooks/use-toast';
 
 export interface ResearchDocument {
   id: string;
@@ -38,28 +37,8 @@ export default function ResearchDataPanel({
   isLoading = false 
 }: ResearchDataPanelProps) {
   const [expanded, setExpanded] = useState(true);
-  const [draggingId, setDraggingId] = useState<string | null>(null);
 
   if (!isVisible) return null;
-
-  const handleDragStart = (e: React.DragEvent<HTMLTableRowElement>, document: ResearchDocument) => {
-    // Set the data to be dragged - serialize the document object
-    e.dataTransfer.setData('text/plain', JSON.stringify({
-      type: 'research_document',
-      content: document
-    }));
-    e.dataTransfer.effectAllowed = 'copy';
-    setDraggingId(document.id);
-    
-    toast({
-      title: "Dragging document",
-      description: "Drop in the action panel to create a new action"
-    });
-  };
-
-  const handleDragEnd = () => {
-    setDraggingId(null);
-  };
 
   return (
     <div className="border-t border-gray-200 bg-white transition-all duration-300 ease-in-out">
@@ -118,20 +97,8 @@ export default function ResearchDataPanel({
               </TableHeader>
               <TableBody>
                 {documents.map((doc) => (
-                  <TableRow 
-                    key={doc.id}
-                    draggable
-                    onDragStart={(e) => handleDragStart(e, doc)}
-                    onDragEnd={handleDragEnd}
-                    className={cn(
-                      "cursor-grab relative group",
-                      draggingId === doc.id && "opacity-60 bg-primary/5"
-                    )}
-                  >
+                  <TableRow key={doc.id}>
                     <TableCell className="font-medium flex items-center gap-2">
-                      <div className="absolute left-0 top-1/2 -ml-5 transform -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity">
-                        <GripVertical className="h-3.5 w-3.5 text-muted-foreground" />
-                      </div>
                       <FileText className="h-4 w-4 text-gray-400" />
                       {doc.title}
                     </TableCell>
@@ -146,31 +113,11 @@ export default function ResearchDataPanel({
                         {doc.documentType}
                       </Badge>
                     </TableCell>
-                    <TableCell 
-                      className="text-sm"
-                      draggable
-                      onDragStart={(e) => {
-                        e.stopPropagation();
-                        e.dataTransfer.setData('text/plain', doc.risks || 'No risks found in this document');
-                        e.dataTransfer.effectAllowed = 'copy';
-                      }}
-                    >
-                      <div className="cursor-grab hover:bg-accent-pale/20 p-1 rounded">
-                        {doc.risks || 'Not in document, click to view explanation'}
-                      </div>
+                    <TableCell className="text-sm">
+                      {doc.risks || 'Not in document, click to view explanation'}
                     </TableCell>
-                    <TableCell 
-                      className="text-sm"
-                      draggable
-                      onDragStart={(e) => {
-                        e.stopPropagation();
-                        e.dataTransfer.setData('text/plain', doc.considerations || 'No market considerations found in this document');
-                        e.dataTransfer.effectAllowed = 'copy';
-                      }}
-                    >
-                      <div className="cursor-grab hover:bg-accent-pale/20 p-1 rounded">
-                        {doc.considerations || 'Not in document, click to view explanation'}
-                      </div>
+                    <TableCell className="text-sm">
+                      {doc.considerations || 'Not in document, click to view explanation'}
                     </TableCell>
                   </TableRow>
                 ))}
