@@ -15,6 +15,8 @@ import ResearchDataPanel, { ResearchDocument } from './ResearchDataPanel';
 import ResultsTable from './ResultsTable';
 import { Supplier } from '@/components/suppliers/SuppliersTable';
 import { predefinedCategories } from '@/components/categories/CategoryBadge';
+import DraggableMessage from './DraggableMessage';
+import { useCustomActions } from '@/hooks/use-custom-actions';
 
 interface Message {
   id: string;
@@ -58,6 +60,14 @@ export default function ChatInterface() {
   const [supplierResults, setSupplierResults] = useState<Supplier[]>([]);
   const [showResultsTable, setShowResultsTable] = useState(false);
   const [resultsTableTitle, setResultsTableTitle] = useState("Top Suppliers");
+
+  const [isDragging, setIsDragging] = useState(false);
+  const { 
+    customActions, 
+    addCustomAction, 
+    removeCustomAction, 
+    clearCustomActions 
+  } = useCustomActions();
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -914,11 +924,11 @@ export default function ChatInterface() {
         {
           id: '2',
           name: 'BioTech Materials',
-          category: 'Excipients',
+          category: 'Active Ingredients',
           categories: [
-            predefinedCategories.find(c => c.id === 'excipients')!
+            predefinedCategories.find(c => c.id === 'apis')!
           ],
-          performance: 92,
+          performance: 90,
           riskLevel: 'low',
           items: 28,
           contact: {
@@ -1091,12 +1101,19 @@ export default function ChatInterface() {
                       
                       <div>
                         <div className={cn(
-                          "rounded-xl whitespace-pre-wrap py-3 px-4",
+                          "rounded-xl py-3 px-4",
                           message.sender === 'user' 
                             ? "bg-primary text-white rounded-tr-none" 
                             : "bg-gray-100 text-gray-800 rounded-tl-none"
                         )}>
-                          {message.content}
+                          {message.sender === 'user' ? (
+                            <div className="whitespace-pre-wrap">{message.content}</div>
+                          ) : (
+                            <DraggableMessage 
+                              content={message.content} 
+                              onDragStart={() => setIsDragging(true)}
+                            />
+                          )}
                         </div>
                         
                         {message.moduleType && (
@@ -1178,9 +1195,12 @@ export default function ChatInterface() {
         
         <ResizablePanel defaultSize={35} minSize={30}>
           <ActionPreview 
-            title={previewTitle}
-            description={previewDescription}
+            title={customActions.length > 0 ? "Your Action Batch" : previewTitle}
+            description={customActions.length > 0 ? "Drag more content from the chat to add actions" : previewDescription}
             actions={previewActions}
+            customActions={customActions}
+            onAddCustomAction={addCustomAction}
+            onRemoveCustomAction={removeCustomAction}
             className="h-full"
           />
         </ResizablePanel>
