@@ -1,10 +1,10 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { ArrowRight, BarChart3, Box, ClipboardList, Package, FileSearch, Shield, BookOpen, Link2, Trash2, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { toast } from '@/hooks/use-toast';
 import { CustomAction } from '@/hooks/use-custom-actions';
+import { Button } from '@/components/ui/button';
 
 export type ActionItem = {
   id: string;
@@ -60,7 +60,6 @@ const ActionPreview: React.FC<ActionPreviewProps> = ({
 }) => {
   const [isDragOver, setIsDragOver] = useState(false);
   
-  // Combine system actions and custom actions
   const allActions = [...actions, ...customActions];
   
   const actionsByCategory = allActions.reduce((acc, action) => {
@@ -167,7 +166,7 @@ const ActionPreview: React.FC<ActionPreviewProps> = ({
           <img 
             src="/lovable-uploads/8909c790-d73e-4ca4-99fb-106aa9109740.png" 
             alt="Fabricated Logo" 
-            className="h-24 w-auto mb-3 opacity-30" 
+            className="h-72 w-auto mb-3 opacity-30" 
           />
           <p className="text-xs max-w-xs">Drag content from the chat to create custom actions, or ask about inventory levels, suppliers, or orders to see actionable suggestions.</p>
         </div>
@@ -177,4 +176,3 @@ const ActionPreview: React.FC<ActionPreviewProps> = ({
 };
 
 export default ActionPreview;
-
