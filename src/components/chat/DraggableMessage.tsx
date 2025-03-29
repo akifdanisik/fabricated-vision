@@ -47,7 +47,7 @@ const DraggableMessage: React.FC<DraggableMessageProps> = ({
           onDragEnd={handleDragEnd}
           className={cn(
             "relative mb-1.5 p-1.5 rounded cursor-grab",
-            isDragging ? "bg-gray-100/50" : "hover:bg-gray-100/30",
+            isDragging ? "bg-accent-pale/10" : "hover:bg-accent-pale/5",
             className
           )}
         >

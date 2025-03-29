@@ -17,8 +17,6 @@ import { Supplier } from '@/components/suppliers/SuppliersTable';
 import { predefinedCategories } from '@/components/categories/CategoryBadge';
 import DraggableMessage from './DraggableMessage';
 import { useCustomActions } from '@/hooks/use-custom-actions';
-import { Tabs, TabsList, TabsTrigger, TabsContent } from '@radix-ui/react-tabs';
-import RelatedDocumentsTab from './RelatedDocumentsTab';
 
 interface Message {
   id: string;
@@ -1241,50 +1239,15 @@ export default function ChatInterface() {
         <ResizableHandle withHandle />
         
         <ResizablePanel defaultSize={35} minSize={30}>
-          <Tabs defaultValue="actions" className="h-full">
-            <div className="border-b px-3">
-              <TabsList className="h-11 bg-transparent p-0 w-auto">
-                <TabsTrigger 
-                  value="actions" 
-                  className="data-[state=active]:bg-transparent data-[state=active]:shadow-none rounded-none border-b-2 border-transparent data-[state=active]:border-gray-900 px-3 pb-3 pt-2 text-sm font-medium text-gray-500 data-[state=active]:text-gray-900"
-                >
-                  Actions
-                </TabsTrigger>
-                <TabsTrigger 
-                  value="related" 
-                  className="data-[state=active]:bg-transparent data-[state=active]:shadow-none rounded-none border-b-2 border-transparent data-[state=active]:border-gray-900 px-3 pb-3 pt-2 text-sm font-medium text-gray-500 data-[state=active]:text-gray-900"
-                >
-                  Related
-                </TabsTrigger>
-              </TabsList>
-            </div>
-            
-            <TabsContent value="actions" className="h-[calc(100%-44px)] p-0 m-0 border-none">
-              <ActionPreview 
-                title={customActions.length > 0 ? "Your Action Batch" : previewTitle}
-                description={customActions.length > 0 ? "Drag more content from the chat to add actions" : previewDescription}
-                actions={previewActions}
-                customActions={customActions}
-                onAddCustomAction={addCustomAction}
-                onRemoveCustomAction={removeCustomAction}
-                className="h-full"
-              />
-            </TabsContent>
-            
-            <TabsContent value="related" className="h-[calc(100%-44px)] p-0 m-0 border-none">
-              <RelatedDocumentsTab 
-                documents={researchData} 
-                onViewDocument={(doc) => {
-                  setShowResearchPanel(true);
-                  toast({
-                    title: "Document selected",
-                    description: `Viewing ${doc.title}`
-                  });
-                }}
-                className="h-full"
-              />
-            </TabsContent>
-          </Tabs>
+          <ActionPreview 
+            title={customActions.length > 0 ? "Your Action Batch" : previewTitle}
+            description={customActions.length > 0 ? "Drag more content from the chat to add actions" : previewDescription}
+            actions={previewActions}
+            customActions={customActions}
+            onAddCustomAction={addCustomAction}
+            onRemoveCustomAction={removeCustomAction}
+            className="h-full"
+          />
         </ResizablePanel>
       </ResizablePanelGroup>
       
