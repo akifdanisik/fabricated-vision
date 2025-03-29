@@ -756,11 +756,12 @@ export default function ChatInterface() {
       
       setSupplierResults(displayedSuppliers);
       setShowResultsTable(true);
+      setShowResearchPanel(true);
       setResultsTableTitle(`Top ${numSuppliers} Suppliers`);
       
       return {
         id: Date.now().toString(),
-        content: `Here are the top ${numSuppliers} suppliers based on performance metrics, risk assessment, and operational reliability:\n\n1. PharmaCorp (95/100) - Low risk, 32 items\n2. BioTech Materials (92/100) - Low risk, 28 items\n3. ChemSource Inc. (90/100) - Low risk, 24 items${numSuppliers > 3 ? '\n... and more shown in the table below.' : ''}`,
+        content: `Here are the top ${numSuppliers} suppliers based on performance metrics, risk assessment, and operational reliability:\n\n1. PharmaCorp (95/100) - Low risk, 32 items\n2. BioTech Materials (92/100) - Low risk, 28 items\n3. ChemSource Inc. (90/100) - Low risk, 24 items${numSuppliers > 3 ? '\n... and more shown in the research panel.' : ''}`,
         sender: 'ai',
         timestamp: new Date(),
         suppliers: displayedSuppliers,
@@ -871,6 +872,7 @@ export default function ChatInterface() {
       
       setSupplierResults(paracetamolSuppliers);
       setShowResultsTable(true);
+      setShowResearchPanel(true);
       setResultsTableTitle('GMP Certified Paracetamol API Suppliers');
       
       return {
@@ -960,6 +962,7 @@ export default function ChatInterface() {
       
       setSupplierResults(suppliersToCompare);
       setShowResultsTable(true);
+      setShowResearchPanel(true);
       setResultsTableTitle('Supplier Comparison');
       
       return {
@@ -1251,23 +1254,14 @@ export default function ChatInterface() {
         </ResizablePanel>
       </ResizablePanelGroup>
       
-      {showResultsTable && (
-        <ResultsTable 
-          isVisible={showResultsTable} 
-          suppliers={supplierResults}
-          onClose={() => setShowResultsTable(false)}
-          title={resultsTableTitle}
-        />
-      )}
-      
-      {showResearchPanel && (
-        <ResearchDataPanel 
-          isVisible={showResearchPanel}
-          documents={researchData}
-          isLoading={isResearching}
-          onClose={() => setShowResearchPanel(false)}
-        />
-      )}
+      <ResearchDataPanel 
+        isVisible={showResearchPanel}
+        documents={researchData}
+        suppliers={supplierResults}
+        isLoading={isResearching}
+        onClose={() => setShowResearchPanel(false)}
+        title={supplierResults.length > 0 && researchData.length === 0 ? resultsTableTitle : "Research Data"}
+      />
       
       <ModuleSelector 
         isOpen={moduleSelectOpen} 
