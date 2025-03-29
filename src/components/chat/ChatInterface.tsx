@@ -1105,7 +1105,9 @@ export default function ChatInterface() {
                           "rounded-xl py-3 px-4",
                           message.sender === 'user' 
                             ? "bg-primary text-white rounded-tr-none" 
-                            : "bg-gray-100 text-gray-800 rounded-tl-none"
+                            : message.isResearch
+                              ? "bg-gradient-to-r from-accent-light to-accent-pale text-gray-800 rounded-tl-none"
+                              : "bg-white border border-gray-100 shadow-sm text-gray-800 rounded-tl-none"
                         )}>
                           {message.sender === 'user' ? (
                             <div className="whitespace-pre-wrap">{message.content}</div>
@@ -1142,7 +1144,7 @@ export default function ChatInterface() {
                           </div>
                         )}
                         
-                        {/* Add message action icons for AI responses */}
+                        {/* Message action icons for AI responses */}
                         {message.sender === 'ai' && (
                           <div className="flex items-center gap-3 mt-1.5">
                             <button 
