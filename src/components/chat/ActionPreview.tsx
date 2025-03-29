@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { ArrowRight, BarChart3, Box, ClipboardList, Package, FileSearch, Shield, BookOpen, Link2, Trash2, X } from 'lucide-react';
@@ -149,38 +150,63 @@ const ActionPreview: React.FC<ActionPreviewProps> = ({
             {actionsByCategory[category].map((action) => (
               <Card 
                 key={action.id} 
-                className="bg-white hover:bg-accent-pale/40 transition-colors border-accent-pale/50"
+                className={cn(
+                  "bg-white hover:bg-accent-pale/40 transition-colors border-accent-pale/50",
+                  isCustomAction(action) && "py-1 px-3 shadow-sm rounded-full flex items-center"
+                )}
               >
-                <CardHeader className="p-3 pb-1 flex flex-row items-start gap-2">
-                  <div className="p-1.5 rounded-md bg-primary-light/70 text-primary-dark">
-                    {getActionIcon(action.icon)}
+                {isCustomAction(action) ? (
+                  // Compact version for custom actions (pill style)
+                  <div className="flex w-full items-center justify-between">
+                    <span className="text-sm font-medium text-gray-700 truncate mr-2">
+                      {action.title}
+                    </span>
+                    <div className="flex items-center gap-1">
+                      <Button 
+                        variant="ghost" 
+                        size="sm" 
+                        className="h-6 w-6 p-0 rounded-full hover:bg-accent-pale/50" 
+                        onClick={action.onClick}
+                      >
+                        <ArrowRight className="h-3 w-3 text-primary" />
+                      </Button>
+                      {onRemoveCustomAction && (
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="h-6 w-6 p-0 rounded-full hover:bg-accent-pale/50 text-muted-foreground hover:text-destructive"
+                          onClick={() => onRemoveCustomAction(action.id)}
+                        >
+                          <X className="h-3 w-3" />
+                        </Button>
+                      )}
+                    </div>
                   </div>
-                  <div className="flex-1">
-                    <CardTitle className="text-sm">{action.title}</CardTitle>
-                    <CardDescription className="text-xs mt-0.5 line-clamp-2">{action.description}</CardDescription>
-                  </div>
-                  {isCustomAction(action) && onRemoveCustomAction && (
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="h-6 w-6 p-0 text-muted-foreground hover:text-destructive"
-                      onClick={() => onRemoveCustomAction(action.id)}
-                    >
-                      <X className="h-3 w-3" />
-                    </Button>
-                  )}
-                </CardHeader>
-                <CardFooter className="px-3 py-1 justify-end">
-                  <Button 
-                    variant="ghost" 
-                    size="sm" 
-                    className="text-xs text-accent hover:text-accent hover:bg-accent-pale/50 h-7 px-2" 
-                    onClick={action.onClick}
-                  >
-                    {action.actionLabel}
-                    <ArrowRight className="ml-1 h-3 w-3" />
-                  </Button>
-                </CardFooter>
+                ) : (
+                  // Standard card for system actions
+                  <>
+                    <CardHeader className="p-3 pb-1 flex flex-row items-start gap-2">
+                      <div className="p-1.5 rounded-md bg-primary-light/70 text-primary-dark">
+                        {getActionIcon(action.icon)}
+                      </div>
+                      <div className="flex-1">
+                        <CardTitle className="text-sm">{action.title}</CardTitle>
+                        <CardDescription className="text-xs mt-0.5 line-clamp-2">{action.description}</CardDescription>
+                      </div>
+                    </CardHeader>
+                    <CardFooter className="px-3 py-1 justify-end">
+                      <Button 
+                        variant="ghost" 
+                        size="sm" 
+                        className="text-xs text-accent hover:text-accent hover:bg-accent-pale/50 h-7 px-2" 
+                        onClick={action.onClick}
+                      >
+                        {action.actionLabel}
+                        <ArrowRight className="ml-1 h-3 w-3" />
+                      </Button>
+                    </CardFooter>
+                  </>
+                )}
               </Card>
             ))}
           </div>
