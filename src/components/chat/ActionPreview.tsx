@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { ArrowRight, BarChart3, Box, ClipboardList, Package, FileSearch, Shield, BookOpen, Link2, Trash2, X } from 'lucide-react';
@@ -76,7 +75,6 @@ const ActionPreview: React.FC<ActionPreviewProps> = ({
 
   const categories = Object.keys(actionsByCategory);
 
-  // Update container width when the component mounts and when window resizes
   useEffect(() => {
     const updateWidth = () => {
       if (containerRef.current) {
@@ -84,13 +82,10 @@ const ActionPreview: React.FC<ActionPreviewProps> = ({
       }
     };
 
-    // Initial measurement
     updateWidth();
     
-    // Add resize listener
     window.addEventListener('resize', updateWidth);
     
-    // Periodic check for sidebar changes
     const interval = setInterval(updateWidth, 300);
     
     return () => {
@@ -99,11 +94,9 @@ const ActionPreview: React.FC<ActionPreviewProps> = ({
     };
   }, []);
   
-  // Calculate logo size based on container width
   const getLogoSize = () => {
-    // Base size on container width with min/max constraints
-    const baseSize = Math.min(containerWidth * 0.6, 280);
-    const minSize = 100;
+    const baseSize = Math.min(containerWidth * 0.8, 400);
+    const minSize = 150;
     return Math.max(baseSize, minSize);
   };
   
