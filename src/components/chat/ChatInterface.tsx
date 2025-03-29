@@ -1092,7 +1092,7 @@ export default function ChatInterface() {
                       <Avatar className={cn(
                         "h-8 w-8 mt-1",
                         message.sender === 'user' ? "ml-3" : "mr-3",
-                        message.sender === 'user' ? "bg-primary" : "bg-gray-100"
+                        message.sender === 'user' ? "bg-gray-500" : "bg-gray-100"
                       )}>
                         <AvatarFallback className={message.sender === 'user' ? "text-white" : "text-gray-500"}>
                           {message.sender === 'user' ? 'U' : 'A'}
@@ -1103,10 +1103,10 @@ export default function ChatInterface() {
                         <div className={cn(
                           "rounded-2xl py-4 px-5",
                           message.sender === 'user' 
-                            ? "bg-primary text-white" 
+                            ? "bg-gray-800 text-white" 
                             : message.isResearch
-                              ? "bg-[#f1f1f1] text-gray-800"
-                              : "bg-[#f1f1f1] text-gray-800"
+                              ? "bg-gray-100 text-gray-800"
+                              : "bg-gray-100 text-gray-800"
                         )}>
                           {message.sender === 'user' ? (
                             <div className="whitespace-pre-wrap">{message.content}</div>
@@ -1143,7 +1143,6 @@ export default function ChatInterface() {
                           </div>
                         )}
                         
-                        {/* Message action icons for AI responses */}
                         {message.sender === 'ai' && (
                           <div className="flex items-center gap-4 mt-2">
                             <button 
