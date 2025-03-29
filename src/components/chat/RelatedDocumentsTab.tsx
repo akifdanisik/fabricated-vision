@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { FileText, FilePdf, FileArchive, ExternalLink } from 'lucide-react';
+import { FileText, File, FileArchive, ExternalLink } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
@@ -16,7 +16,7 @@ const getDocumentIcon = (documentType: string) => {
   switch (documentType.toLowerCase()) {
     case 'pdf':
     case 'public report':
-      return <FilePdf className="h-5 w-5 text-red-500" />;
+      return <File className="h-5 w-5 text-red-500" />;
     case 'xlsx':
     case 'excel':
     case 'spreadsheet':
