@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+
+import React, { useState, useEffect, useRef } from 'react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { ArrowRight, BarChart3, Box, ClipboardList, Package, FileSearch, Shield, BookOpen, Link2, Trash2, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -59,6 +60,8 @@ const ActionPreview: React.FC<ActionPreviewProps> = ({
   className 
 }) => {
   const [isDragOver, setIsDragOver] = useState(false);
+  const [containerWidth, setContainerWidth] = useState(0);
+  const containerRef = useRef<HTMLDivElement>(null);
   
   const allActions = [...actions, ...customActions];
   
@@ -72,6 +75,37 @@ const ActionPreview: React.FC<ActionPreviewProps> = ({
   }, {} as Record<string, (ActionItem | CustomAction)[]>);
 
   const categories = Object.keys(actionsByCategory);
+
+  // Update container width when the component mounts and when window resizes
+  useEffect(() => {
+    const updateWidth = () => {
+      if (containerRef.current) {
+        setContainerWidth(containerRef.current.offsetWidth);
+      }
+    };
+
+    // Initial measurement
+    updateWidth();
+    
+    // Add resize listener
+    window.addEventListener('resize', updateWidth);
+    
+    // Periodic check for sidebar changes
+    const interval = setInterval(updateWidth, 300);
+    
+    return () => {
+      window.removeEventListener('resize', updateWidth);
+      clearInterval(interval);
+    };
+  }, []);
+  
+  // Calculate logo size based on container width
+  const getLogoSize = () => {
+    // Base size on container width with min/max constraints
+    const baseSize = Math.min(containerWidth * 0.6, 280);
+    const minSize = 100;
+    return Math.max(baseSize, minSize);
+  };
   
   const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -100,6 +134,7 @@ const ActionPreview: React.FC<ActionPreviewProps> = ({
 
   return (
     <div 
+      ref={containerRef}
       className={cn(
         "flex flex-col h-full overflow-auto p-4 bg-[#F1F0FB]",
         isDragOver && "bg-primary-light/20 border-2 border-dashed border-primary",
@@ -163,11 +198,13 @@ const ActionPreview: React.FC<ActionPreviewProps> = ({
         <div 
           className="flex flex-col items-center justify-center h-full text-accent-medium text-center p-4 bg-accent-pale/10 border-2 border-dashed border-accent-pale/30 rounded-lg"
         >
-          <img 
-            src="/lovable-uploads/8909c790-d73e-4ca4-99fb-106aa9109740.png" 
-            alt="Fabricated Logo" 
-            className="h-72 w-auto mb-3 opacity-30" 
-          />
+          <div className="flex justify-center items-center" style={{ height: `${getLogoSize()}px` }}>
+            <img 
+              src="/lovable-uploads/8909c790-d73e-4ca4-99fb-106aa9109740.png" 
+              alt="Fabricated Logo" 
+              className="w-auto h-full mb-3 opacity-30 object-contain transition-all duration-300" 
+            />
+          </div>
           <p className="text-xs max-w-xs">Drag content from the chat to create custom actions, or ask about inventory levels, suppliers, or orders to see actionable suggestions.</p>
         </div>
       )}
