@@ -74,9 +74,14 @@ export default function ResearchDataPanel({
         <div className="flex items-center gap-2">
           <FileText className="h-4 w-4 text-gray-500" />
           <h3 className="text-sm font-medium">{title}</h3>
-          <Badge variant="outline" className="ml-2 text-xs bg-gray-100">
-            {activeTab === 'documents' ? `${documents.length} documents` : `${suppliers.length} suppliers`}
-          </Badge>
+          <div className="flex items-center gap-1 ml-2">
+            <Badge variant="outline" className="text-xs bg-gray-100">
+              {documents.length} documents
+            </Badge>
+            <Badge variant="outline" className="text-xs bg-gray-100">
+              {suppliers.length} suppliers
+            </Badge>
+          </div>
         </div>
         <div className="flex items-center gap-2">
           <Button 
