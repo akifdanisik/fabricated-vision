@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect } from 'react';
 import { Send, Mic, PlusCircle, Search, Grid, Eye, ThumbsUp, ThumbsDown, RefreshCw, Copy, FileText } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -1069,8 +1068,8 @@ export default function ChatInterface() {
   return (
     <div className="flex flex-col h-full">
       <ResizablePanelGroup direction="horizontal">
-        <ResizablePanel defaultSize={65} minSize={50} className="flex flex-col bg-[#f3f3f3]">
-          <div className="flex-1 overflow-auto px-4 bg-[#f3f3f3]">
+        <ResizablePanel defaultSize={65} minSize={50} className="flex flex-col bg-[#f8f8f8]">
+          <div className="flex-1 overflow-auto px-4 bg-[#f8f8f8]">
             {showWelcomeScreen ? (
               <WelcomeScreen 
                 onSelectQuickStart={handleQuickPrompt} 
@@ -1102,12 +1101,12 @@ export default function ChatInterface() {
                       
                       <div>
                         <div className={cn(
-                          "rounded-xl py-3 px-4",
+                          "rounded-2xl py-4 px-5",
                           message.sender === 'user' 
-                            ? "bg-primary text-white rounded-tr-none" 
+                            ? "bg-primary text-white" 
                             : message.isResearch
-                              ? "bg-gradient-to-r from-accent-light to-accent-pale text-gray-800 rounded-tl-none"
-                              : "bg-white border border-gray-100 shadow-sm text-gray-800 rounded-tl-none"
+                              ? "bg-[#f1f1f1] text-gray-800"
+                              : "bg-[#f1f1f1] text-gray-800"
                         )}>
                           {message.sender === 'user' ? (
                             <div className="whitespace-pre-wrap">{message.content}</div>
@@ -1146,7 +1145,7 @@ export default function ChatInterface() {
                         
                         {/* Message action icons for AI responses */}
                         {message.sender === 'ai' && (
-                          <div className="flex items-center gap-3 mt-1.5">
+                          <div className="flex items-center gap-4 mt-2">
                             <button 
                               className="text-gray-400 hover:text-gray-600 transition-colors"
                               title="View"
@@ -1184,13 +1183,6 @@ export default function ChatInterface() {
                               }}
                             >
                               <Copy className="h-4 w-4" />
-                            </button>
-                            <button 
-                              className="text-gray-400 hover:text-yellow-600 transition-colors"
-                              title="Save"
-                              onClick={() => toast({ title: "Saved", description: "Response saved for later" })}
-                            >
-                              <FileText className="h-4 w-4" />
                             </button>
                           </div>
                         )}

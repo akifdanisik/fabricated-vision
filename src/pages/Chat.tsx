@@ -29,7 +29,7 @@ const Chat = () => {
 
   return (
     <Layout fullWidth hideNavbar>
-      <div className="flex flex-col h-[calc(100vh-0px)] bg-[#f3f3f3]">
+      <div className="flex flex-col h-[calc(100vh-0px)] bg-[#f8f8f8]">
         <div className="flex justify-end items-center px-6 py-3 border-b bg-white">
           <div className="flex items-center gap-2">
             <Button variant="ghost" size="icon" className="relative rounded-full text-gray-500 hover:bg-gray-100 hover:text-gray-900">
@@ -84,7 +84,7 @@ const Chat = () => {
           </div>
         </div>
         
-        <div className="flex-1 overflow-hidden bg-[#f3f3f3]">
+        <div className="flex-1 overflow-hidden bg-[#f8f8f8]">
           <ChatInterface />
         </div>
       </div>
