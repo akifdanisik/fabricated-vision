@@ -1,7 +1,7 @@
 
 import { useState } from 'react';
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { FileText, ChevronDown, ChevronUp, Calendar, ExternalLink, File, Package, Users, Star } from 'lucide-react';
+import { FileText, ChevronDown, ChevronUp, Calendar, ExternalLink, File, Package, Users, Star, AlertCircle } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';

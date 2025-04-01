@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { Send, Mic, PlusCircle, Search, Grid, Eye, ThumbsUp, ThumbsDown, RefreshCw, Copy, FileText } from 'lucide-react';
+import { Send, Mic, PlusCircle, Search, Grid, Eye, ThumbsUp, ThumbsDown, RefreshCw, Copy, FileText, AlertCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -17,6 +17,26 @@ import { Supplier } from '@/components/suppliers/SuppliersTable';
 import { predefinedCategories } from '@/components/categories/CategoryBadge';
 import DraggableMessage from './DraggableMessage';
 import { useCustomActions } from '@/hooks/use-custom-actions';
+import { 
+  Popover, 
+  PopoverTrigger, 
+  PopoverContent 
+} from '@/components/ui/popover';
+
+interface NumberedItem {
+  id: string;
+  title: string;
+  description: string;
+  type: 'risk' | 'finding' | 'document' | 'supplier';
+  severity?: 'low' | 'medium' | 'high';
+}
+
+interface NumberIndicator {
+  id: string;
+  number: number;
+  items: NumberedItem[];
+  type: 'risk' | 'finding' | 'document' | 'supplier';
+}
 
 interface Message {
   id: string;
@@ -31,6 +51,7 @@ interface Message {
   }[];
   isResearch?: boolean;
   suppliers?: Supplier[];
+  numberedIndicators?: NumberIndicator[];
 }
 
 export default function ChatInterface() {
@@ -62,6 +83,7 @@ export default function ChatInterface() {
   const [resultsTableTitle, setResultsTableTitle] = useState("Top Suppliers");
 
   const [isDragging, setIsDragging] = useState(false);
+  const [activeIndicator, setActiveIndicator] = useState<string | null>(null);
   const { 
     customActions, 
     addCustomAction, 
@@ -197,12 +219,65 @@ export default function ChatInterface() {
       setResearchData(mockDocuments);
       setIsResearching(false);
       
+      const mockRiskItems: NumberedItem[] = [
+        {
+          id: 'risk-1',
+          title: 'Legal Compliance Risk',
+          description: 'The merger agreement contains potential regulatory compliance issues in section 3.4.',
+          type: 'risk',
+          severity: 'high'
+        },
+        {
+          id: 'risk-2',
+          title: 'Financial Exposure',
+          description: 'Current product pricing strategy may lead to margin compression post-merger.',
+          type: 'risk',
+          severity: 'medium'
+        },
+        {
+          id: 'risk-3',
+          title: 'Integration Timeline',
+          description: 'System integration plan lacks specific milestones for tech stack consolidation.',
+          type: 'risk',
+          severity: 'high'
+        }
+      ];
+      
+      const mockFindingItems: NumberedItem[] = [
+        {
+          id: 'finding-1',
+          title: 'Market Opportunity',
+          description: 'Combined TAM increases by approximately 37% post-merger.',
+          type: 'finding'
+        },
+        {
+          id: 'finding-2',
+          title: 'Cost Synergies',
+          description: 'Potential $4.2M in annual cost savings identified across operations.',
+          type: 'finding'
+        }
+      ];
+      
       const researchSummaryMessage: Message = {
         id: Date.now().toString(),
         content: "I've analyzed 7 documents related to your query. Key insights include:\n\n- Financial documents show increasing costs\n- Expert opinions are divided on technology defensibility\n- The estimated market size (TAM) is approximately $72B\n- Several product integration risks have been identified\n\nYou can review the detailed research data in the panel below.",
         sender: 'ai',
         timestamp: new Date(),
         isResearch: true,
+        numberedIndicators: [
+          {
+            id: 'risks-indicator',
+            number: 3,
+            items: mockRiskItems,
+            type: 'risk'
+          },
+          {
+            id: 'findings-indicator',
+            number: 2,
+            items: mockFindingItems,
+            type: 'finding'
+          }
+        ],
         actions: [
           { 
             label: 'Close research panel', 
@@ -1068,6 +1143,98 @@ export default function ChatInterface() {
     }
   ];
 
+  const renderNumberIndicator = (indicator: NumberIndicator) => {
+    const getIndicatorColor = () => {
+      switch (indicator.type) {
+        case 'risk':
+          return 'bg-red-100 text-red-800 border-red-200 hover:bg-red-200';
+        case 'finding':
+          return 'bg-emerald-100 text-emerald-800 border-emerald-200 hover:bg-emerald-200';
+        case 'document':
+          return 'bg-blue-100 text-blue-800 border-blue-200 hover:bg-blue-200';
+        case 'supplier':
+          return 'bg-amber-100 text-amber-800 border-amber-200 hover:bg-amber-200';
+        default:
+          return 'bg-gray-100 text-gray-800 border-gray-200 hover:bg-gray-200';
+      }
+    };
+
+    return (
+      <Popover>
+        <PopoverTrigger asChild>
+          <Button 
+            variant="outline" 
+            size="sm" 
+            className={`h-6 w-6 p-0 rounded-full font-medium inline-flex items-center justify-center ${getIndicatorColor()}`}
+            onClick={() => setActiveIndicator(indicator.id === activeIndicator ? null : indicator.id)}
+          >
+            {indicator.number}
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent className="w-80 p-0">
+          <div className="px-3 py-2 border-b border-gray-100 bg-gray-50">
+            <h3 className="text-sm font-medium flex items-center gap-2">
+              {indicator.type === 'risk' && <AlertCircle className="h-4 w-4 text-red-500" />}
+              {indicator.type === 'finding' && <FileText className="h-4 w-4 text-emerald-500" />}
+              {indicator.type === 'document' && <FileText className="h-4 w-4 text-blue-500" />}
+              {indicator.type === 'supplier' && <FileText className="h-4 w-4 text-amber-500" />}
+              {indicator.number} {indicator.type === 'risk' ? 'Risks' : 
+                indicator.type === 'finding' ? 'Findings' : 
+                indicator.type === 'document' ? 'Documents' : 'Suppliers'}
+            </h3>
+          </div>
+          <div className="max-h-[300px] overflow-auto">
+            {indicator.items.map((item) => (
+              <div key={item.id} className="px-3 py-2 border-b border-gray-100 last:border-0 hover:bg-gray-50">
+                <div className="flex items-start gap-2">
+                  {item.severity === 'high' && <div className="h-2 w-2 mt-1.5 rounded-full bg-red-500" />}
+                  {item.severity === 'medium' && <div className="h-2 w-2 mt-1.5 rounded-full bg-amber-500" />}
+                  {item.severity === 'low' && <div className="h-2 w-2 mt-1.5 rounded-full bg-green-500" />}
+                  <div>
+                    <h4 className="text-sm font-medium">{item.title}</h4>
+                    <p className="text-xs text-gray-500">{item.description}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </PopoverContent>
+      </Popover>
+    );
+  };
+
+  const renderMessageWithNumberedIndicators = (content: string, indicators?: NumberIndicator[]) => {
+    if (!indicators || indicators.length === 0) return content;
+    
+    return (
+      <div className="whitespace-pre-wrap">
+        {content.split(/(\s+)/).map((part, index) => {
+          if (part.includes('identified') || part.includes('analyzed') || part.includes('found')) {
+            const indicatorsToRender = indicators.filter(ind => 
+              (part.includes('risk') && ind.type === 'risk') || 
+              (part.includes('finding') && ind.type === 'finding')
+            );
+            
+            if (indicatorsToRender.length > 0) {
+              return (
+                <span key={index}>
+                  {part}
+                  {' '}
+                  {indicatorsToRender.map(ind => (
+                    <span key={ind.id} className="inline-block mx-1">
+                      {renderNumberIndicator(ind)}
+                    </span>
+                  ))}
+                </span>
+              );
+            }
+          }
+          return part;
+        })}
+      </div>
+    );
+  };
+
   return (
     <div className="flex flex-col h-full">
       <ResizablePanelGroup direction="horizontal">
@@ -1113,6 +1280,8 @@ export default function ChatInterface() {
                         )}>
                           {message.sender === 'user' ? (
                             <div className="whitespace-pre-wrap">{message.content}</div>
+                          ) : message.numberedIndicators ? (
+                            renderMessageWithNumberedIndicators(message.content, message.numberedIndicators)
                           ) : (
                             <DraggableMessage 
                               content={message.content} 
