@@ -1,3 +1,4 @@
+
 import Layout from '@/components/layout/Layout';
 import ChatInterface from '@/components/chat/ChatInterface';
 import { useEffect, useState } from 'react';
@@ -28,13 +29,13 @@ const Chat = () => {
 
   return (
     <Layout fullWidth hideNavbar>
-      <div className="flex flex-col h-[calc(100vh-0px)] bg-[#f8f8f8]">
-        <div className="flex justify-end items-center px-6 py-3 border-b bg-white">
+      <div className="flex flex-col h-[calc(100vh-0px)] bg-[#f8f8f8] rounded-2xl overflow-hidden">
+        <div className="flex justify-end items-center px-6 py-3 border-b bg-white rounded-t-2xl">
           <div className="flex items-center gap-2">
             <Button variant="ghost" size="icon" className="relative rounded-full text-gray-500 hover:bg-gray-100 hover:text-gray-900">
               <Bell className="h-5 w-5" />
               <Badge 
-                className="absolute -top-1 -right-1 h-4 w-4 p-0 flex items-center justify-center text-xs"
+                className="absolute -top-1 -right-1 h-4 w-4 p-0 flex items-center justify-center text-xs rounded-full"
                 variant="destructive"
               >
                 3
@@ -48,17 +49,17 @@ const Chat = () => {
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" className="flex items-center gap-2 px-3 py-2 rounded-full hover:bg-gray-100">
-                  <Avatar className="h-8 w-8 border border-gray-200">
+                  <Avatar className="h-8 w-8 border border-gray-200 rounded-full">
                     <AvatarImage src="" alt="User" />
-                    <AvatarFallback className="text-sm bg-gray-100 text-gray-700">JD</AvatarFallback>
+                    <AvatarFallback className="text-sm bg-gray-100 text-gray-700 rounded-full">JD</AvatarFallback>
                   </Avatar>
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-56 rounded-xl shadow-md border-gray-100">
-                <DropdownMenuLabel className="flex items-center gap-2">
-                  <Avatar className="h-8 w-8">
+                <DropdownMenuLabel className="flex items-center gap-2 rounded-t-xl">
+                  <Avatar className="h-8 w-8 rounded-full">
                     <AvatarImage src="" alt="User" />
-                    <AvatarFallback className="bg-gray-100 text-gray-700">JD</AvatarFallback>
+                    <AvatarFallback className="bg-gray-100 text-gray-700 rounded-full">JD</AvatarFallback>
                   </Avatar>
                   <div>
                     <p className="text-sm font-medium">John Doe</p>
@@ -83,7 +84,7 @@ const Chat = () => {
           </div>
         </div>
         
-        <div className="flex-1 overflow-hidden bg-[#f8f8f8]">
+        <div className="flex-1 overflow-hidden bg-[#f8f8f8] rounded-b-2xl">
           <ChatInterface />
         </div>
       </div>
