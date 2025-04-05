@@ -219,8 +219,8 @@ const ActionPreview: React.FC<ActionPreviewProps> = ({
         >
           <div className="flex justify-center items-center" style={{ height: `${getLogoSize()}px` }}>
             <img 
-              src="/lovable-uploads/8909c790-d73e-4ca4-99fb-106aa9109740.png" 
-              alt="Fabricated Logo" 
+              src="/lovable-uploads/01412af3-e768-4704-86e8-1f8e006a8bb3.png" 
+              alt="ProChain Logo" 
               className="w-auto h-full mb-3 opacity-30 object-contain transition-all duration-300" 
             />
           </div>
