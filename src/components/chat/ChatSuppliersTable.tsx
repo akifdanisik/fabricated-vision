@@ -41,7 +41,7 @@ export default function ChatSuppliersTable({
   };
 
   return (
-    <div className={cn("overflow-hidden rounded-xl border border-accent-pale shadow-sm bg-white my-4", className)}>
+    <div className={cn("overflow-hidden rounded-xl border border-accent-pale shadow-sm bg-white", className)}>
       <div className="overflow-x-auto">
         <Table>
           <TableHeader>

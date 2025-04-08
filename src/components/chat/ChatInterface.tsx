@@ -17,6 +17,7 @@ import { Supplier } from '@/components/suppliers/SuppliersTable';
 import { predefinedCategories } from '@/components/categories/CategoryBadge';
 import DraggableMessage from './DraggableMessage';
 import { useCustomActions } from '@/hooks/use-custom-actions';
+import ChatSuppliersTable from './ChatSuppliersTable';
 import { 
   Popover, 
   PopoverTrigger, 
@@ -829,14 +830,9 @@ export default function ChatInterface() {
       
       const displayedSuppliers = topSuppliers.slice(0, numSuppliers);
       
-      setSupplierResults(displayedSuppliers);
-      setShowResultsTable(true);
-      setShowResearchPanel(true);
-      setResultsTableTitle(`Top ${numSuppliers} Suppliers`);
-      
       return {
         id: Date.now().toString(),
-        content: `Here are the top ${numSuppliers} suppliers based on performance metrics, risk assessment, and operational reliability:\n\n1. PharmaCorp (95/100) - Low risk, 32 items\n2. BioTech Materials (92/100) - Low risk, 28 items\n3. ChemSource Inc. (90/100) - Low risk, 24 items${numSuppliers > 3 ? '\n... and more shown in the research panel.' : ''}`,
+        content: `Here are the top ${numSuppliers} suppliers based on performance metrics, risk assessment, and operational reliability:`,
         sender: 'ai',
         timestamp: new Date(),
         suppliers: displayedSuppliers,
@@ -945,14 +941,9 @@ export default function ChatInterface() {
         }
       ];
       
-      setSupplierResults(paracetamolSuppliers);
-      setShowResultsTable(true);
-      setShowResearchPanel(true);
-      setResultsTableTitle('GMP Certified Paracetamol API Suppliers');
-      
       return {
         id: Date.now().toString(),
-        content: 'Here are 5 suppliers for Paracetamol API with GMP certification:\n\nSupplier A: $500/kg, 10-week lead time.\nSupplier B: $550/kg, 8-week lead time.\nSupplier C: $480/kg, 12-week lead time (FDA approval pending).\nSupplier D: $530/kg, 9-week lead time (ISO certified).\nSupplier E: $575/kg, 7-week lead time (multiple quality certifications).\n\nWould you like to compare them or create an RFQ?',
+        content: 'Here are 5 suppliers for Paracetamol API with GMP certification:',
         sender: 'ai',
         timestamp: new Date(),
         suppliers: paracetamolSuppliers,
@@ -1035,14 +1026,9 @@ export default function ChatInterface() {
         }
       ];
       
-      setSupplierResults(suppliersToCompare);
-      setShowResultsTable(true);
-      setShowResearchPanel(true);
-      setResultsTableTitle('Supplier Comparison');
-      
       return {
         id: Date.now().toString(),
-        content: 'Here\'s a comparison of the selected suppliers:\n\nPharmaCorp:\n- Performance: 95/100\n- Risk Level: Low\n- Location: Boston, USA\n- Items: 32\n\nBioTech Materials:\n- Performance: 92/100\n- Risk Level: Low\n- Location: Barcelona, Spain\n- Items: 28\n\nChemSource Inc.:\n- Performance: 90/100\n- Risk Level: Low\n- Location: Singapore\n- Items: 24\n\nPharmaCorp has the highest performance score and offers the most comprehensive product catalog, while BioTech Materials and ChemSource provide good alternatives with slightly lower performance metrics.',
+        content: 'Here\'s a comparison of the selected suppliers:',
         sender: 'ai',
         timestamp: new Date(),
         suppliers: suppliersToCompare,
@@ -1155,7 +1141,7 @@ export default function ChatInterface() {
         case 'supplier':
           return 'bg-amber-100 text-amber-800 border-amber-200 hover:bg-amber-200';
         default:
-          return 'bg-gray-100 text-gray-800 border-gray-200 hover:bg-gray-200';
+          return 'bg-gray-100 text-gray-800 border-gray-200 hover:bg-gray-100';
       }
     };
 
@@ -1289,6 +1275,15 @@ export default function ChatInterface() {
                             />
                           )}
                         </div>
+                        
+                        {message.suppliers && message.suppliers.length > 0 && (
+                          <div className="mt-3">
+                            <ChatSuppliersTable 
+                              suppliers={message.suppliers} 
+                              compact={true}
+                            />
+                          </div>
+                        )}
                         
                         {message.moduleType && (
                           <div className="mt-3">
