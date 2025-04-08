@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
@@ -8,12 +9,14 @@ import { Progress } from '@/components/ui/progress';
 import { Supplier } from '@/components/suppliers/SuppliersTable';
 import CategoryBadge from '@/components/categories/CategoryBadge';
 import { cn } from '@/lib/utils';
+
 interface ResultsTableProps {
   isVisible: boolean;
   suppliers?: Supplier[];
   onClose: () => void;
   title?: string;
 }
+
 export default function ResultsTable({
   isVisible,
   suppliers = [],
@@ -21,29 +24,57 @@ export default function ResultsTable({
   title = "Top Suppliers"
 }: ResultsTableProps) {
   const [isCollapsed, setIsCollapsed] = useState(false);
+  
   if (!isVisible) return null;
+  
   const getPerformanceColor = (score: number) => {
     if (score >= 80) return 'bg-green-500';
     if (score >= 60) return 'bg-amber-500';
     return 'bg-red-500';
   };
+  
   const getRiskBadge = (risk: Supplier['riskLevel']) => {
     switch (risk) {
       case 'low':
-        return <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200">Low Risk</Badge>;
+        return <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200 rounded-full">Low Risk</Badge>;
       case 'medium':
-        return <Badge variant="outline" className="bg-amber-50 text-amber-700 border-amber-200">Medium Risk</Badge>;
+        return <Badge variant="outline" className="bg-amber-50 text-amber-700 border-amber-200 rounded-full">Medium Risk</Badge>;
       case 'high':
-        return <Badge variant="outline" className="bg-red-50 text-red-700 border-red-200">High Risk</Badge>;
+        return <Badge variant="outline" className="bg-red-50 text-red-700 border-red-200 rounded-full">High Risk</Badge>;
       default:
-        return <Badge variant="outline">Unknown</Badge>;
+        return <Badge variant="outline" className="rounded-full">Unknown</Badge>;
     }
   };
-  return <div className="border-t border-gray-200 bg-white">
+  
+  return (
+    <div className="border-t border-gray-200 bg-white rounded-b-xl">
+      <div className="flex justify-between items-center p-3 border-b border-gray-200">
+        <h3 className="text-sm font-medium">{title}</h3>
+        <div className="flex items-center space-x-2">
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            className="h-7 w-7 p-0 rounded-full"
+            onClick={() => setIsCollapsed(!isCollapsed)}
+          >
+            {isCollapsed ? <ChevronDown className="h-4 w-4" /> : <ChevronUp className="h-4 w-4" />}
+          </Button>
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            className="h-7 w-7 p-0 rounded-full"
+            onClick={onClose}
+          >
+            <span className="sr-only">Close</span>
+            <span aria-hidden="true">×</span>
+          </Button>
+        </div>
+      </div>
       
-      
-      {!isCollapsed && <div className="overflow-auto max-h-[300px]">
-          {suppliers.length > 0 ? <Table>
+      {!isCollapsed && (
+        <div className="overflow-auto max-h-[300px]">
+          {suppliers.length > 0 ? (
+            <Table>
               <TableHeader>
                 <TableRow>
                   <TableHead className="w-[180px]">Supplier</TableHead>
@@ -56,20 +87,27 @@ export default function ResultsTable({
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {suppliers.map(supplier => <TableRow key={supplier.id} className="h-[65px]">
+                {suppliers.map(supplier => (
+                  <TableRow key={supplier.id} className="h-[65px]">
                     <TableCell>
                       <div className="flex items-center gap-3">
-                        <Avatar className="h-8 w-8">
+                        <Avatar className="h-8 w-8 rounded-full">
                           <AvatarImage src={supplier.logo} alt={supplier.name} />
-                          <AvatarFallback>{supplier.initials}</AvatarFallback>
+                          <AvatarFallback className="rounded-full">{supplier.initials}</AvatarFallback>
                         </Avatar>
                         <span className="font-medium">{supplier.name}</span>
                       </div>
                     </TableCell>
                     <TableCell>
-                      {supplier.categories ? <div className="flex flex-wrap gap-1">
-                          {supplier.categories.map(category => <CategoryBadge key={category.id} category={category} />)}
-                        </div> : <CategoryBadge category={supplier.category} />}
+                      {supplier.categories ? (
+                        <div className="flex flex-wrap gap-1">
+                          {supplier.categories.map(category => (
+                            <CategoryBadge key={category.id} category={category} />
+                          ))}
+                        </div>
+                      ) : (
+                        <CategoryBadge category={supplier.category} />
+                      )}
                     </TableCell>
                     <TableCell>
                       <div className="w-32 space-y-1">
@@ -80,7 +118,11 @@ export default function ResultsTable({
                           </div>
                           <span className="text-xs text-muted-foreground">/ 100</span>
                         </div>
-                        <Progress value={supplier.performance} className="h-1.5" indicatorClassName={getPerformanceColor(supplier.performance)} />
+                        <Progress 
+                          value={supplier.performance} 
+                          className="h-1.5 rounded-full" 
+                          indicatorClassName={cn(getPerformanceColor(supplier.performance), "rounded-full")} 
+                        />
                       </div>
                     </TableCell>
                     <TableCell>{getRiskBadge(supplier.riskLevel)}</TableCell>
@@ -92,11 +134,17 @@ export default function ResultsTable({
                       </div>
                     </TableCell>
                     <TableCell>{supplier.location}</TableCell>
-                  </TableRow>)}
+                  </TableRow>
+                ))}
               </TableBody>
-            </Table> : <div className="text-center py-8 text-gray-500">
+            </Table>
+          ) : (
+            <div className="text-center py-8 text-gray-500 rounded-b-xl">
               No supplier data available.
-            </div>}
-        </div>}
-    </div>;
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
 }
