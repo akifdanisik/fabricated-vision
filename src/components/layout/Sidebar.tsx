@@ -211,7 +211,7 @@ const Sidebar = ({
                 className="flex w-full items-center justify-start gap-2 px-2 py-1.5 rounded-md text-[0.8rem] hover:bg-gray-100"
               >
                 <Inbox className="h-4 w-4 text-slate-500" />
-                <span>Sync Email Inbox</span>
+                <span>Inbox</span>
               </Button>
             </div>
             
