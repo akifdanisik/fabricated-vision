@@ -76,10 +76,11 @@ const Layout = ({ children, fullWidth = false, hideNavbar = false }: LayoutProps
         
         <main className={cn(
           "flex-1 animate-fade-in",
-          fullWidth ? "p-0" : "p-5 md:p-8 bg-background"
+          fullWidth ? "p-0" : "p-0", // Changed from "p-5 md:p-8" to "p-0"
+          "w-full mx-auto" // Added to ensure content is centered
         )}>
           <div className={cn(
-            fullWidth ? "w-full h-full" : "w-full mx-auto"
+            fullWidth ? "w-full h-full" : "w-full h-full" // Simplified to always take full width and height
           )}>
             {children}
           </div>
@@ -90,3 +91,4 @@ const Layout = ({ children, fullWidth = false, hideNavbar = false }: LayoutProps
 };
 
 export default Layout;
+
