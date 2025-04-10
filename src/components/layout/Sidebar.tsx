@@ -1,12 +1,12 @@
-
 import { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { MessageSquare, ChevronRight, ChevronLeft, Search, Folder, ChevronDown, Square, Menu, AlignLeft } from "lucide-react";
+import { MessageSquare, ChevronRight, ChevronLeft, Search, Folder, ChevronDown, Square, Menu, AlignLeft, Inbox } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Input } from "@/components/ui/input";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { useToast } from "@/components/ui/use-toast";
 
 interface SidebarProps {
   isOpen: boolean;
@@ -22,37 +22,39 @@ interface ChatItem {
   parentId?: string;
 }
 
-const mockChats: ChatItem[] = [{
-  id: '1',
-  title: 'FDA Compliance for API Suppliers',
-  date: new Date(),
-  type: 'chat'
-}, {
-  id: '2',
-  title: 'Market Price Trends: MCC',
-  date: new Date(),
-  type: 'chat'
-}, {
-  id: '3',
-  title: 'Urgent Backup Suppliers',
-  date: new Date(Date.now() - 86400000),
-  type: 'chat'
-}, {
-  id: '4',
-  title: 'MedSource Assessment',
-  date: new Date(Date.now() - 86400000),
-  type: 'chat'
-}, {
-  id: '5',
-  title: 'Contract Force Majeure Analysis',
-  date: new Date(Date.now() - 86400000),
-  type: 'chat'
-}, {
-  id: '6',
-  title: 'Raw Material Shortages',
-  date: new Date(Date.now() - 86400000),
-  type: 'chat'
-}];
+const mockChats: ChatItem[] = [
+  {
+    id: '1',
+    title: 'FDA Compliance for API Suppliers',
+    date: new Date(),
+    type: 'chat'
+  }, {
+    id: '2',
+    title: 'Market Price Trends: MCC',
+    date: new Date(),
+    type: 'chat'
+  }, {
+    id: '3',
+    title: 'Urgent Backup Suppliers',
+    date: new Date(Date.now() - 86400000),
+    type: 'chat'
+  }, {
+    id: '4',
+    title: 'MedSource Assessment',
+    date: new Date(Date.now() - 86400000),
+    type: 'chat'
+  }, {
+    id: '5',
+    title: 'Contract Force Majeure Analysis',
+    date: new Date(Date.now() - 86400000),
+    type: 'chat'
+  }, {
+    id: '6',
+    title: 'Raw Material Shortages',
+    date: new Date(Date.now() - 86400000),
+    type: 'chat'
+  }
+];
 
 interface Project {
   id: string;
@@ -60,39 +62,41 @@ interface Project {
   chats: ChatItem[];
 }
 
-const mockProjects: Project[] = [{
-  id: 'p1',
-  title: 'Supplier Evaluations',
-  chats: []
-}, {
-  id: 'p2',
-  title: 'Cost Optimization',
-  chats: []
-}, {
-  id: 'p3',
-  title: 'Compliance Docs',
-  chats: [{
-    id: 'p3c1',
-    title: 'GMP Certifications',
-    date: new Date(Date.now() - 3 * 86400000),
-    type: 'chat',
-    parentId: 'p3'
+const mockProjects: Project[] = [
+  {
+    id: 'p1',
+    title: 'Supplier Evaluations',
+    chats: []
   }, {
-    id: 'p3c2',
-    title: 'FDA Inspection Reports',
-    date: new Date(Date.now() - 4 * 86400000),
-    type: 'chat',
-    parentId: 'p3'
-  }]
-}, {
-  id: 'p4',
-  title: 'Market Research',
-  chats: []
-}, {
-  id: 'p5',
-  title: 'Innovation Tracking',
-  chats: []
-}];
+    id: 'p2',
+    title: 'Cost Optimization',
+    chats: []
+  }, {
+    id: 'p3',
+    title: 'Compliance Docs',
+    chats: [{
+      id: 'p3c1',
+      title: 'GMP Certifications',
+      date: new Date(Date.now() - 3 * 86400000),
+      type: 'chat',
+      parentId: 'p3'
+    }, {
+      id: 'p3c2',
+      title: 'FDA Inspection Reports',
+      date: new Date(Date.now() - 4 * 86400000),
+      type: 'chat',
+      parentId: 'p3'
+    }]
+  }, {
+    id: 'p4',
+    title: 'Market Research',
+    chats: []
+  }, {
+    id: 'p5',
+    title: 'Innovation Tracking',
+    chats: []
+  }
+];
 
 const Sidebar = ({
   isOpen,
@@ -106,6 +110,7 @@ const Sidebar = ({
   const [expandedProjects, setExpandedProjects] = useState<Record<string, boolean>>({
     'p3': true
   });
+  const { toast } = useToast();
 
   useEffect(() => {
     setIsMounted(true);
@@ -137,6 +142,14 @@ const Sidebar = ({
   
   const handleChatClick = (chatId: string) => {
     navigate(`/chat?id=${chatId}`);
+  };
+
+  const handleInboxSync = () => {
+    toast({
+      title: "Inbox Sync",
+      description: "Email inbox synchronization is coming soon!",
+      duration: 3000,
+    });
   };
 
   if (isCompleteClosed) {
@@ -182,7 +195,26 @@ const Sidebar = ({
             <Link to="/chat" className={cn("group flex items-center gap-3 rounded-xl px-3 py-2.5 transition-all justify-center py-2.5", location.pathname === "/chat" ? "bg-primary text-white" : "text-slate-700 hover:bg-gray-100 hover:text-slate-900")}>
               <MessageSquare className={cn("h-5 w-5 shrink-0", location.pathname === "/chat" && "text-white")} />
             </Link>
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              onClick={handleInboxSync}
+              className="flex items-center justify-center rounded-xl p-2.5 text-slate-700 hover:bg-gray-100 hover:text-slate-900"
+            >
+              <Inbox className="h-5 w-5 shrink-0" />
+            </Button>
           </nav> : <div className="px-3 py-1">
+            <div className="mb-2">
+              <Button 
+                variant="ghost" 
+                onClick={handleInboxSync}
+                className="flex w-full items-center justify-start gap-2 px-2 py-1.5 rounded-md text-[0.8rem] hover:bg-gray-100"
+              >
+                <Inbox className="h-4 w-4 text-slate-500" />
+                <span>Sync Email Inbox</span>
+              </Button>
+            </div>
+            
             {todayChats.length > 0 && <>
                 <h3 className="text-xs font-medium text-slate-500 py-2">Today</h3>
                 <nav className="grid gap-1">
