@@ -5,6 +5,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Chat from "./pages/Chat";
+import Inbox from "./pages/Inbox";
 import { useEffect } from "react";
 
 const queryClient = new QueryClient();
@@ -29,6 +30,7 @@ const App = () => {
           <Routes>
             <Route path="/" element={<Navigate to="/chat" replace />} />
             <Route path="/chat" element={<Chat />} />
+            <Route path="/inbox" element={<Inbox />} />
             {/* Catch-all route for any unmatched paths */}
             <Route path="*" element={<Navigate to="/chat" replace />} />
           </Routes>

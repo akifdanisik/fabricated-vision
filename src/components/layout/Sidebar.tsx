@@ -144,12 +144,8 @@ const Sidebar = ({
     navigate(`/chat?id=${chatId}`);
   };
 
-  const handleInboxSync = () => {
-    toast({
-      title: "Inbox Sync",
-      description: "Email inbox synchronization is coming soon!",
-      duration: 3000,
-    });
+  const handleInboxClick = () => {
+    navigate('/inbox');
   };
 
   const handleDocuments = () => {
@@ -203,14 +199,13 @@ const Sidebar = ({
             <Link to="/chat" className={cn("group flex items-center gap-3 rounded-xl px-3 py-2.5 transition-all justify-center py-2.5", location.pathname === "/chat" ? "bg-primary text-white" : "text-slate-700 hover:bg-gray-100 hover:text-slate-900")}>
               <MessageSquare className={cn("h-5 w-5 shrink-0", location.pathname === "/chat" && "text-white")} />
             </Link>
-            <Button 
-              variant="ghost" 
-              size="icon" 
-              onClick={handleInboxSync}
-              className="flex items-center justify-center rounded-xl p-2.5 text-slate-700 hover:bg-gray-100 hover:text-slate-900"
+            <Link 
+              to="/inbox" 
+              className={cn("group flex items-center gap-3 rounded-xl px-3 py-2.5 transition-all justify-center py-2.5", 
+                location.pathname === "/inbox" ? "bg-primary text-white" : "text-slate-700 hover:bg-gray-100 hover:text-slate-900")}
             >
-              <Inbox className="h-5 w-5 shrink-0" />
-            </Button>
+              <Inbox className={cn("h-5 w-5 shrink-0", location.pathname === "/inbox" && "text-white")} />
+            </Link>
             <Button 
               variant="ghost" 
               size="icon" 
@@ -221,14 +216,16 @@ const Sidebar = ({
             </Button>
           </nav> : <div className="px-3 py-1">
             <div className="mb-2">
-              <Button 
-                variant="ghost" 
-                onClick={handleInboxSync}
-                className="flex w-full items-center justify-start gap-2 px-2 py-1.5 rounded-md text-[0.8rem] hover:bg-gray-100"
+              <Link 
+                to="/inbox"
+                className={cn(
+                  "flex w-full items-center justify-start gap-2 px-2 py-1.5 rounded-md text-[0.8rem] hover:bg-gray-100",
+                  location.pathname === "/inbox" && "bg-gray-100 font-medium"
+                )}
               >
                 <Inbox className="h-4 w-4 text-slate-500" />
                 <span>Inbox</span>
-              </Button>
+              </Link>
               
               <Button 
                 variant="ghost" 
