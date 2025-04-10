@@ -1,10 +1,9 @@
-
 import { useState } from "react";
 import Layout from "@/components/layout/Layout";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { FileText, File, FileArchive, FileImage, FilePlus, Search, Filter, Download, Trash2, Share2 } from "lucide-react";
+import { FileText, File, FileArchive, FileImage, FilePlus, Search, Filter, Download, Trash2, Share2, MinusSquare, CheckSquare, Square as SquareIcon } from "lucide-react";
 import {
   Table,
   TableBody,
@@ -151,12 +150,10 @@ const Documents = () => {
   };
 
   const filteredDocuments = mockDocuments.filter(doc => {
-    // Filter by search query
     if (searchQuery && !doc.name.toLowerCase().includes(searchQuery.toLowerCase())) {
       return false;
     }
     
-    // Filter by tab
     if (activeTab !== "all" && doc.category.toLowerCase() !== activeTab) {
       return false;
     }
@@ -203,6 +200,16 @@ const Documents = () => {
       default:
         break;
     }
+  };
+
+  const getSelectionIcon = () => {
+    if (selectedDocuments.length === 0) {
+      return <SquareIcon className="h-4 w-4" />;
+    }
+    if (selectedDocuments.length === mockDocuments.length) {
+      return <CheckSquare className="h-4 w-4" />;
+    }
+    return <MinusSquare className="h-4 w-4" />;
   };
 
   return (
@@ -269,11 +276,12 @@ const Documents = () => {
                   <TableHeader>
                     <TableRow>
                       <TableHead className="w-12">
-                        <Checkbox 
-                          checked={selectedDocuments.length === mockDocuments.length && mockDocuments.length > 0}
-                          indeterminate={selectedDocuments.length > 0 && selectedDocuments.length < mockDocuments.length}
-                          onCheckedChange={selectAllDocuments}
-                        />
+                        <div 
+                          className="cursor-pointer flex items-center justify-center"
+                          onClick={selectAllDocuments}
+                        >
+                          {getSelectionIcon()}
+                        </div>
                       </TableHead>
                       <TableHead>Name</TableHead>
                       <TableHead>Category</TableHead>
@@ -322,7 +330,6 @@ const Documents = () => {
               </div>
             </TabsContent>
             
-            {/* The other tab contents will filter based on the activeTab state */}
             <TabsContent value="report" className="flex-1 m-0 p-0 data-[state=active]:flex">
               {/* Content is filtered through the filteredDocuments */}
             </TabsContent>
