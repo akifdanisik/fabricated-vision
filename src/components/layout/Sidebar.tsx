@@ -148,12 +148,8 @@ const Sidebar = ({
     navigate('/inbox');
   };
 
-  const handleDocuments = () => {
-    toast({
-      title: "Documents",
-      description: "Document management feature is coming soon!",
-      duration: 3000,
-    });
+  const handleDocumentsClick = () => {
+    navigate('/documents');
   };
 
   if (isCompleteClosed) {
@@ -206,14 +202,13 @@ const Sidebar = ({
             >
               <Inbox className={cn("h-5 w-5 shrink-0", location.pathname === "/inbox" && "text-white")} />
             </Link>
-            <Button 
-              variant="ghost" 
-              size="icon" 
-              onClick={handleDocuments}
-              className="flex items-center justify-center rounded-xl p-2.5 text-slate-700 hover:bg-gray-100 hover:text-slate-900"
+            <Link 
+              to="/documents"
+              className={cn("group flex items-center gap-3 rounded-xl px-3 py-2.5 transition-all justify-center py-2.5", 
+                location.pathname === "/documents" ? "bg-primary text-white" : "text-slate-700 hover:bg-gray-100 hover:text-slate-900")}
             >
-              <FileText className="h-5 w-5 shrink-0" />
-            </Button>
+              <FileText className={cn("h-5 w-5 shrink-0", location.pathname === "/documents" && "text-white")} />
+            </Link>
           </nav> : <div className="px-3 py-1">
             <div className="mb-2">
               <Link 
@@ -227,14 +222,16 @@ const Sidebar = ({
                 <span>Inbox</span>
               </Link>
               
-              <Button 
-                variant="ghost" 
-                onClick={handleDocuments}
-                className="flex w-full items-center justify-start gap-2 px-2 py-1.5 rounded-md text-[0.8rem] hover:bg-gray-100 mt-1"
+              <Link
+                to="/documents"
+                className={cn(
+                  "flex w-full items-center justify-start gap-2 px-2 py-1.5 rounded-md text-[0.8rem] hover:bg-gray-100 mt-1",
+                  location.pathname === "/documents" && "bg-gray-100 font-medium"
+                )}
               >
                 <FileText className="h-4 w-4 text-slate-500" />
                 <span>Documents</span>
-              </Button>
+              </Link>
             </div>
             
             {todayChats.length > 0 && <>
