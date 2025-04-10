@@ -152,6 +152,10 @@ const Sidebar = ({
     navigate('/documents');
   };
 
+  const handleWorkflowsClick = () => {
+    navigate('/workflows');
+  };
+
   if (isCompleteClosed) {
     return (
       <div className="fixed inset-y-0 left-0 z-50 w-14 transition-all duration-300 ease-in-out-expo flex flex-col items-center bg-white border-r border-gray-200 shadow-sm">
@@ -209,6 +213,13 @@ const Sidebar = ({
             >
               <FileText className={cn("h-5 w-5 shrink-0", location.pathname === "/documents" && "text-white")} />
             </Link>
+            <Link 
+              to="/workflows"
+              className={cn("group flex items-center gap-3 rounded-xl px-3 py-2.5 transition-all justify-center py-2.5", 
+                location.pathname === "/workflows" ? "bg-primary text-white" : "text-slate-700 hover:bg-gray-100 hover:text-slate-900")}
+            >
+              <FileText className={cn("h-5 w-5 shrink-0", location.pathname === "/workflows" && "text-white")} />
+            </Link>
           </nav> : <div className="px-3 py-1">
             <div className="mb-2">
               <Link 
@@ -231,6 +242,17 @@ const Sidebar = ({
               >
                 <FileText className="h-4 w-4 text-slate-500" />
                 <span>Documents</span>
+              </Link>
+
+              <Link
+                to="/workflows"
+                className={cn(
+                  "flex w-full items-center justify-start gap-2 px-2 py-1.5 rounded-md text-[0.8rem] hover:bg-gray-100 mt-1",
+                  location.pathname === "/workflows" && "bg-gray-100 font-medium"
+                )}
+              >
+                <FileText className="h-4 w-4 text-slate-500" />
+                <span>Workflows</span>
               </Link>
             </div>
             

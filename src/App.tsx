@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Chat from "./pages/Chat";
 import Inbox from "./pages/Inbox";
 import Documents from "./pages/Documents";
+import Workflows from "./pages/Workflows";
 import { useEffect } from "react";
 
 const queryClient = new QueryClient();
@@ -33,6 +34,7 @@ const App = () => {
             <Route path="/chat" element={<Chat />} />
             <Route path="/inbox" element={<Inbox />} />
             <Route path="/documents" element={<Documents />} />
+            <Route path="/workflows" element={<Workflows />} />
             {/* Catch-all route for any unmatched paths */}
             <Route path="*" element={<Navigate to="/chat" replace />} />
           </Routes>
