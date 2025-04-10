@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { MessageSquare, ChevronRight, ChevronLeft, Search, Folder, ChevronDown, Square, Menu, AlignLeft, Inbox } from "lucide-react";
+import { MessageSquare, ChevronRight, ChevronLeft, Search, Folder, ChevronDown, Square, Menu, AlignLeft, Inbox, FileText } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -152,6 +152,14 @@ const Sidebar = ({
     });
   };
 
+  const handleDocuments = () => {
+    toast({
+      title: "Documents",
+      description: "Document management feature is coming soon!",
+      duration: 3000,
+    });
+  };
+
   if (isCompleteClosed) {
     return (
       <div className="fixed inset-y-0 left-0 z-50 w-14 transition-all duration-300 ease-in-out-expo flex flex-col items-center bg-white border-r border-gray-200 shadow-sm">
@@ -203,6 +211,14 @@ const Sidebar = ({
             >
               <Inbox className="h-5 w-5 shrink-0" />
             </Button>
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              onClick={handleDocuments}
+              className="flex items-center justify-center rounded-xl p-2.5 text-slate-700 hover:bg-gray-100 hover:text-slate-900"
+            >
+              <FileText className="h-5 w-5 shrink-0" />
+            </Button>
           </nav> : <div className="px-3 py-1">
             <div className="mb-2">
               <Button 
@@ -212,6 +228,15 @@ const Sidebar = ({
               >
                 <Inbox className="h-4 w-4 text-slate-500" />
                 <span>Inbox</span>
+              </Button>
+              
+              <Button 
+                variant="ghost" 
+                onClick={handleDocuments}
+                className="flex w-full items-center justify-start gap-2 px-2 py-1.5 rounded-md text-[0.8rem] hover:bg-gray-100 mt-1"
+              >
+                <FileText className="h-4 w-4 text-slate-500" />
+                <span>Documents</span>
               </Button>
             </div>
             
