@@ -1,7 +1,6 @@
-
 import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { Bell, ChevronDown, Menu, Search, Settings, User, CreditCard, BarChart2, Calendar, Clock } from 'lucide-react';
+import { Bell, ChevronDown, Menu, Search, Settings, User, Calendar, Clock } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -106,7 +105,6 @@ const Navbar = ({
               align="end" 
               className="w-[280px] rounded-xl shadow-lg border border-gray-200 bg-white z-50" 
               sideOffset={15}
-              forceMount
             >
               <DropdownMenuLabel className="flex items-center gap-2 px-4 py-3">
                 <Avatar className="h-10 w-10">
