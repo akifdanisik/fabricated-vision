@@ -103,7 +103,7 @@ const Navbar = ({
                 <ChevronDown className="h-4 w-4 text-gray-500" />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-56 rounded-xl shadow-md border-gray-100">
+            <DropdownMenuContent align="end" className="w-64 rounded-xl shadow-md border-gray-100">
               <DropdownMenuLabel className="flex items-center gap-2">
                 <Avatar className="h-8 w-8">
                   <AvatarImage src="" alt="User" />
@@ -114,7 +114,25 @@ const Navbar = ({
                   <p className="text-xs text-gray-500">aysa.doe@example.com</p>
                 </div>
               </DropdownMenuLabel>
-              <DropdownMenuSeparator className="bg-gray-100" />
+              
+              {/* Credits and Limits Section */}
+              <div className="px-3 py-2 bg-gray-50 border-y border-gray-100">
+                <div className="flex justify-between items-center mb-2">
+                  <span className="text-sm font-medium text-gray-700">Monthly Credits</span>
+                  <span className="text-sm font-medium">119/250</span>
+                </div>
+                <div className="w-full bg-gray-200 rounded-full h-1.5 mb-3">
+                  <div className="bg-primary h-1.5 rounded-full" style={{ width: '47.6%' }}></div>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-sm font-medium text-gray-700">Daily Limit</span>
+                  <span className="text-sm font-medium">5/5</span>
+                </div>
+                <div className="w-full bg-gray-200 rounded-full h-1.5">
+                  <div className="bg-primary h-1.5 rounded-full" style={{ width: '100%' }}></div>
+                </div>
+              </div>
+              
               <DropdownMenuItem className="cursor-pointer focus:bg-gray-100 rounded-lg my-1 focus:text-gray-900">
                 <User className="mr-2 h-4 w-4" />
                 <span>Profile</span>
