@@ -6,37 +6,23 @@ import { Bell, Settings, User, Calendar, Clock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
-import { 
-  DropdownMenu, 
-  DropdownMenuContent, 
-  DropdownMenuItem, 
-  DropdownMenuLabel, 
-  DropdownMenuSeparator, 
-  DropdownMenuTrigger 
-} from '@/components/ui/dropdown-menu';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Toaster } from '@/components/ui/toaster';
-
 const Chat = () => {
   const location = useLocation();
   const [chatId, setChatId] = useState<string | null>(null);
-  
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const id = params.get('id');
     setChatId(id);
   }, [location]);
-
-  return (
-    <Layout fullWidth hideNavbar>
+  return <Layout fullWidth hideNavbar>
       <div className="flex flex-col h-[calc(100vh-0px)] bg-[#f8f8f8] rounded-2xl overflow-hidden">
         <div className="flex justify-end items-center px-6 py-3 border-b bg-white rounded-t-2xl">
           <div className="flex items-center gap-2">
             <Button variant="ghost" size="icon" className="relative rounded-full text-gray-500 hover:bg-gray-100 hover:text-gray-900">
               <Bell className="h-5 w-5" />
-              <Badge 
-                className="absolute -top-1 -right-1 h-4 w-4 p-0 flex items-center justify-center text-xs rounded-full"
-                variant="destructive"
-              >
+              <Badge className="absolute -top-1 -right-1 h-4 w-4 p-0 flex items-center justify-center text-xs rounded-full" variant="destructive">
                 3
               </Badge>
             </Button>
@@ -66,7 +52,7 @@ const Chat = () => {
                   </div>
                 </DropdownMenuLabel>
                 
-                <div className="px-4 py-3 bg-gray-50 border-y border-gray-100 space-y-3">
+                <div className="px-4 py-3 border-y border-gray-100 space-y-3 bg-white/[0.31]">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       <Calendar className="h-5 w-5 text-gray-600" />
@@ -108,8 +94,6 @@ const Chat = () => {
       </div>
       
       <Toaster />
-    </Layout>
-  );
+    </Layout>;
 };
-
 export default Chat;
