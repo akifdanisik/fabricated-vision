@@ -8,6 +8,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Toaster } from '@/components/ui/toaster';
+
 const Chat = () => {
   const location = useLocation();
   const [chatId, setChatId] = useState<string | null>(null);
@@ -58,7 +59,7 @@ const Chat = () => {
                       <Calendar className="h-5 w-5 text-gray-600" />
                       <span className="text-sm font-semibold text-gray-800">Monthly Credits</span>
                     </div>
-                    <span className="text-sm font-bold text-gray-700">119/250</span>
+                    <span className="text-sm font-semibold text-gray-700">119/250</span>
                   </div>
                   
                   <div className="flex items-center justify-between mt-3">
@@ -66,7 +67,7 @@ const Chat = () => {
                       <Clock className="h-5 w-5 text-gray-500" />
                       <span className="text-sm font-semibold text-gray-800">Daily Limit</span>
                     </div>
-                    <span className="text-sm font-bold text-gray-600">5/5</span>
+                    <span className="text-sm font-semibold text-gray-600">5/5</span>
                   </div>
                 </div>
                 
