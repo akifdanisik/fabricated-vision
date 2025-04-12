@@ -74,17 +74,6 @@ const CategoryActions = ({ category }: CategoryActionsProps) => {
       category: 'Analytics'
     },
     {
-      id: 'workflow',
-      title: 'Workflow Management',
-      description: selectedCategory 
-        ? `Create workflows for ${selectedCategory.name}` 
-        : 'Design workflows by category',
-      icon: 'list',
-      actionLabel: 'Go to Workflows',
-      onClick: () => navigate('/workflows'),
-      category: 'Workflows'
-    },
-    {
       id: 'category-management',
       title: 'Manage Categories',
       description: 'View and manage all procurement categories',
