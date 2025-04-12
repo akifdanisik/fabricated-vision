@@ -95,68 +95,71 @@ const Navbar = ({
               <Button variant="ghost" className="flex items-center gap-2 px-3 py-2 rounded-full hover:bg-gray-100">
                 <Avatar className="h-8 w-8 border border-gray-200">
                   <AvatarImage src="" alt="User" />
-                  <AvatarFallback className="text-sm bg-gray-100 text-gray-700">AD</AvatarFallback>
+                  <AvatarFallback className="text-sm bg-gray-100 text-gray-700">JD</AvatarFallback>
                 </Avatar>
-                <span className="hidden md:block text-sm font-medium">Ayşa Doe</span>
+                <span className="hidden md:block text-sm font-medium">John Doe</span>
                 <ChevronDown className="h-4 w-4 text-gray-500" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent 
               align="end" 
-              className="w-80 rounded-xl shadow-2xl border border-gray-200 bg-white dark:bg-gray-800 z-[100]" 
+              className="w-[280px] rounded-xl shadow-lg border border-gray-200 bg-white z-50" 
               sideOffset={15}
+              forceMount
             >
-              <DropdownMenuLabel className="flex items-center gap-2">
-                <Avatar className="h-8 w-8">
+              <DropdownMenuLabel className="flex items-center gap-2 px-4 py-3">
+                <Avatar className="h-10 w-10">
                   <AvatarImage src="" alt="User" />
-                  <AvatarFallback className="bg-gray-100 text-gray-700">AD</AvatarFallback>
+                  <AvatarFallback className="bg-gray-100 text-gray-700">JD</AvatarFallback>
                 </Avatar>
                 <div>
-                  <p className="text-sm font-medium">Ayşa Doe</p>
-                  <p className="text-xs text-gray-500">aysa.doe@example.com</p>
+                  <p className="text-sm font-medium">John Doe</p>
+                  <p className="text-xs text-gray-500">john.doe@example.com</p>
                 </div>
               </DropdownMenuLabel>
               
-              <div className="px-4 py-3 bg-gray-50 dark:bg-gray-900 border-y border-gray-200 dark:border-gray-700 space-y-3">
+              <div className="px-4 py-3 bg-blue-50 border-y border-gray-200 space-y-3">
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <CreditCard className="h-5 w-5 text-primary" />
-                    <span className="text-sm font-semibold text-gray-800 dark:text-gray-200">Monthly Credits</span>
+                  <div className="flex items-center gap-2">
+                    <CreditCard className="h-5 w-5 text-purple-600" />
+                    <span className="text-sm font-semibold text-gray-800">Monthly Credits</span>
                   </div>
-                  <span className="text-sm font-bold text-primary">119/250</span>
+                  <span className="text-sm font-bold text-purple-600">119/250</span>
                 </div>
                 <Progress 
                   value={(119/250)*100} 
-                  className="h-2 bg-gray-200 dark:bg-gray-700" 
-                  indicatorClassName="bg-primary dark:bg-primary-foreground"
+                  className="h-3 bg-gray-200" 
+                  indicatorClassName="bg-purple-600"
                 />
                 
                 <div className="flex items-center justify-between mt-3">
-                  <div className="flex items-center gap-3">
-                    <BarChart2 className="h-5 w-5 text-accent" />
-                    <span className="text-sm font-semibold text-gray-800 dark:text-gray-200">Daily Limit</span>
+                  <div className="flex items-center gap-2">
+                    <BarChart2 className="h-5 w-5 text-orange-500" />
+                    <span className="text-sm font-semibold text-gray-800">Daily Limit</span>
                   </div>
-                  <span className="text-sm font-bold text-accent">5/5</span>
+                  <span className="text-sm font-bold text-orange-500">5/5</span>
                 </div>
                 <Progress 
                   value={(5/5)*100} 
-                  className="h-2 bg-gray-200 dark:bg-gray-700" 
-                  indicatorClassName="bg-accent dark:bg-accent-foreground"
+                  className="h-3 bg-gray-200" 
+                  indicatorClassName="bg-orange-500"
                 />
               </div>
               
-              <DropdownMenuItem className="cursor-pointer focus:bg-gray-100 rounded-lg my-1 focus:text-gray-900">
-                <User className="mr-2 h-4 w-4" />
-                <span>Profile</span>
-              </DropdownMenuItem>
-              <DropdownMenuItem className="cursor-pointer focus:bg-gray-100 rounded-lg my-1 focus:text-gray-900">
-                <Settings className="mr-2 h-4 w-4" />
-                <span>Settings</span>
-              </DropdownMenuItem>
-              <DropdownMenuSeparator className="bg-gray-100" />
-              <DropdownMenuItem className="cursor-pointer focus:bg-gray-100 rounded-lg my-1 focus:text-gray-900">
-                Log out
-              </DropdownMenuItem>
+              <div className="p-2">
+                <DropdownMenuItem className="flex items-center gap-2 p-2 cursor-pointer hover:bg-gray-100 rounded-lg">
+                  <User className="h-4 w-4" />
+                  <span>Profile</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem className="flex items-center gap-2 p-2 cursor-pointer hover:bg-gray-100 rounded-lg">
+                  <Settings className="h-4 w-4" />
+                  <span>Settings</span>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator className="my-1 bg-gray-200" />
+                <DropdownMenuItem className="p-2 cursor-pointer hover:bg-gray-100 rounded-lg">
+                  Log out
+                </DropdownMenuItem>
+              </div>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
