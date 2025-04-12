@@ -3,10 +3,11 @@ import Layout from '@/components/layout/Layout';
 import ChatInterface from '@/components/chat/ChatInterface';
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { Bell, Settings, User, Eye, ThumbsUp, ThumbsDown, RefreshCw, Copy, FileText } from 'lucide-react';
+import { Bell, Settings, User, Calendar, Clock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
+import { Progress } from '@/components/ui/progress';
 import { 
   DropdownMenu, 
   DropdownMenuContent, 
@@ -55,7 +56,7 @@ const Chat = () => {
                   </Avatar>
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-56 rounded-xl shadow-md border-gray-100">
+              <DropdownMenuContent align="end" className="w-[280px] rounded-xl shadow-md border-gray-100">
                 <DropdownMenuLabel className="flex items-center gap-2 rounded-t-xl">
                   <Avatar className="h-8 w-8 rounded-full">
                     <AvatarImage src="" alt="User" />
@@ -66,6 +67,35 @@ const Chat = () => {
                     <p className="text-xs text-gray-500">john.doe@example.com</p>
                   </div>
                 </DropdownMenuLabel>
+                
+                <div className="px-4 py-3 bg-purple-50 border-y border-purple-100 space-y-3">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <Calendar className="h-5 w-5 text-purple-600" />
+                      <span className="text-sm font-semibold text-purple-800">Monthly Credits</span>
+                    </div>
+                    <span className="text-sm font-bold text-purple-700">119/250</span>
+                  </div>
+                  <Progress 
+                    value={(119/250)*100} 
+                    className="h-4 bg-purple-200" 
+                    indicatorClassName="bg-purple-600"
+                  />
+                  
+                  <div className="flex items-center justify-between mt-3">
+                    <div className="flex items-center gap-2">
+                      <Clock className="h-5 w-5 text-orange-500" />
+                      <span className="text-sm font-semibold text-orange-800">Daily Limit</span>
+                    </div>
+                    <span className="text-sm font-bold text-orange-600">5/5</span>
+                  </div>
+                  <Progress 
+                    value={(5/5)*100} 
+                    className="h-4 bg-orange-100" 
+                    indicatorClassName="bg-orange-500"
+                  />
+                </div>
+                
                 <DropdownMenuSeparator className="bg-gray-100" />
                 <DropdownMenuItem className="cursor-pointer focus:bg-gray-100 rounded-lg my-1 focus:text-gray-900">
                   <User className="mr-2 h-4 w-4" />
