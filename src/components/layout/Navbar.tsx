@@ -119,7 +119,7 @@ const Navbar = ({
                 </div>
               </DropdownMenuLabel>
               
-              {/* Credit Section - Visibly highlighted in the dropdown */}
+              {/* Credit Section - Visibly highlighted in the dropdown with enhanced styling */}
               <div className="px-4 py-3 bg-purple-100 border-y border-purple-200 space-y-3">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
