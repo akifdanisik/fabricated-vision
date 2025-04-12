@@ -104,7 +104,7 @@ const Navbar = ({
                 <ChevronDown className="h-4 w-4 text-gray-500" />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-64 rounded-xl shadow-md border-gray-100" sideOffset={8}>
+            <DropdownMenuContent align="end" className="w-64 rounded-xl shadow-lg border-gray-100 bg-white z-50" sideOffset={12}>
               <DropdownMenuLabel className="flex items-center gap-2">
                 <Avatar className="h-8 w-8">
                   <AvatarImage src="" alt="User" />
