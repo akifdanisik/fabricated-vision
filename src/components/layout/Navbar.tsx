@@ -1,12 +1,11 @@
 import { useState, useEffect } from 'react';
-import { useLocation, Link } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { Bell, ChevronDown, Menu, Search, Settings, User, CreditCard, BarChart2 } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { Badge } from "@/components/ui/badge";
+import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
 import { Progress } from "@/components/ui/progress";
 import { cn } from '@/lib/utils';
 
@@ -100,7 +99,11 @@ const Navbar = ({
                 <ChevronDown className="h-4 w-4 text-gray-500" />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-72 rounded-xl shadow-lg border-gray-100 bg-white z-50" sideOffset={12}>
+            <DropdownMenuContent 
+              align="end" 
+              className="w-80 rounded-xl shadow-2xl border border-gray-200 bg-white dark:bg-gray-800 z-[100]" 
+              sideOffset={15}
+            >
               <DropdownMenuLabel className="flex items-center gap-2">
                 <Avatar className="h-8 w-8">
                   <AvatarImage src="" alt="User" />
@@ -112,24 +115,32 @@ const Navbar = ({
                 </div>
               </DropdownMenuLabel>
               
-              <div className="px-4 py-3 bg-gray-50 border-y border-gray-100 space-y-3">
+              <div className="px-4 py-3 bg-gray-50 dark:bg-gray-900 border-y border-gray-200 dark:border-gray-700 space-y-3">
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <CreditCard className="h-4 w-4 text-gray-500" />
-                    <span className="text-sm font-medium text-gray-700">Monthly Credits</span>
+                  <div className="flex items-center gap-3">
+                    <CreditCard className="h-5 w-5 text-primary" />
+                    <span className="text-sm font-semibold text-gray-800 dark:text-gray-200">Monthly Credits</span>
                   </div>
-                  <span className="text-sm font-semibold">119/250</span>
+                  <span className="text-sm font-bold text-primary">119/250</span>
                 </div>
-                <Progress value={(119/250)*100} className="h-1.5" />
+                <Progress 
+                  value={(119/250)*100} 
+                  className="h-2 bg-gray-200 dark:bg-gray-700" 
+                  indicatorClassName="bg-primary dark:bg-primary-foreground"
+                />
                 
-                <div className="flex items-center justify-between mt-2">
-                  <div className="flex items-center gap-2">
-                    <BarChart2 className="h-4 w-4 text-gray-500" />
-                    <span className="text-sm font-medium text-gray-700">Daily Limit</span>
+                <div className="flex items-center justify-between mt-3">
+                  <div className="flex items-center gap-3">
+                    <BarChart2 className="h-5 w-5 text-accent" />
+                    <span className="text-sm font-semibold text-gray-800 dark:text-gray-200">Daily Limit</span>
                   </div>
-                  <span className="text-sm font-semibold">5/5</span>
+                  <span className="text-sm font-bold text-accent">5/5</span>
                 </div>
-                <Progress value={(5/5)*100} className="h-1.5" />
+                <Progress 
+                  value={(5/5)*100} 
+                  className="h-2 bg-gray-200 dark:bg-gray-700" 
+                  indicatorClassName="bg-accent dark:bg-accent-foreground"
+                />
               </div>
               
               <DropdownMenuItem className="cursor-pointer focus:bg-gray-100 rounded-lg my-1 focus:text-gray-900">
