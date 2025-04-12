@@ -59,7 +59,7 @@ const Chat = () => {
                       <Calendar className="h-5 w-5 text-gray-600" />
                       <span className="text-sm font-semibold text-gray-800">Monthly Credits</span>
                     </div>
-                    <span className="text-sm font-semibold text-gray-700">119/250</span>
+                    <span className="text-sm font-normal text-gray-700">119/250</span>
                   </div>
                   
                   <div className="flex items-center justify-between mt-3">
@@ -67,7 +67,7 @@ const Chat = () => {
                       <Clock className="h-5 w-5 text-gray-500" />
                       <span className="text-sm font-semibold text-gray-800">Daily Limit</span>
                     </div>
-                    <span className="text-sm font-semibold text-gray-600">5/5</span>
+                    <span className="text-sm font-normal text-gray-600">5/5</span>
                   </div>
                 </div>
                 
