@@ -65,18 +65,6 @@ const Navbar = ({
           <Input type="search" placeholder="Search..." className="pl-10 w-[280px] bg-gray-50 border-gray-100 rounded-xl focus:bg-white" />
         </div>
         
-        {/* Credits Button - ALWAYS VISIBLE with stronger styling */}
-        <Button 
-          variant="soft" 
-          className="hidden md:flex items-center gap-2 bg-purple-600 hover:bg-purple-700 text-white rounded-xl px-3"
-        >
-          <CreditCard className="h-5 w-5" />
-          <div className="flex flex-col items-start">
-            <span className="text-xs font-semibold">Credits</span>
-            <span className="text-sm font-bold">119/250</span>
-          </div>
-        </Button>
-        
         <div className="flex items-center gap-2">
           <TooltipProvider>
             <Tooltip>
@@ -131,30 +119,31 @@ const Navbar = ({
                 </div>
               </DropdownMenuLabel>
               
-              <div className="px-4 py-3 bg-purple-50 border-y border-gray-200 space-y-3">
+              {/* Credit Section - Visibly highlighted in the dropdown */}
+              <div className="px-4 py-3 bg-purple-100 border-y border-purple-200 space-y-3">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <CreditCard className="h-5 w-5 text-purple-600" />
-                    <span className="text-sm font-semibold text-gray-800">Monthly Credits</span>
+                    <span className="text-sm font-semibold text-purple-800">Monthly Credits</span>
                   </div>
-                  <span className="text-sm font-bold text-purple-600">119/250</span>
+                  <span className="text-sm font-bold text-purple-700">119/250</span>
                 </div>
                 <Progress 
                   value={(119/250)*100} 
-                  className="h-3 bg-gray-200" 
+                  className="h-4 bg-purple-200" 
                   indicatorClassName="bg-purple-600"
                 />
                 
                 <div className="flex items-center justify-between mt-3">
                   <div className="flex items-center gap-2">
                     <BarChart2 className="h-5 w-5 text-orange-500" />
-                    <span className="text-sm font-semibold text-gray-800">Daily Limit</span>
+                    <span className="text-sm font-semibold text-orange-800">Daily Limit</span>
                   </div>
-                  <span className="text-sm font-bold text-orange-500">5/5</span>
+                  <span className="text-sm font-bold text-orange-600">5/5</span>
                 </div>
                 <Progress 
                   value={(5/5)*100} 
-                  className="h-3 bg-gray-200" 
+                  className="h-4 bg-orange-100" 
                   indicatorClassName="bg-orange-500"
                 />
               </div>
