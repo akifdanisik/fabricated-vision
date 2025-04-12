@@ -1,3 +1,4 @@
+
 import Layout from '@/components/layout/Layout';
 import ChatInterface from '@/components/chat/ChatInterface';
 import { useEffect, useState } from 'react';
@@ -6,6 +7,7 @@ import { Bell, Settings, User, Calendar, Clock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
+import { Progress } from '@/components/ui/progress';
 import { 
   DropdownMenu, 
   DropdownMenuContent, 
@@ -66,6 +68,34 @@ const Chat = () => {
                   </div>
                 </DropdownMenuLabel>
                 
+                <div className="px-4 py-3 bg-gray-50 border-y border-gray-100 space-y-3">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <Calendar className="h-5 w-5 text-gray-600" />
+                      <span className="text-sm font-semibold text-gray-800">Monthly Credits</span>
+                    </div>
+                    <span className="text-sm font-bold text-gray-700">119/250</span>
+                  </div>
+                  <Progress 
+                    value={(119/250)*100} 
+                    className="h-4 bg-gray-200" 
+                    indicatorClassName="bg-gray-600"
+                  />
+                  
+                  <div className="flex items-center justify-between mt-3">
+                    <div className="flex items-center gap-2">
+                      <Clock className="h-5 w-5 text-gray-500" />
+                      <span className="text-sm font-semibold text-gray-800">Daily Limit</span>
+                    </div>
+                    <span className="text-sm font-bold text-gray-600">5/5</span>
+                  </div>
+                  <Progress 
+                    value={(5/5)*100} 
+                    className="h-4 bg-gray-100" 
+                    indicatorClassName="bg-gray-500"
+                  />
+                </div>
+                
                 <DropdownMenuSeparator className="bg-gray-100" />
                 <DropdownMenuItem className="cursor-pointer focus:bg-gray-100 rounded-lg my-1 focus:text-gray-900">
                   <User className="mr-2 h-4 w-4" />
@@ -95,3 +125,4 @@ const Chat = () => {
 };
 
 export default Chat;
+
