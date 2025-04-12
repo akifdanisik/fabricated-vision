@@ -65,48 +65,17 @@ const Navbar = ({
           <Input type="search" placeholder="Search..." className="pl-10 w-[280px] bg-gray-50 border-gray-100 rounded-xl focus:bg-white" />
         </div>
         
-        {/* Credits Section - Always Visible */}
-        <Popover>
-          <PopoverTrigger asChild>
-            <Button variant="outline" className="hidden md:flex items-center gap-2 bg-purple-50 border-purple-200 hover:bg-purple-100 hover:border-purple-300 rounded-xl px-3">
-              <CreditCard className="h-5 w-5 text-purple-600" />
-              <div className="flex flex-col items-start">
-                <span className="text-xs text-purple-700 font-semibold">Credits</span>
-                <span className="text-sm font-bold text-purple-700">119/250</span>
-              </div>
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent className="w-[280px] bg-white border border-gray-200 shadow-lg rounded-xl p-0">
-            <div className="p-4 bg-purple-50 border-b border-purple-100 rounded-t-xl space-y-3">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <CreditCard className="h-5 w-5 text-purple-600" />
-                  <span className="text-sm font-semibold text-purple-800">Monthly Credits</span>
-                </div>
-                <span className="text-sm font-bold text-purple-600">119/250</span>
-              </div>
-              <Progress 
-                value={(119/250)*100} 
-                className="h-3 bg-gray-200" 
-                indicatorClassName="bg-purple-600"
-              />
-            </div>
-            <div className="p-4 space-y-3">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <BarChart2 className="h-5 w-5 text-orange-500" />
-                  <span className="text-sm font-semibold text-gray-800">Daily Limit</span>
-                </div>
-                <span className="text-sm font-bold text-orange-500">5/5</span>
-              </div>
-              <Progress 
-                value={(5/5)*100} 
-                className="h-3 bg-gray-200" 
-                indicatorClassName="bg-orange-500"
-              />
-            </div>
-          </PopoverContent>
-        </Popover>
+        {/* Credits Button - ALWAYS VISIBLE with stronger styling */}
+        <Button 
+          variant="soft" 
+          className="hidden md:flex items-center gap-2 bg-purple-600 hover:bg-purple-700 text-white rounded-xl px-3"
+        >
+          <CreditCard className="h-5 w-5" />
+          <div className="flex flex-col items-start">
+            <span className="text-xs font-semibold">Credits</span>
+            <span className="text-sm font-bold">119/250</span>
+          </div>
+        </Button>
         
         <div className="flex items-center gap-2">
           <TooltipProvider>
