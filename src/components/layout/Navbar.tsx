@@ -1,7 +1,7 @@
 
 import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { Bell, ChevronDown, Menu, Search, Settings, User, CreditCard, BarChart2 } from 'lucide-react';
+import { Bell, ChevronDown, Menu, Search, Settings, User, CreditCard, BarChart2, Calendar, Clock } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -119,10 +119,10 @@ const Navbar = ({
                 </div>
               </DropdownMenuLabel>
               
-              <div className="px-4 py-3 bg-purple-100 border-y border-purple-200 space-y-3">
+              <div className="px-4 py-3 bg-purple-50 border-y border-purple-100 space-y-3">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <CreditCard className="h-5 w-5 text-purple-600" />
+                    <Calendar className="h-5 w-5 text-purple-600" />
                     <span className="text-sm font-semibold text-purple-800">Monthly Credits</span>
                   </div>
                   <span className="text-sm font-bold text-purple-700">119/250</span>
@@ -135,7 +135,7 @@ const Navbar = ({
                 
                 <div className="flex items-center justify-between mt-3">
                   <div className="flex items-center gap-2">
-                    <BarChart2 className="h-5 w-5 text-orange-500" />
+                    <Clock className="h-5 w-5 text-orange-500" />
                     <span className="text-sm font-semibold text-orange-800">Daily Limit</span>
                   </div>
                   <span className="text-sm font-bold text-orange-600">5/5</span>
