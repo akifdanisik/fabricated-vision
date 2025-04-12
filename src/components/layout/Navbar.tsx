@@ -1,7 +1,6 @@
-
 import { useState, useEffect } from 'react';
 import { useLocation, Link } from 'react-router-dom';
-import { Bell, ChevronDown, Menu, Search, Settings, User } from 'lucide-react';
+import { Bell, ChevronDown, Menu, Search, Settings, User, CreditCard, BarChart2 } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -24,18 +23,15 @@ const Navbar = ({
   const [scrolled, setScrolled] = useState(false);
   const [pageTitle, setPageTitle] = useState('Dashboard');
 
-  // Update page title based on current route
   useEffect(() => {
     const path = location.pathname;
     if (path === '/') {
       setPageTitle('Dashboard');
     } else {
-      // Convert path to title (e.g., '/inventory' to 'Inventory')
       setPageTitle(path.substring(1).charAt(0).toUpperCase() + path.substring(2).replace(/-/g, ' '));
     }
   }, [location]);
 
-  // Add shadow to navbar on scroll
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 10);
@@ -43,7 +39,7 @@ const Navbar = ({
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-  
+
   return (
     <header className={cn("sticky top-0 z-40 flex h-16 w-full items-center justify-between border-b border-gray-100 bg-white/95 px-4 backdrop-blur transition-all duration-200", scrolled ? "shadow-sm" : "")}>
       <div className="flex items-center gap-2">
@@ -104,7 +100,7 @@ const Navbar = ({
                 <ChevronDown className="h-4 w-4 text-gray-500" />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-64 rounded-xl shadow-lg border-gray-100 bg-white z-50" sideOffset={12}>
+            <DropdownMenuContent align="end" className="w-72 rounded-xl shadow-lg border-gray-100 bg-white z-50" sideOffset={12}>
               <DropdownMenuLabel className="flex items-center gap-2">
                 <Avatar className="h-8 w-8">
                   <AvatarImage src="" alt="User" />
@@ -116,22 +112,24 @@ const Navbar = ({
                 </div>
               </DropdownMenuLabel>
               
-              {/* Credits and Limits Section */}
-              <div className="px-3 py-2 bg-gray-50 border-y border-gray-100">
-                <div className="flex justify-between items-center mb-2">
-                  <span className="text-sm font-medium text-gray-700">Monthly Credits</span>
-                  <span className="text-sm font-medium">119/250</span>
+              <div className="px-4 py-3 bg-gray-50 border-y border-gray-100 space-y-3">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <CreditCard className="h-4 w-4 text-gray-500" />
+                    <span className="text-sm font-medium text-gray-700">Monthly Credits</span>
+                  </div>
+                  <span className="text-sm font-semibold">119/250</span>
                 </div>
-                <div className="w-full bg-gray-200 rounded-full h-1.5 mb-3">
-                  <div className="bg-primary h-1.5 rounded-full" style={{ width: '47.6%' }}></div>
+                <Progress value={(119/250)*100} className="h-1.5" />
+                
+                <div className="flex items-center justify-between mt-2">
+                  <div className="flex items-center gap-2">
+                    <BarChart2 className="h-4 w-4 text-gray-500" />
+                    <span className="text-sm font-medium text-gray-700">Daily Limit</span>
+                  </div>
+                  <span className="text-sm font-semibold">5/5</span>
                 </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-sm font-medium text-gray-700">Daily Limit</span>
-                  <span className="text-sm font-medium">5/5</span>
-                </div>
-                <div className="w-full bg-gray-200 rounded-full h-1.5">
-                  <div className="bg-primary h-1.5 rounded-full" style={{ width: '100%' }}></div>
-                </div>
+                <Progress value={(5/5)*100} className="h-1.5" />
               </div>
               
               <DropdownMenuItem className="cursor-pointer focus:bg-gray-100 rounded-lg my-1 focus:text-gray-900">
