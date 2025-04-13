@@ -3,7 +3,7 @@ import Layout from '@/components/layout/Layout';
 import ChatInterface from '@/components/chat/ChatInterface';
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { Bell, Settings, User, Calendar, Clock, FileUpload, Plus, Link, Globe, Mic } from 'lucide-react';
+import { Bell, Settings, User, Calendar, Clock, Plus, Link, Globe, Mic, Upload } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
@@ -38,7 +38,7 @@ const Chat = () => {
               <Tooltip>
                 <TooltipTrigger asChild>
                   <Button variant="ghost" size="icon" className="rounded-full text-gray-500 hover:bg-gray-100 hover:text-gray-900">
-                    <FileUpload className="h-5 w-5" />
+                    <Upload className="h-5 w-5" />
                   </Button>
                 </TooltipTrigger>
                 <TooltipContent>Upload Document</TooltipContent>

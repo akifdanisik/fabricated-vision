@@ -1,7 +1,7 @@
 
 import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { Bell, ChevronDown, Menu, Search, Settings, User, Calendar, Clock, FileUpload, Plus, Link, Globe, Mic } from 'lucide-react';
+import { Bell, ChevronDown, Menu, Search, Settings, User, Calendar, Clock, Plus, Link, Globe, Mic, Upload } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -80,7 +80,7 @@ const Navbar = ({
               <Tooltip>
                 <TooltipTrigger asChild>
                   <Button variant="ghost" size="icon" className="rounded-full text-gray-500 hover:bg-gray-100 hover:text-gray-900">
-                    <FileUpload className="h-5 w-5" />
+                    <Upload className="h-5 w-5" />
                   </Button>
                 </TooltipTrigger>
                 <TooltipContent>Upload Document</TooltipContent>
@@ -112,7 +112,7 @@ const Navbar = ({
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <Button variant="primary" size="icon" className="rounded-full bg-blue-500 text-white hover:bg-blue-600">
+                  <Button variant="secondary" size="icon" className="rounded-full bg-blue-500 text-white hover:bg-blue-600">
                     <Mic className="h-5 w-5" />
                   </Button>
                 </TooltipTrigger>
