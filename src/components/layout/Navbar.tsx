@@ -1,6 +1,7 @@
+
 import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { Bell, ChevronDown, Menu, Search, Settings, User, Calendar, Clock } from 'lucide-react';
+import { Bell, ChevronDown, Menu, Search, Settings, User, Calendar, Clock, FileUpload, Plus, Link, Globe, Mic } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -62,6 +63,63 @@ const Navbar = ({
             <Search className="h-4 w-4 text-gray-400" />
           </div>
           <Input type="search" placeholder="Search..." className="pl-10 w-[280px] bg-gray-50 border-gray-100 rounded-xl focus:bg-white" />
+          
+          <div className="flex items-center gap-2 ml-2">
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button variant="ghost" size="icon" className="rounded-full text-gray-500 hover:bg-gray-100 hover:text-gray-900">
+                    <Globe className="h-5 w-5" />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>Language</TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+            
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button variant="ghost" size="icon" className="rounded-full text-gray-500 hover:bg-gray-100 hover:text-gray-900">
+                    <FileUpload className="h-5 w-5" />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>Upload Document</TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+            
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button variant="ghost" size="icon" className="rounded-full text-gray-500 hover:bg-gray-100 hover:text-gray-900">
+                    <Link className="h-5 w-5" />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>Connection Onboarding</TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+            
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button variant="ghost" size="icon" className="rounded-full text-gray-500 hover:bg-gray-100 hover:text-gray-900">
+                    <Plus className="h-5 w-5" />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>Add New</TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+            
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button variant="primary" size="icon" className="rounded-full bg-blue-500 text-white hover:bg-blue-600">
+                    <Mic className="h-5 w-5" />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>Voice Search</TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          </div>
         </div>
         
         <div className="flex items-center gap-2">
