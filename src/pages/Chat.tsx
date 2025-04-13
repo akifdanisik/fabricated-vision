@@ -1,71 +1,30 @@
+
 import Layout from '@/components/layout/Layout';
 import ChatInterface from '@/components/chat/ChatInterface';
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { Bell, Settings, User, Calendar, Clock, Plus, Link, Globe, Mic, Upload } from 'lucide-react';
+import { Bell, Settings, User, Calendar, Clock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Toaster } from '@/components/ui/toaster';
-import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from '@/components/ui/tooltip';
 
 const Chat = () => {
   const location = useLocation();
   const [chatId, setChatId] = useState<string | null>(null);
+  
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const id = params.get('id');
     setChatId(id);
   }, [location]);
+  
   return <Layout fullWidth hideNavbar>
       <div className="flex flex-col h-[calc(100vh-0px)] bg-[#f8f8f8] rounded-2xl overflow-hidden">
         <div className="flex justify-between items-center px-6 py-3 border-b bg-white rounded-t-2xl">
-          <div className="flex items-center gap-2 ml-2">
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button variant="ghost" size="icon" className="rounded-full text-gray-500 hover:bg-gray-100 hover:text-gray-900">
-                    <Globe className="h-5 w-5" />
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent>Language</TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-            
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button variant="ghost" size="icon" className="rounded-full text-gray-500 hover:bg-gray-100 hover:text-gray-900">
-                    <Upload className="h-5 w-5" />
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent>Upload Document</TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-            
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button variant="ghost" size="icon" className="rounded-full text-gray-500 hover:bg-gray-100 hover:text-gray-900">
-                    <Link className="h-5 w-5" />
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent>Connection Onboarding</TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-            
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button variant="ghost" size="icon" className="rounded-full text-gray-500 hover:bg-gray-100 hover:text-gray-900">
-                    <Plus className="h-5 w-5" />
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent>Add New</TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-          </div>
+          {/* Empty div to maintain spacing */}
+          <div></div>
           
           <div className="flex items-center gap-2">
             <Button variant="ghost" size="icon" className="relative rounded-full text-gray-500 hover:bg-gray-100 hover:text-gray-900">

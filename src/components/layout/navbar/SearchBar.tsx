@@ -56,6 +56,17 @@ const SearchBar = () => {
             <TooltipContent>Add New</TooltipContent>
           </Tooltip>
         </TooltipProvider>
+        
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button variant="secondary" size="icon" className="rounded-full bg-blue-500 text-white hover:bg-blue-600">
+                <Mic className="h-5 w-5" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>Voice Search</TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
       </div>
     </div>
   );
