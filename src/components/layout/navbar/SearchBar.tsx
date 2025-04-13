@@ -6,13 +6,15 @@ import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from "@/comp
 
 const SearchBar = () => {
   return (
-    <div className="relative hidden md:flex w-full max-w-[24rem] items-center">
-      <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-        <Search className="h-4 w-4 text-gray-400" />
+    <div className="relative flex w-full max-w-[24rem] items-center space-x-2">
+      <div className="relative flex-1">
+        <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+          <Search className="h-4 w-4 text-gray-400" />
+        </div>
+        <Input type="search" placeholder="Search..." className="pl-10 w-full bg-gray-50 border-gray-100 rounded-xl focus:bg-white" />
       </div>
-      <Input type="search" placeholder="Search..." className="pl-10 w-[280px] bg-gray-50 border-gray-100 rounded-xl focus:bg-white" />
       
-      <div className="flex items-center gap-2 ml-2">
+      <div className="flex items-center gap-2">
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>
