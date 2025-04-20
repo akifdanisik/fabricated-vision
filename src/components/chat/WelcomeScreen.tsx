@@ -132,11 +132,17 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
           </div>
         </WelcomeModule>
         <WelcomeModule
-          title="Generate Integration Code"
-          description="Create code for integrating with procurement systems"
+          title="Workflow Automation & Collaboration"
+          description="Smart orchestration of procurement workflows, automated RFQs/RFPs, and internal task coordination between teams."
           icon={<Code size={24} />}
-          onClick={() => onSelectQuickStart("Generate code for integrating with our inventory system")}
-        />
+          onClick={() => onSelectQuickStart("Help me set up an automated RFQ workflow")}
+        >
+          <div className="mt-4 font-mono text-xs text-gray-500 bg-gray-50 p-2 rounded">
+            <div>{"function connect() {"}</div>
+            <div>&nbsp;&nbsp;{"return api.init();"}</div>
+            <div>{"}"}</div>
+          </div>
+        </WelcomeModule>
       </div>
     </div>
   );
