@@ -101,8 +101,8 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
           onClick={() => onSelectQuickStart("Help me find qualified suppliers and optimize inventory levels")}
         />
         <WelcomeModule
-          title="Create Market Analysis"
-          description="Generate market insights based on your procurement data"
+          title="Market & Price Intelligence"
+          description="Real-time insights on price fluctuations, FX risk, global supply trends, tariffs, and material availability."
           icon={<BarChart3 size={24} />}
           onClick={() => onSelectQuickStart("Create a market analysis report for pharmaceutical APIs")}
         />
