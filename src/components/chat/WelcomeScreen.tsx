@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Card } from '@/components/ui/card';
 import { FileText, BarChart3, PenLine, Code } from 'lucide-react';
@@ -30,6 +29,13 @@ const WelcomeModule: React.FC<WelcomeModuleProps> = ({
           </div>
           <h3 className="text-base font-medium mb-2">{title}</h3>
           <p className="text-sm text-gray-500">{description}</p>
+          {title === "Supplier & Inventory Intelligence" && (
+            <div className="mt-4 space-y-1 text-xs text-gray-600">
+              <p>1. Submit your sourcing criteria or BOM</p>
+              <p>2. Get AI-matched supplier recommendations</p>
+              <p>3. Receive predictive inventory forecasts</p>
+            </div>
+          )}
           {title === "Analyze Smart Contracts" && (
             <div className="mt-4 space-y-1 text-xs text-gray-600">
               <p>1. Upload a contract for analysis</p>
@@ -88,6 +94,12 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
       </div>
       
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 max-w-5xl">
+        <WelcomeModule
+          title="Supplier & Inventory Intelligence"
+          description="Find the right suppliers and stay ahead of inventory risks with predictive procurement insights."
+          icon={<FileText size={24} />}
+          onClick={() => onSelectQuickStart("Help me find qualified suppliers and optimize inventory levels")}
+        />
         <WelcomeModule
           title="Analyze Smart Contracts"
           description="Get a risk assessment and security analysis for your smart contracts"
