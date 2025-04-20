@@ -101,12 +101,6 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
           onClick={() => onSelectQuickStart("Help me find qualified suppliers and optimize inventory levels")}
         />
         <WelcomeModule
-          title="Analyze Smart Contracts"
-          description="Get a risk assessment and security analysis for your smart contracts"
-          icon={<FileText size={24} />}
-          onClick={() => onSelectQuickStart("I want to analyze a smart contract for risks")}
-        />
-        <WelcomeModule
           title="Create Market Analysis"
           description="Generate market insights based on your procurement data"
           icon={<BarChart3 size={24} />}
