@@ -105,7 +105,18 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
           description="Real-time insights on price fluctuations, FX risk, global supply trends, tariffs, and material availability."
           icon={<BarChart3 size={24} />}
           onClick={() => onSelectQuickStart("Create a market analysis report for pharmaceutical APIs")}
-        />
+        >
+          {/* Restoring chart image visualization */}
+          <div className="mt-4">
+            <div className="h-20 flex items-end">
+              <div className="w-6 h-10 bg-blue-400 rounded-sm"></div>
+              <div className="w-6 h-16 bg-blue-500 rounded-sm mx-1"></div>
+              <div className="w-6 h-8 bg-blue-400 rounded-sm mr-1"></div>
+              <div className="w-6 h-12 bg-blue-500 rounded-sm mr-1"></div>
+              <div className="w-6 h-7 bg-blue-400 rounded-sm"></div>
+            </div>
+          </div>
+        </WelcomeModule>
         <WelcomeModule
           title="Draft Procurement Docs"
           description="Create professional procurement documents and contracts"
