@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Card } from '@/components/ui/card';
 import { FileSearch, ChartBar, ShieldCheck, Workflow } from 'lucide-react';
@@ -9,7 +8,6 @@ interface WelcomeModuleProps {
   icon: React.ReactNode;
   features: string[];
   onClick: () => void;
-  children?: React.ReactNode;
 }
 
 const WelcomeModule: React.FC<WelcomeModuleProps> = ({ 
@@ -17,15 +15,13 @@ const WelcomeModule: React.FC<WelcomeModuleProps> = ({
   description, 
   icon, 
   features,
-  onClick,
-  children
+  onClick 
 }) => {
   return (
     <Card 
-      className="w-full max-w-[300px] cursor-pointer hover:shadow-md transition-shadow border border-gray-200 relative"
+      className="w-full max-w-[300px] cursor-pointer hover:shadow-md transition-shadow border border-gray-200"
       onClick={onClick}
     >
-      {children}
       <div className="p-6">
         <div className="flex flex-col h-full">
           <div className="flex items-center gap-2 mb-4">
