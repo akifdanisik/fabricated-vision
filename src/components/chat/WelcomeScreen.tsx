@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Card } from '@/components/ui/card';
 import { FileText, BarChart3, PenLine, Code } from 'lucide-react';
@@ -7,13 +8,15 @@ interface WelcomeModuleProps {
   description: string;
   icon: React.ReactNode;
   onClick: () => void;
+  children?: React.ReactNode;
 }
 
 const WelcomeModule: React.FC<WelcomeModuleProps> = ({ 
   title, 
   description, 
   icon, 
-  onClick 
+  onClick,
+  children
 }) => {
   return (
     <Card 
@@ -68,6 +71,7 @@ const WelcomeModule: React.FC<WelcomeModuleProps> = ({
               <div>{"}"}</div>
             </div>
           )}
+          {children}
         </div>
       </div>
     </Card>
@@ -106,7 +110,6 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
           icon={<BarChart3 size={24} />}
           onClick={() => onSelectQuickStart("Create a market analysis report for pharmaceutical APIs")}
         >
-          {/* Restoring chart image visualization */}
           <div className="mt-4">
             <div className="h-20 flex items-end">
               <div className="w-6 h-10 bg-blue-400 rounded-sm"></div>
