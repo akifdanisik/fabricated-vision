@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Card } from '@/components/ui/card';
 import { FileText, BarChart3, PenLine, Code } from 'lucide-react';
@@ -88,6 +87,12 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
       </div>
       
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 max-w-5xl">
+        <WelcomeModule
+          title="Supplier & Inventory Intelligence"
+          description="AI-driven supplier discovery, vetting, and predictive inventory planning"
+          icon={<FileText size={24} />}
+          onClick={() => onSelectQuickStart("Perform supplier & inventory intelligence analysis")}
+        />
         <WelcomeModule
           title="Analyze Smart Contracts"
           description="Get a risk assessment and security analysis for your smart contracts"
