@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Card } from '@/components/ui/card';
 import { FileText, BarChart3, PenLine, Code } from 'lucide-react';
@@ -121,11 +120,17 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
           </div>
         </WelcomeModule>
         <WelcomeModule
-          title="Draft Procurement Docs"
-          description="Create professional procurement documents and contracts"
+          title="Compliance, Contract & Risk Intelligence"
+          description="Unified compliance and contract management powered by AI. Tracks certifications, contract obligations, renewal dates, and risk indicators from suppliers."
           icon={<PenLine size={24} />}
-          onClick={() => onSelectQuickStart("Help me draft a procurement document for medical supplies")}
-        />
+          onClick={() => onSelectQuickStart("Help me analyze contract risks and compliance status")}
+        >
+          <div className="mt-4 space-y-1">
+            <div className="h-2 w-full bg-gray-200 rounded-full"></div>
+            <div className="h-2 w-3/4 bg-gray-200 rounded-full"></div>
+            <div className="h-2 w-5/6 bg-gray-200 rounded-full"></div>
+          </div>
+        </WelcomeModule>
         <WelcomeModule
           title="Generate Integration Code"
           description="Create code for integrating with procurement systems"
