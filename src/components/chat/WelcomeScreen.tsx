@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Card } from '@/components/ui/card';
 import { FileSearch, ChartBar, ShieldCheck, Workflow } from 'lucide-react';
@@ -95,7 +94,15 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
           ]}
           icon={<ChartBar size={24} />}
           onClick={() => onSelectQuickStart("Can you provide market and price intelligence for pharmaceutical APIs?")}
-        />
+        >
+          <div className="absolute inset-0 opacity-10 flex items-center justify-center">
+            <img 
+              src="/lovable-uploads/b834ef35-fd25-436d-a183-8a644126c748.png" 
+              alt="Market Price Intelligence" 
+              className="w-full h-full object-cover"
+            />
+          </div>
+        </WelcomeModule>
         <WelcomeModule
           title="Workflow Automation & Collaboration"
           description="Smart orchestration of procurement workflows and internal coordination"
