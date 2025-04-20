@@ -1,12 +1,13 @@
 
 import React from 'react';
 import { Card } from '@/components/ui/card';
-import { FileText, BarChart3, PenLine, Code } from 'lucide-react';
+import { FileSearch, ChartBar, ShieldCheck, Workflow } from 'lucide-react';
 
 interface WelcomeModuleProps {
   title: string;
   description: string;
   icon: React.ReactNode;
+  features: string[];
   onClick: () => void;
 }
 
@@ -14,6 +15,7 @@ const WelcomeModule: React.FC<WelcomeModuleProps> = ({
   title, 
   description, 
   icon, 
+  features,
   onClick 
 }) => {
   return (
@@ -29,39 +31,12 @@ const WelcomeModule: React.FC<WelcomeModuleProps> = ({
             </div>
           </div>
           <h3 className="text-base font-medium mb-2">{title}</h3>
-          <p className="text-sm text-gray-500">{description}</p>
-          {title === "Analyze Smart Contracts" && (
-            <div className="mt-4 space-y-1 text-xs text-gray-600">
-              <p>1. Upload a contract for analysis</p>
-              <p>2. Get risk assessment report</p>
-              <p>3. Receive security recommendations</p>
-            </div>
-          )}
-          {title === "Create Market Analysis" && (
-            <div className="mt-4">
-              <div className="h-20 flex items-end">
-                <div className="w-6 h-10 bg-blue-400 rounded-sm"></div>
-                <div className="w-6 h-16 bg-blue-500 rounded-sm mx-1"></div>
-                <div className="w-6 h-8 bg-blue-400 rounded-sm mr-1"></div>
-                <div className="w-6 h-12 bg-blue-500 rounded-sm mr-1"></div>
-                <div className="w-6 h-7 bg-blue-400 rounded-sm"></div>
-              </div>
-            </div>
-          )}
-          {title === "Draft Procurement Docs" && (
-            <div className="mt-4 space-y-1">
-              <div className="h-2 w-full bg-gray-200 rounded-full"></div>
-              <div className="h-2 w-3/4 bg-gray-200 rounded-full"></div>
-              <div className="h-2 w-5/6 bg-gray-200 rounded-full"></div>
-            </div>
-          )}
-          {title === "Generate Integration Code" && (
-            <div className="mt-4 font-mono text-xs text-gray-500 bg-gray-50 p-2 rounded">
-              <div>{"function connect() {"}</div>
-              <div>&nbsp;&nbsp;{"return api.init();"}</div>
-              <div>{"}"}</div>
-            </div>
-          )}
+          <p className="text-sm text-gray-500 mb-4">{description}</p>
+          <div className="mt-4 space-y-1 text-xs text-gray-600">
+            {features.map((feature, index) => (
+              <p key={index}>{index + 1}. {feature}</p>
+            ))}
+          </div>
         </div>
       </div>
     </Card>
@@ -89,28 +64,48 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
       
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 max-w-5xl">
         <WelcomeModule
-          title="Analyze Smart Contracts"
-          description="Get a risk assessment and security analysis for your smart contracts"
-          icon={<FileText size={24} />}
-          onClick={() => onSelectQuickStart("I want to analyze a smart contract for risks")}
+          title="Supplier & Inventory Intelligence"
+          description="AI-driven supplier discovery, vetting, and predictive inventory planning"
+          features={[
+            "Supplier matching by certification, capacity, region",
+            "Predictive sourcing based on consumption",
+            "Smart inventory optimization"
+          ]}
+          icon={<FileSearch size={24} />}
+          onClick={() => onSelectQuickStart("I need help with supplier matching based on our certification requirements")}
         />
         <WelcomeModule
-          title="Create Market Analysis"
-          description="Generate market insights based on your procurement data"
-          icon={<BarChart3 size={24} />}
-          onClick={() => onSelectQuickStart("Create a market analysis report for pharmaceutical APIs")}
+          title="Compliance, Contract & Risk Intelligence"
+          description="Unified compliance and contract management powered by AI"
+          features={[
+            "Document parsing (ISO, GMP, CE, ATEX, etc.)",
+            "Contract clause extraction and detection",
+            "Risk scoring and audit trail generation"
+          ]}
+          icon={<ShieldCheck size={24} />}
+          onClick={() => onSelectQuickStart("I need to analyze our contract compliance and risk factors")}
         />
         <WelcomeModule
-          title="Draft Procurement Docs"
-          description="Create professional procurement documents and contracts"
-          icon={<PenLine size={24} />}
-          onClick={() => onSelectQuickStart("Help me draft a procurement document for medical supplies")}
+          title="Market & Price Intelligence"
+          description="Real-time insights on price fluctuations and global supply trends"
+          features={[
+            "Global material pricing trends",
+            "Tariff and duty calculators",
+            "FX sensitivity alerts"
+          ]}
+          icon={<ChartBar size={24} />}
+          onClick={() => onSelectQuickStart("Can you provide market and price intelligence for pharmaceutical APIs?")}
         />
         <WelcomeModule
-          title="Generate Integration Code"
-          description="Create code for integrating with procurement systems"
-          icon={<Code size={24} />}
-          onClick={() => onSelectQuickStart("Generate code for integrating with our inventory system")}
+          title="Workflow Automation & Collaboration"
+          description="Smart orchestration of procurement workflows and internal coordination"
+          features={[
+            "Procurement task manager",
+            "RFQ auto-generation and routing",
+            "Notification and approval workflows"
+          ]}
+          icon={<Workflow size={24} />}
+          onClick={() => onSelectQuickStart("I want to set up automated procurement workflows for our team")}
         />
       </div>
     </div>
