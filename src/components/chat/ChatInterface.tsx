@@ -92,6 +92,8 @@ export default function ChatInterface() {
     clearCustomActions 
   } = useCustomActions();
 
+  const hydrochloricAcidProductImage = "/lovable-uploads/3880837d-fd52-46b4-a3d6-a7b15797c654.png";
+
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
@@ -1047,6 +1049,76 @@ export default function ChatInterface() {
           }
         ]
       };
+    } else if (
+      lowerCaseInput.includes('top') &&
+      lowerCaseInput.includes('supplier') &&
+      lowerCaseInput.includes('hydrochloric acid')
+    ) {
+      const hcSuppliers: Supplier[] = [
+        {
+          id: '1',
+          name: 'Emsure Chemicals Ltd',
+          category: 'Chemicals',
+          categories: [
+            predefinedCategories.find(c => c.id === 'chemicals')!
+          ],
+          performance: 93,
+          riskLevel: 'low',
+          items: 18,
+          contact: {
+            name: 'Ina Mayer',
+            email: 'ina@emsure.com',
+          },
+          location: 'Leverkusen, Germany',
+          initials: 'EC',
+        },
+        {
+          id: '2',
+          name: 'ChemSource Inc.',
+          category: 'Chemicals',
+          categories: [
+            predefinedCategories.find(c => c.id === 'chemicals')!
+          ],
+          performance: 91,
+          riskLevel: 'low',
+          items: 30,
+          contact: {
+            name: 'David Lee',
+            email: 'd.lee@chemsource.com',
+          },
+          location: 'Singapore',
+          initials: 'CS',
+        },
+        {
+          id: '3',
+          name: 'Quality Chemicals Ltd',
+          category: 'Chemicals',
+          categories: [
+            predefinedCategories.find(c => c.id === 'chemicals')!
+          ],
+          performance: 88,
+          riskLevel: 'medium',
+          items: 12,
+          contact: {
+            name: 'Sarah Johnson',
+            email: 'sjohnson@qualitychem.co.uk',
+          },
+          location: 'Manchester, UK',
+          initials: 'QC',
+        }
+      ];
+      return {
+        id: Date.now().toString(),
+        content: "Here are the top suppliers for Hydrochloric acid (see product image below):",
+        sender: 'ai',
+        timestamp: new Date(),
+        suppliers: hcSuppliers,
+        actions: [
+          { label: 'Compare all suppliers', onClick: () => handleQuickPrompt('Compare Hydrochloric acid suppliers') },
+          { label: 'View product catalog', onClick: () => window.open(hydrochloricAcidProductImage, "_blank") }
+        ],
+        moduleData: { hydrochloricAcidProductImage }
+      };
     }
     
     return {
@@ -1264,6 +1336,18 @@ export default function ChatInterface() {
                               ? "bg-gray-100 text-gray-800"
                               : "bg-gray-100 text-gray-800"
                         )}>
+                          {message.moduleData?.hydrochloricAcidProductImage && (
+                            <div className="mb-4 flex justify-center items-center">
+                              <img
+                                src={message.moduleData.hydrochloricAcidProductImage}
+                                width={162}
+                                height={200}
+                                alt="Hydrochloric Acid Product"
+                                className="rounded-lg border bg-white shadow-sm object-contain"
+                                style={{ maxWidth: 162, maxHeight: 200 }}
+                              />
+                            </div>
+                          )}
                           {message.sender === 'user' ? (
                             <div className="whitespace-pre-wrap">{message.content}</div>
                           ) : message.numberedIndicators ? (
