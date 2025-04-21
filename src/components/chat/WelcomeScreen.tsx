@@ -31,6 +31,65 @@ const WelcomeModule: React.FC<WelcomeModuleProps> = ({
           </div>
           <h3 className="text-base font-medium mb-2">{title}</h3>
           <p className="text-sm text-gray-500">{description}</p>
+          {title === "Compliance, Contract & Risk Intelligence" && (
+            <div className="mt-4 text-xs text-gray-600 space-y-2">
+              <div>
+                <div className="font-semibold mb-1">Functionality:</div>
+                <div>
+                  Unified compliance and contract management powered by AI.
+                  Tracks certifications, contract obligations, renewal dates, and risk indicators from suppliers.
+                </div>
+              </div>
+              <div>
+                <div className="font-semibold mb-1">Includes:</div>
+                <ul className="list-disc ml-5 space-y-0.5">
+                  <li>Document parsing (ISO, GMP, CE, ATEX, etc.)</li>
+                  <li>Contract clause extraction and deviation detection</li>
+                  <li>Risk scoring and audit trail generation</li>
+                </ul>
+              </div>
+              <div>
+                <div className="font-semibold mb-1">Value:</div>
+                <div>
+                  Ensures regulatory compliance, reduces contract risk, and simplifies audits.
+                </div>
+              </div>
+              <div className="mt-4 space-y-1">
+                <div className="h-2 w-full bg-gray-200 rounded-full"></div>
+                <div className="h-2 w-3/4 bg-gray-200 rounded-full"></div>
+                <div className="h-2 w-5/6 bg-gray-200 rounded-full"></div>
+              </div>
+            </div>
+          )}
+          {title === "Workflow Automation & Collaboration" && (
+            <div className="mt-4 text-xs text-gray-600 space-y-2">
+              <div>
+                <div className="font-semibold mb-1">Functionality:</div>
+                <div>
+                  Smart orchestration of procurement workflows, automated RFQs/RFPs, and internal task coordination between teams.
+                </div>
+              </div>
+              <div>
+                <div className="font-semibold mb-1">Includes:</div>
+                <ul className="list-disc ml-5 space-y-0.5">
+                  <li>Procurement task manager</li>
+                  <li>RFQ auto-generation and routing</li>
+                  <li>Notification and approval workflows</li>
+                </ul>
+              </div>
+              <div>
+                <div className="font-semibold mb-1">Value:</div>
+                <div>
+                  Cuts operational friction, saves time, and ensures consistency across teams.
+                </div>
+              </div>
+              <div className="mt-4 font-mono text-xs text-gray-500 bg-gray-50 p-2 rounded">
+                <div>{"function connect() {"}</div>
+                <div>&nbsp;&nbsp;{"return api.init();"}</div>
+                <div>{"}"}</div>
+              </div>
+            </div>
+          )}
           {title === "Supplier & Inventory Intelligence" && (
             <div className="mt-4 space-y-1 text-xs text-gray-600">
               <p>1. Submit your sourcing criteria or BOM</p>
@@ -45,7 +104,7 @@ const WelcomeModule: React.FC<WelcomeModuleProps> = ({
               <p>3. Receive security recommendations</p>
             </div>
           )}
-          {title === "Create Market Analysis" && (
+          {title === "Market & Price Intelligence" && (
             <div className="mt-4">
               <div className="h-20 flex items-end">
                 <div className="w-6 h-10 bg-blue-400 rounded-sm"></div>
@@ -54,20 +113,6 @@ const WelcomeModule: React.FC<WelcomeModuleProps> = ({
                 <div className="w-6 h-12 bg-blue-500 rounded-sm mr-1"></div>
                 <div className="w-6 h-7 bg-blue-400 rounded-sm"></div>
               </div>
-            </div>
-          )}
-          {title === "Draft Procurement Docs" && (
-            <div className="mt-4 space-y-1">
-              <div className="h-2 w-full bg-gray-200 rounded-full"></div>
-              <div className="h-2 w-3/4 bg-gray-200 rounded-full"></div>
-              <div className="h-2 w-5/6 bg-gray-200 rounded-full"></div>
-            </div>
-          )}
-          {title === "Generate Integration Code" && (
-            <div className="mt-4 font-mono text-xs text-gray-500 bg-gray-50 p-2 rounded">
-              <div>{"function connect() {"}</div>
-              <div>&nbsp;&nbsp;{"return api.init();"}</div>
-              <div>{"}"}</div>
             </div>
           )}
           {children}
@@ -124,25 +169,13 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
           description="Unified compliance and contract management powered by AI. Tracks certifications, contract obligations, renewal dates, and risk indicators from suppliers."
           icon={<PenLine size={24} />}
           onClick={() => onSelectQuickStart("Help me analyze contract risks and compliance status")}
-        >
-          <div className="mt-4 space-y-1">
-            <div className="h-2 w-full bg-gray-200 rounded-full"></div>
-            <div className="h-2 w-3/4 bg-gray-200 rounded-full"></div>
-            <div className="h-2 w-5/6 bg-gray-200 rounded-full"></div>
-          </div>
-        </WelcomeModule>
+        />
         <WelcomeModule
           title="Workflow Automation & Collaboration"
           description="Smart orchestration of procurement workflows, automated RFQs/RFPs, and internal task coordination between teams."
           icon={<Code size={24} />}
           onClick={() => onSelectQuickStart("Help me set up an automated RFQ workflow")}
-        >
-          <div className="mt-4 font-mono text-xs text-gray-500 bg-gray-50 p-2 rounded">
-            <div>{"function connect() {"}</div>
-            <div>&nbsp;&nbsp;{"return api.init();"}</div>
-            <div>{"}"}</div>
-          </div>
-        </WelcomeModule>
+        />
       </div>
     </div>
   );
