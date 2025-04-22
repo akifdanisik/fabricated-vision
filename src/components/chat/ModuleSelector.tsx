@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -73,26 +74,26 @@ export const ModuleSelector = ({ isOpen, onClose, modules, onSelectModule }: Mod
           
           {['all', 'analysis', 'data', 'development', 'security'].map((category) => (
             <TabsContent key={category} value={category} className="p-6 pt-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                 {(category === 'all' ? modules : modules.filter(module => module.category === category)).map((module) => (
                   <div 
                     key={module.id}
                     className={cn(
-                      "border border-border rounded-xl p-4 cursor-pointer",
-                      "hover:shadow-sm transition-all flex items-start gap-4",
-                      "bg-white hover:bg-accent/5"
+                      "border border-border rounded-lg p-3 cursor-pointer",
+                      "hover:shadow-sm transition-all flex items-start gap-3",
+                      "bg-white hover:bg-accent/5 space-y-2"
                     )}
                     onClick={() => onSelectModule(module.id)}
                   >
                     <div className={cn(
-                      "p-3 rounded-full flex-shrink-0",
+                      "p-2 rounded-full flex-shrink-0",
                       "bg-secondary/20 text-muted-foreground"
                     )}>
                       {getIconComponent(module.icon)}
                     </div>
                     <div>
-                      <h3 className="font-medium text-foreground">{module.title}</h3>
-                      <p className="text-sm text-muted-foreground">{module.description}</p>
+                      <h3 className="font-medium text-sm text-foreground">{module.title}</h3>
+                      <p className="text-xs text-muted-foreground">{module.description}</p>
                     </div>
                   </div>
                 ))}
