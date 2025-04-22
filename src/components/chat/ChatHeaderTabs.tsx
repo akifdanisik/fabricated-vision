@@ -19,24 +19,28 @@ const models = [
     name: 'Supplier & Inventory Intelligence',
     description: 'Find the right suppliers and stay ahead of inventory risks with predictive procurement insights. 1. Submit your sourcing criteria or BOM 2. Get AI-matched supplier recommendations 3. Receive predictive inventory forecasts',
     active: true,
+    badge: null
   },
   {
     id: 'market-price',
     name: 'Market & Price Intelligence',
     description: 'Real-time insights on price fluctuations, FX risk, global supply trends, tariffs, and material availability.',
     active: true,
+    badge: null
   },
   {
     id: 'compliance-contract-risk',
     name: 'Compliance, Contract & Risk Intelligence',
     description: 'Unified compliance and contract management powered by AI. Tracks certifications, contract obligations, renewal dates, and risk indicators from suppliers.',
     active: true,
+    badge: null
   },
   {
     id: 'workflow-automation',
     name: 'Workflow Automation & Collaboration',
     description: '',
     active: true,
+    badge: null
   }
 ];
 
@@ -118,4 +122,3 @@ export default function ChatHeaderTabs({
     </div>
   );
 }
-
