@@ -527,7 +527,7 @@ export default function ChatInterface() {
           },
           {
             id: '3',
-1          title: 'Set Reorder Points',
+            title: 'Set Reorder Points',
             description: 'Configure automatic reorder points for critical items',
             icon: 'list',
             actionLabel: 'Configure',
@@ -1062,13 +1062,13 @@ export default function ChatInterface() {
         {
           id: '1',
           name: 'Hydrochloric Acid (37%)',
-          image: 'https://5.imimg.com/data5/SELLER/Default/2021/3/KO/QG/XG/3823480/hydrochloric-acid-500x500.jpg',
+          image: 'https://placehold.co/200x200?text=Hydrochloric+Acid+37%25',
           description: 'High purity hydrochloric acid for pharmaceutical applications'
         },
         {
           id: '2',
           name: 'Hydrochloric Acid (Reagent Grade)',
-          image: 'https://4.imimg.com/data4/RQ/XY/MY-3077534/reagent-grade-hydrochloric-acid-500x500.jpg',
+          image: 'https://placehold.co/200x200?text=Reagent+Grade',
           description: 'Reagent grade hydrochloric acid for laboratory use'
         }
       ]);
@@ -1099,25 +1099,25 @@ export default function ChatInterface() {
         {
           id: '1',
           name: 'Hydrochloric Acid (37%)',
-          image: 'https://5.imimg.com/data5/SELLER/Default/2021/3/KO/QG/XG/3823480/hydrochloric-acid-500x500.jpg',
+          image: 'https://placehold.co/200x200?text=Hydrochloric+Acid+37%25',
           description: 'High purity hydrochloric acid for pharmaceutical applications'
         },
         {
           id: '2',
           name: 'Hydrochloric Acid (Reagent Grade)',
-          image: 'https://4.imimg.com/data4/RQ/XY/MY-3077534/reagent-grade-hydrochloric-acid-500x500.jpg',
+          image: 'https://placehold.co/200x200?text=Reagent+Grade',
           description: 'Reagent grade hydrochloric acid for laboratory use'
         },
         {
           id: '3',
           name: 'Sulfuric Acid',
-          image: 'https://5.imimg.com/data5/SELLER/Default/2020/8/OD/PQ/GG/3823480/sulfuric-acid-500x500.jpg',
+          image: 'https://placehold.co/200x200?text=Sulfuric+Acid',
           description: 'Industrial grade sulfuric acid'
         },
         {
           id: '4',
           name: 'Nitric Acid',
-          image: 'https://5.imimg.com/data5/SELLER/Default/2021/3/VN/BZ/OQ/3823480/nitric-acid-500x500.jpg',
+          image: 'https://placehold.co/200x200?text=Nitric+Acid',
           description: 'Laboratory grade nitric acid'
         }
       ]);
