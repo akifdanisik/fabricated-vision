@@ -665,7 +665,7 @@ export default function ChatInterface() {
             predefinedCategories.find(c => c.id === 'apis')!
           ],
           performance: 95,
-          riskLevel: 'low',
+          riskLevel: 'low' as const,
           items: 32,
           contact: {
             name: 'Alex Johnson',
@@ -683,7 +683,7 @@ export default function ChatInterface() {
             predefinedCategories.find(c => c.id === 'excipients')!
           ],
           performance: 92,
-          riskLevel: 'low',
+          riskLevel: 'low' as const,
           items: 28,
           contact: {
             name: 'Maria Garcia',
@@ -701,7 +701,7 @@ export default function ChatInterface() {
             predefinedCategories.find(c => c.id === 'chemicals')!
           ],
           performance: 90,
-          riskLevel: 'low',
+          riskLevel: 'low' as const,
           items: 24,
           contact: {
             name: 'David Lee',
@@ -718,7 +718,7 @@ export default function ChatInterface() {
             predefinedCategories.find(c => c.id === 'apis')!
           ],
           performance: 89,
-          riskLevel: 'low',
+          riskLevel: 'low' as const,
           items: 45,
           contact: {
             name: 'Robert Wilson',
@@ -736,7 +736,7 @@ export default function ChatInterface() {
             predefinedCategories.find(c => c.id === 'chemicals')!
           ],
           performance: 87,
-          riskLevel: 'low',
+          riskLevel: 'low' as const,
           items: 19,
           contact: {
             name: 'John Smith',
@@ -753,7 +753,7 @@ export default function ChatInterface() {
             predefinedCategories.find(c => c.id === 'apis')!
           ],
           performance: 86,
-          riskLevel: 'low',
+          riskLevel: 'low' as const,
           items: 30,
           contact: {
             name: 'Lisa Chen',
@@ -770,7 +770,7 @@ export default function ChatInterface() {
             predefinedCategories.find(c => c.id === 'excipients')!
           ],
           performance: 85,
-          riskLevel: 'low',
+          riskLevel: 'low' as const,
           items: 22,
           contact: {
             name: 'Thomas Müller',
@@ -787,7 +787,7 @@ export default function ChatInterface() {
             predefinedCategories.find(c => c.id === 'packaging')!
           ],
           performance: 84,
-          riskLevel: 'low',
+          riskLevel: 'low' as const,
           items: 37,
           contact: {
             name: 'Hiroshi Tanaka',
@@ -804,7 +804,7 @@ export default function ChatInterface() {
             predefinedCategories.find(c => c.id === 'chemicals')!
           ],
           performance: 83,
-          riskLevel: 'low',
+          riskLevel: 'low' as const,
           items: 41,
           contact: {
             name: 'Sarah Johnson',
@@ -821,7 +821,7 @@ export default function ChatInterface() {
             predefinedCategories.find(c => c.id === 'packaging')!
           ],
           performance: 82,
-          riskLevel: 'low',
+          riskLevel: 'low' as const,
           items: 32,
           contact: {
             name: 'Sarah Miller',
@@ -871,7 +871,7 @@ export default function ChatInterface() {
             predefinedCategories.find(c => c.id === 'apis')!
           ],
           performance: 95,
-          riskLevel: 'low',
+          riskLevel: 'low' as const,
           items: 12,
           contact: {
             name: 'Alex Johnson',
@@ -889,7 +889,7 @@ export default function ChatInterface() {
             predefinedCategories.find(c => c.id === 'apis')!
           ],
           performance: 90,
-          riskLevel: 'low',
+          riskLevel: 'low' as const,
           items: 8,
           contact: {
             name: 'Maria Garcia',
@@ -906,7 +906,7 @@ export default function ChatInterface() {
             predefinedCategories.find(c => c.id === 'apis')!
           ],
           performance: 88,
-          riskLevel: 'low',
+          riskLevel: 'low' as const,
           items: 10,
           contact: {
             name: 'Lisa Chen',
@@ -923,7 +923,7 @@ export default function ChatInterface() {
             predefinedCategories.find(c => c.id === 'apis')!
           ],
           performance: 85,
-          riskLevel: 'low',
+          riskLevel: 'low' as const,
           items: 7,
           contact: {
             name: 'Robert Wilson',
@@ -940,7 +940,7 @@ export default function ChatInterface() {
             predefinedCategories.find(c => c.id === 'apis')!
           ],
           performance: 82,
-          riskLevel: 'low',
+          riskLevel: 'low' as const,
           items: 6,
           contact: {
             name: 'John Smith',
@@ -1049,7 +1049,6 @@ export default function ChatInterface() {
         ]
       };
     } else if (lowerCaseInput.includes('create rfq') || lowerCaseInput.includes('request for quotation')) {
-      // Extract product name if available
       let productName = 'API Product';
       if (lowerCaseInput.includes('for')) {
         const forIndex = lowerCaseInput.indexOf('for');
@@ -1102,16 +1101,15 @@ export default function ChatInterface() {
   const handleModuleRequest = (userInput: string): Message => {
     const lowerCaseInput = userInput.toLowerCase();
     
-    // Module for showing supplier results table
     if (lowerCaseInput.includes('supplier') && (lowerCaseInput.includes('table') || lowerCaseInput.includes('list'))) {
-      const suppliers = [
+      const suppliers: Supplier[] = [
         {
           id: '1',
           name: 'PharmaCorp',
           category: 'Active Ingredients',
           categories: [predefinedCategories.find(c => c.id === 'apis')!],
           performance: 95,
-          riskLevel: 'low',
+          riskLevel: 'low' as const,
           items: 32,
           contact: {
             name: 'Alex Johnson',
@@ -1126,7 +1124,7 @@ export default function ChatInterface() {
           category: 'Excipients',
           categories: [predefinedCategories.find(c => c.id === 'excipients')!],
           performance: 92,
-          riskLevel: 'low',
+          riskLevel: 'low' as const,
           items: 28,
           contact: {
             name: 'Maria Garcia',
@@ -1150,7 +1148,6 @@ export default function ChatInterface() {
         moduleData: { suppliers },
       };
     } else {
-      // Default response if no specific module is requested
       return {
         id: Date.now().toString(),
         content: "I'm not sure which data display you want to see. You can ask for 'supplier table', 'inventory status', or other specific data views.",
@@ -1159,7 +1156,7 @@ export default function ChatInterface() {
       };
     }
   };
-  
+
   const availableModules: ModuleItem[] = [
     {
       id: 'supplier-assessment',
@@ -1278,7 +1275,7 @@ export default function ChatInterface() {
       <ResizablePanel defaultSize={65} minSize={40} className="flex flex-col h-full bg-white p-0">
         <div className="flex-1 overflow-y-auto p-4">
           {showWelcomeScreen ? (
-            <WelcomeScreen onQuickPrompt={handleQuickPrompt} />
+            <WelcomeScreen onSelectQuickStart={handleQuickPrompt} onQuickPrompt={handleQuickPrompt} />
           ) : (
             <div>
               {renderMessages()}
@@ -1357,6 +1354,7 @@ export default function ChatInterface() {
                   documents={researchData} 
                   isLoading={isResearching}
                   onClose={() => setShowResearchPanel(false)}
+                  isVisible={true}
                 />
               ) : showResultsTable ? (
                 <ResultsTable

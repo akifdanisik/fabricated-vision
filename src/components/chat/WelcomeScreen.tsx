@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Card } from '@/components/ui/card';
 import { FileText, BarChart3, PenLine, Code } from 'lucide-react';
@@ -80,12 +81,23 @@ const WelcomeModule: React.FC<WelcomeModuleProps> = ({
 export interface WelcomeScreenProps {
   onSelectQuickStart: (prompt: string) => void;
   userName?: string;
+  onQuickPrompt?: (prompt: string) => void; // Added this prop to fix the TypeScript error
 }
 
 const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ 
   onSelectQuickStart, 
-  userName = "Ayşa" 
+  userName = "Ayşa",
+  onQuickPrompt
 }) => {
+  // Use either onQuickPrompt or onSelectQuickStart function (for backward compatibility)
+  const handlePrompt = (prompt: string) => {
+    if (onQuickPrompt) {
+      onQuickPrompt(prompt);
+    } else {
+      onSelectQuickStart(prompt);
+    }
+  };
+
   return (
     <div className="flex flex-col items-center justify-center h-full px-4 py-10">
       <div className="text-center mb-12">
@@ -101,13 +113,13 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
           title="Supplier & Inventory Intelligence"
           description="Find the right suppliers and stay ahead of inventory risks with predictive procurement insights."
           icon={<FileText size={24} />}
-          onClick={() => onSelectQuickStart("Help me find qualified suppliers and optimize inventory levels")}
+          onClick={() => handlePrompt("Help me find qualified suppliers and optimize inventory levels")}
         />
         <WelcomeModule
           title="Market & Price Intelligence"
           description="Real-time insights on price fluctuations, FX risk, global supply trends, tariffs, and material availability."
           icon={<BarChart3 size={24} />}
-          onClick={() => onSelectQuickStart("Create a market analysis report for pharmaceutical APIs")}
+          onClick={() => handlePrompt("Create a market analysis report for pharmaceutical APIs")}
         >
           <div className="mt-4">
             <div className="h-20 flex items-end">
@@ -123,7 +135,7 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
           title="Compliance, Contract & Risk Intelligence"
           description="Unified compliance and contract management powered by AI. Tracks certifications, contract obligations, renewal dates, and risk indicators from suppliers."
           icon={<PenLine size={24} />}
-          onClick={() => onSelectQuickStart("Help me analyze contract risks and compliance status")}
+          onClick={() => handlePrompt("Help me analyze contract risks and compliance status")}
         >
           <div className="mt-4 space-y-1">
             <div className="h-2 w-full bg-gray-200 rounded-full"></div>
@@ -135,7 +147,7 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
           title="Workflow Automation & Collaboration"
           description="Smart orchestration of procurement workflows, automated RFQs/RFPs, and internal task coordination between teams."
           icon={<Code size={24} />}
-          onClick={() => onSelectQuickStart("Help me set up an automated RFQ workflow")}
+          onClick={() => handlePrompt("Help me set up an automated RFQ workflow")}
         >
           <div className="mt-4 font-mono text-xs text-gray-500 bg-gray-50 p-2 rounded">
             <div>{"function connect() {"}</div>
