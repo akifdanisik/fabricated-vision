@@ -2,7 +2,7 @@
 import React from 'react';
 import { Card } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Image } from 'lucide-react';
+import { Images } from 'lucide-react';
 
 interface Product {
   id: string;
@@ -36,6 +36,7 @@ const ProductImageSandbox: React.FC<ProductImageSandboxProps> = ({
                     alt={product.name}
                     className="w-full h-full object-contain"
                     onError={(e) => {
+                      console.log("Image failed to load:", product.image);
                       // Replace with fallback on error
                       const target = e.target as HTMLImageElement;
                       target.onerror = null;
@@ -44,7 +45,7 @@ const ProductImageSandbox: React.FC<ProductImageSandboxProps> = ({
                   />
                 ) : (
                   <div className="w-full h-full flex items-center justify-center bg-gray-100">
-                    <Image className="h-8 w-8 text-gray-400" />
+                    <Images className="h-8 w-8 text-gray-400" />
                   </div>
                 )}
               </div>

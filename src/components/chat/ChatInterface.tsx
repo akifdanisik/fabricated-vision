@@ -462,7 +462,7 @@ export default function ChatInterface() {
         },
         {
           id: '3',
-          title: 'Find GMP Certified Suppliers',
+8          title: 'Find GMP Certified Suppliers',
           description: 'Search for suppliers with GMP certification',
           icon: 'fileSearch',
           actionLabel: 'Search',
