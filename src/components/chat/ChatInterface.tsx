@@ -1062,13 +1062,13 @@ export default function ChatInterface() {
         {
           id: '1',
           name: 'Hydrochloric Acid (37%)',
-          image: '/lovable-uploads/0956f925-373d-40e5-a6ce-8d986514ff7f.png',
+          image: 'https://placehold.co/200x200?text=Hydrochloric+Acid+37%25',
           description: 'High purity hydrochloric acid for pharmaceutical applications'
         },
         {
           id: '2',
           name: 'Hydrochloric Acid (Reagent Grade)',
-          image: '/lovable-uploads/75ef375a-c73d-45b4-88c9-3e20ec5a9d78.png',
+          image: 'https://placehold.co/200x200?text=Reagent+Grade',
           description: 'Reagent grade hydrochloric acid for laboratory use'
         }
       ]);
@@ -1099,13 +1099,13 @@ export default function ChatInterface() {
         {
           id: '1',
           name: 'Hydrochloric Acid (37%)',
-          image: '/lovable-uploads/0956f925-373d-40e5-a6ce-8d986514ff7f.png',
+          image: 'https://placehold.co/200x200?text=Hydrochloric+Acid+37%25',
           description: 'High purity hydrochloric acid for pharmaceutical applications'
         },
         {
           id: '2',
           name: 'Hydrochloric Acid (Reagent Grade)',
-          image: '/lovable-uploads/75ef375a-c73d-45b4-88c9-3e20ec5a9d78.png',
+          image: 'https://placehold.co/200x200?text=Reagent+Grade',
           description: 'Reagent grade hydrochloric acid for laboratory use'
         },
         {
