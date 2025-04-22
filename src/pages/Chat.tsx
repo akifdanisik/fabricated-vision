@@ -1,4 +1,3 @@
-
 import Layout from '@/components/layout/Layout';
 import ChatInterface from '@/components/chat/ChatInterface';
 import { useEffect, useState } from 'react';
@@ -9,6 +8,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Toaster } from '@/components/ui/toaster';
+import ChatHeaderTabs from '@/components/chat/ChatHeaderTabs';
 
 const Chat = () => {
   const location = useLocation();
@@ -21,9 +21,12 @@ const Chat = () => {
   }, [location]);
   
   return <Layout fullWidth hideNavbar>
+      <ChatHeaderTabs
+        folderName="fabricated"
+        chatName="AI Procurement Modules Overview"
+      />
       <div className="flex flex-col h-[calc(100vh-0px)] bg-[#f8f8f8] rounded-2xl overflow-hidden">
         <div className="flex justify-between items-center px-6 py-3 border-b bg-white rounded-t-2xl">
-          {/* Empty div to maintain spacing */}
           <div></div>
           
           <div className="flex items-center gap-2">

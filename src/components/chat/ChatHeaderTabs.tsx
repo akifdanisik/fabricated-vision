@@ -1,0 +1,131 @@
+
+import React, { useState } from "react";
+import { 
+  ChevronDown, 
+  Folder, 
+  List 
+} from "lucide-react";
+import { 
+  Popover, 
+  PopoverTrigger, 
+  PopoverContent 
+} from "@/components/ui/popover";
+import { cn } from "@/lib/utils";
+
+const models = [
+  {
+    id: 'gpt-4o',
+    name: 'GPT-4o',
+    description: 'Great for most questions',
+    active: true,
+  },
+  {
+    id: 'gpt-4o-scheduled',
+    name: 'GPT-4o with scheduled tasks',
+    description: 'Ask ChatGPT to follow up later',
+    active: false,
+    badge: "BETA",
+  },
+  {
+    id: 'gpt-4.5',
+    name: 'GPT-4.5',
+    description: 'Good for writing and exploring ideas',
+    active: false,
+    badge: "RESEARCH PREVIEW",
+  },
+  {
+    id: 'o3',
+    name: 'o3',
+    description: 'Uses advanced reasoning',
+    active: false,
+  },
+  {
+    id: 'o4-mini',
+    name: 'o4-mini',
+    description: 'Fastest at advanced reasoning',
+    active: false,
+  },
+  {
+    id: 'o4-mini-high',
+    name: 'o4-mini-high',
+    description: 'Great at coding and visual reasoning',
+    active: false,
+  },
+];
+
+export default function ChatHeaderTabs({
+  folderName = "fabricated",
+  chatName = "AI Procurement Modules Overview"
+}: {
+  folderName?: string;
+  chatName?: string;
+}) {
+  const [modelOpen, setModelOpen] = useState(false);
+
+  // This would normally live in app state
+  const [currentModel, setCurrentModel] = useState('gpt-4o');
+
+  return (
+    <div className="w-full border-b bg-white px-6 pt-2 pb-1 z-20">
+      <div className="flex items-center gap-2 max-w-screen-xl mx-auto">
+        {/* Folder */}
+        <span className="flex items-center gap-1">
+          <Folder className="w-4 h-4 text-muted-foreground" />
+          <span className="font-medium text-[15px] text-gray-700">{folderName}</span>
+        </span>
+        <span className="mx-1 text-gray-400">/</span>
+
+        {/* Chat (current module/page) */}
+        <span className="flex items-center gap-1 rounded px-2 py-1 bg-muted/50 text-gray-900 font-medium text-[15px]">
+          <List className="w-4 h-4 text-muted-foreground" />
+          <span>{chatName}</span>
+
+          {/* Model Select Popover */}
+          <Popover open={modelOpen} onOpenChange={setModelOpen}>
+            <PopoverTrigger asChild>
+              <button aria-label="Select Model" className="flex items-center gap-1 rounded px-1 ml-2 bg-transparent hover:bg-muted/80 text-gray-700 text-[15px]">
+                <span className="text-xs font-medium text-gray-500">{models.find(m => m.id === currentModel)?.name ?? ""}</span>
+                <ChevronDown className="w-4 h-4 text-gray-400" />
+              </button>
+            </PopoverTrigger>
+            <PopoverContent side="bottom" align="start" className="p-0 border bg-white shadow-xl rounded-xl min-w-[340px] max-w-[400px] z-50">
+              <div className="p-4 border-b font-semibold text-gray-600 text-sm">Model</div>
+              <div className="py-1 divide-y divide-gray-100">
+                {models.map(model => (
+                  <button
+                    key={model.id}
+                    type="button"
+                    disabled={!model.active}
+                    onClick={() => model.active && setCurrentModel(model.id)}
+                    className={cn(
+                      "flex items-start gap-2 w-full px-4 py-3 text-left hover:bg-gray-50 transition-all",
+                      model.active
+                        ? (currentModel === model.id
+                          ? "bg-gray-100 text-gray-800 font-semibold"
+                          : "text-gray-800")
+                        : "opacity-60 cursor-not-allowed"
+                    )}
+                  >
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2">
+                        <span className="text-[15px] leading-none">{model.name}</span>
+                        {model.badge &&
+                          <span className="ml-1 px-2 py-0.5 rounded-full bg-gray-200 text-gray-600 text-[11px] font-semibold">{model.badge}</span>
+                        }
+                        {currentModel === model.id &&
+                          <span className="ml-2 w-4 h-4 inline-block rounded-full border border-gray-400 bg-gray-800" />
+                        }
+                      </div>
+                      <div className="text-xs text-gray-500 mt-0.5">{model.description}</div>
+                    </div>
+                  </button>
+                ))}
+                <button className="w-full px-4 py-2 text-[15px] text-left text-gray-500 font-medium hover:bg-gray-50">More models &rarr;</button>
+              </div>
+            </PopoverContent>
+          </Popover>
+        </span>
+      </div>
+    </div>
+  );
+}
