@@ -11,19 +11,24 @@ import CategoryBadge from '@/components/categories/CategoryBadge';
 import { cn } from '@/lib/utils';
 
 interface ResultsTableProps {
-  isVisible: boolean;
+  data?: Supplier[];
   suppliers?: Supplier[];
-  onClose: () => void;
+  isVisible?: boolean;
+  onClose?: () => void;
   title?: string;
 }
 
 export default function ResultsTable({
-  isVisible,
-  suppliers = [],
+  data,
+  suppliers,
+  isVisible = true,
   onClose,
   title = "Top Suppliers"
 }: ResultsTableProps) {
   const [isCollapsed, setIsCollapsed] = useState(false);
+  
+  // Use data if provided, otherwise use suppliers
+  const displayData = data || suppliers || [];
   
   if (!isVisible) return null;
   
@@ -59,21 +64,23 @@ export default function ResultsTable({
           >
             {isCollapsed ? <ChevronDown className="h-4 w-4" /> : <ChevronUp className="h-4 w-4" />}
           </Button>
-          <Button 
-            variant="ghost" 
-            size="sm" 
-            className="h-7 w-7 p-0 rounded-full"
-            onClick={onClose}
-          >
-            <span className="sr-only">Close</span>
-            <span aria-hidden="true">×</span>
-          </Button>
+          {onClose && (
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              className="h-7 w-7 p-0 rounded-full"
+              onClick={onClose}
+            >
+              <span className="sr-only">Close</span>
+              <span aria-hidden="true">×</span>
+            </Button>
+          )}
         </div>
       </div>
       
       {!isCollapsed && (
         <div className="overflow-auto max-h-[300px]">
-          {suppliers.length > 0 ? (
+          {displayData.length > 0 ? (
             <Table>
               <TableHeader>
                 <TableRow>
@@ -87,7 +94,7 @@ export default function ResultsTable({
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {suppliers.map(supplier => (
+                {displayData.map(supplier => (
                   <TableRow key={supplier.id} className="h-[65px]">
                     <TableCell>
                       <div className="flex items-center gap-3">

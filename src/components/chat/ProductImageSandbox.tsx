@@ -2,7 +2,8 @@
 import React, { useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { ImageOff, RefreshCw, Image as ImageIcon } from 'lucide-react';
+import { ImageOff, RefreshCw, Image as ImageIcon, X } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 interface Product {
   id: string;
@@ -13,12 +14,14 @@ interface Product {
 
 interface ProductImageSandboxProps {
   products: Product[];
-  isVisible: boolean;
+  isVisible?: boolean;
+  onClose?: () => void;
 }
 
 const ProductImageSandbox: React.FC<ProductImageSandboxProps> = ({ 
   products,
-  isVisible 
+  isVisible = true,
+  onClose
 }) => {
   const [imageStates, setImageStates] = useState<Record<string, 'loading' | 'error' | 'success'>>({});
   const [retryAttempts, setRetryAttempts] = useState<Record<string, number>>({});
@@ -56,7 +59,19 @@ const ProductImageSandbox: React.FC<ProductImageSandboxProps> = ({
 
   return (
     <Card className="mt-4 p-4 bg-white/50 backdrop-blur-sm border border-gray-100">
-      <h3 className="text-sm font-medium mb-3 text-gray-700">Product Images</h3>
+      <div className="flex justify-between items-center mb-3">
+        <h3 className="text-sm font-medium text-gray-700">Product Images</h3>
+        {onClose && (
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            className="h-7 w-7 p-0 rounded-full"
+            onClick={onClose}
+          >
+            <X className="h-4 w-4" />
+          </Button>
+        )}
+      </div>
       <ScrollArea className="h-[250px]">
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
           {products.map((product) => {

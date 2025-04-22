@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect } from 'react';
 import { Send, Mic, PlusCircle, Search, Grid, Eye, ThumbsUp, ThumbsDown, RefreshCw, Copy, FileText, AlertCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -463,7 +462,7 @@ export default function ChatInterface() {
         },
         {
           id: '3',
-          title: 'Find GMP Certified Suppliers',
+8          title: 'Find GMP Certified Suppliers',
           description: 'Search for suppliers with GMP certification',
           icon: 'fileSearch',
           actionLabel: 'Search',
@@ -1166,28 +1165,32 @@ export default function ChatInterface() {
       id: 'supplier-assessment',
       title: 'Supplier Assessment',
       description: 'Evaluate supplier quality, reliability, and performance',
-      icon: 'badge'
+      icon: 'badge',
+      category: 'analysis'
     },
     {
       id: 'inventory-planner',
       title: 'Inventory Planner',
       description: 'Plan and optimize inventory levels',
-      icon: 'package'
+      icon: 'package',
+      category: 'data'
     },
     {
       id: 'contract-risk',
       title: 'Contract Risk Analysis',
       description: 'Analyze contract terms for risks and compliance issues',
-      icon: 'shield'
+      icon: 'shield',
+      category: 'security'
     },
     {
       id: 'document-analysis',
       title: 'Document Analysis',
       description: 'Extract insights from documents and contracts',
-      icon: 'fileSearch'
+      icon: 'fileSearch',
+      category: 'analysis'
     }
   ];
-  
+
   const renderMessages = () => {
     return messages.map((message, index) => (
       <div
@@ -1351,13 +1354,13 @@ export default function ChatInterface() {
             <>
               {showResearchPanel ? (
                 <ResearchDataPanel 
-                  data={researchData} 
+                  documents={researchData} 
                   isLoading={isResearching}
                   onClose={() => setShowResearchPanel(false)}
                 />
               ) : showResultsTable ? (
                 <ResultsTable
-                  data={supplierResults}
+                  suppliers={supplierResults}
                   title={resultsTableTitle}
                   onClose={() => setShowResultsTable(false)}
                 />
