@@ -1,3 +1,4 @@
+
 import { useState, useRef, useEffect } from 'react';
 import { Send, Mic, PlusCircle, Search, Grid, Eye, ThumbsUp, ThumbsDown, RefreshCw, Copy, FileText, AlertCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -948,3 +949,442 @@ export default function ChatInterface() {
           },
           location: 'San Francisco, USA',
           initials: 'MI',
+        }
+      ];
+      
+      return {
+        id: Date.now().toString(),
+        content: `I found 5 GMP-certified suppliers for Paracetamol API with availability matching your requirements:`,
+        sender: 'ai',
+        timestamp: new Date(),
+        suppliers: paracetamolSuppliers,
+        actions: [
+          { 
+            label: 'Request samples', 
+            onClick: () => handleQuickPrompt('I want to request samples from PharmaCorp')
+          },
+          { 
+            label: 'Create RFQ', 
+            onClick: () => {
+              setConversationContext({
+                type: 'rfq',
+                step: 1,
+                data: { product: 'Paracetamol API' }
+              });
+              setTimeout(() => {
+                const message: Message = {
+                  id: Date.now().toString(),
+                  content: 'What quantity of Paracetamol API do you need?',
+                  sender: 'ai',
+                  timestamp: new Date(),
+                  actions: [
+                    { label: '100 kg', onClick: () => handleQuickPrompt('100 kg') },
+                    { label: '500 kg', onClick: () => handleQuickPrompt('500 kg') },
+                    { label: '1000+ kg', onClick: () => handleQuickPrompt('1000+ kg') }
+                  ]
+                };
+                setMessages(prev => [...prev, message]);
+              }, 500);
+            }
+          },
+          { 
+            label: 'Compare quality parameters', 
+            onClick: () => handleQuickPrompt('Compare quality parameters of Paracetamol API suppliers')
+          }
+        ]
+      };
+    } else if (lowerCaseInput.includes('chemical') && (lowerCaseInput.includes('image') || lowerCaseInput.includes('product'))) {
+      const productImages: Product[] = [
+        {
+          id: '1',
+          name: 'Hydrochloric Acid',
+          image: 'https://images.unsplash.com/photo-1603126857599-f6e157fa2fe6?ixlib=rb-1.2.1&auto=format&fit=crop&q=80&w=800',
+          description: 'Highly pure pharmaceutical grade hydrochloric acid.'
+        },
+        {
+          id: '2',
+          name: 'Sodium Hydroxide',
+          image: 'https://images.unsplash.com/photo-1612639267275-7c4ae6a12d7b?ixlib=rb-1.2.1&auto=format&fit=crop&q=80&w=800',
+          description: 'Pharmaceutical grade sodium hydroxide pellets.'
+        },
+        {
+          id: '3',
+          name: 'Citric Acid',
+          image: 'https://images.unsplash.com/photo-1629207331321-716dc0095785?ixlib=rb-1.2.1&auto=format&fit=crop&q=80&w=800',
+          description: 'Food and pharmaceutical grade citric acid.'
+        },
+        {
+          id: '4',
+          name: 'Pharmaceutical Ethanol',
+          image: 'https://images.unsplash.com/photo-1620880248264-f2e405a69441?ixlib=rb-1.2.1&auto=format&fit=crop&q=80&w=800',
+          description: 'Pure ethanol for pharmaceutical applications.'
+        }
+      ];
+      
+      setProductImages(productImages);
+      setShowProductSandbox(true);
+      
+      return {
+        id: Date.now().toString(),
+        content: `Here are some chemical product images from our database. You can view detailed information about each product:`,
+        sender: 'ai',
+        timestamp: new Date(),
+        actions: [
+          { 
+            label: 'View product details', 
+            onClick: () => window.location.href = '/products'
+          },
+          { 
+            label: 'Download product catalog', 
+            onClick: () => {
+              toast({
+                title: "Download Started",
+                description: "Product catalog is being downloaded"
+              });
+            }
+          },
+          { 
+            label: 'Close product viewer', 
+            onClick: () => setShowProductSandbox(false)
+          }
+        ]
+      };
+    } else if (lowerCaseInput.includes('create rfq') || lowerCaseInput.includes('request for quotation')) {
+      // Extract product name if available
+      let productName = 'API Product';
+      if (lowerCaseInput.includes('for')) {
+        const forIndex = lowerCaseInput.indexOf('for');
+        if (forIndex !== -1) {
+          productName = userInput.substring(forIndex + 3).trim();
+        }
+      }
+      
+      setConversationContext({
+        type: 'rfq',
+        step: 1,
+        data: { product: productName }
+      });
+      
+      return {
+        id: Date.now().toString(),
+        content: `What quantity of ${productName} do you need?`,
+        sender: 'ai',
+        timestamp: new Date(),
+        actions: [
+          { label: '100 kg', onClick: () => handleQuickPrompt('100 kg') },
+          { label: '500 kg', onClick: () => handleQuickPrompt('500 kg') },
+          { label: '1000+ kg', onClick: () => handleQuickPrompt('1000+ kg') }
+        ]
+      };
+    } else {
+      return {
+        id: Date.now().toString(),
+        content: "I'm here to help with your pharmaceutical procurement needs. You can ask me about suppliers, inventory, or create RFQs. How can I assist you today?",
+        sender: 'ai',
+        timestamp: new Date(),
+        actions: [
+          { 
+            label: 'Find suppliers', 
+            onClick: () => handleQuickPrompt('Find GMP certified suppliers for Paracetamol API')
+          },
+          { 
+            label: 'Create RFQ', 
+            onClick: () => handleQuickPrompt('Create RFQ for API product')
+          },
+          { 
+            label: 'Show product images', 
+            onClick: () => handleQuickPrompt('Show chemical product images')
+          }
+        ]
+      };
+    }
+  };
+
+  const handleModuleRequest = (userInput: string): Message => {
+    const lowerCaseInput = userInput.toLowerCase();
+    
+    // Module for showing supplier results table
+    if (lowerCaseInput.includes('supplier') && (lowerCaseInput.includes('table') || lowerCaseInput.includes('list'))) {
+      const suppliers = [
+        {
+          id: '1',
+          name: 'PharmaCorp',
+          category: 'Active Ingredients',
+          categories: [predefinedCategories.find(c => c.id === 'apis')!],
+          performance: 95,
+          riskLevel: 'low',
+          items: 32,
+          contact: {
+            name: 'Alex Johnson',
+            email: 'alex.johnson@pharmaco.com',
+          },
+          location: 'Boston, USA',
+          initials: 'PC',
+        },
+        {
+          id: '2',
+          name: 'BioTech Materials',
+          category: 'Excipients',
+          categories: [predefinedCategories.find(c => c.id === 'excipients')!],
+          performance: 92,
+          riskLevel: 'low',
+          items: 28,
+          contact: {
+            name: 'Maria Garcia',
+            email: 'mgarcia@biotechmat.com',
+          },
+          location: 'Barcelona, Spain',
+          initials: 'BM',
+        }
+      ];
+      
+      setSupplierResults(suppliers);
+      setShowResultsTable(true);
+      setResultsTableTitle("Suppliers");
+      
+      return {
+        id: Date.now().toString(),
+        content: "Here's a detailed view of your suppliers:",
+        sender: 'ai',
+        timestamp: new Date(),
+        moduleType: 'suppliersTable',
+        moduleData: { suppliers },
+      };
+    } else {
+      // Default response if no specific module is requested
+      return {
+        id: Date.now().toString(),
+        content: "I'm not sure which data display you want to see. You can ask for 'supplier table', 'inventory status', or other specific data views.",
+        sender: 'ai',
+        timestamp: new Date(),
+      };
+    }
+  };
+  
+  const availableModules: ModuleItem[] = [
+    {
+      id: 'supplier-assessment',
+      title: 'Supplier Assessment',
+      description: 'Evaluate supplier quality, reliability, and performance',
+      icon: 'badge'
+    },
+    {
+      id: 'inventory-planner',
+      title: 'Inventory Planner',
+      description: 'Plan and optimize inventory levels',
+      icon: 'package'
+    },
+    {
+      id: 'contract-risk',
+      title: 'Contract Risk Analysis',
+      description: 'Analyze contract terms for risks and compliance issues',
+      icon: 'shield'
+    },
+    {
+      id: 'document-analysis',
+      title: 'Document Analysis',
+      description: 'Extract insights from documents and contracts',
+      icon: 'fileSearch'
+    }
+  ];
+  
+  const renderMessages = () => {
+    return messages.map((message, index) => (
+      <div
+        key={message.id}
+        className={cn(
+          "flex w-full mb-4",
+          message.sender === 'user' ? "justify-end" : "justify-start"
+        )}
+      >
+        {message.sender === 'ai' && (
+          <Avatar className="h-8 w-8 mr-2 mt-1">
+            <AvatarImage src="" />
+            <AvatarFallback className="bg-primary text-white text-xs">AI</AvatarFallback>
+          </Avatar>
+        )}
+        
+        <div
+          className={cn(
+            "relative px-4 py-3 rounded-lg max-w-[85%]",
+            message.sender === 'user'
+              ? "bg-primary text-white rounded-tr-none"
+              : "bg-white border border-gray-200 rounded-tl-none shadow-sm"
+          )}
+        >
+          {message.numberedIndicators && (
+            <div className="flex items-center gap-2 mb-2">
+              {message.numberedIndicators.map((indicator) => (
+                <DraggableMessage
+                  key={indicator.id}
+                  id={indicator.id}
+                  type={indicator.type}
+                  number={indicator.number}
+                  items={indicator.items}
+                  onDragStart={() => {
+                    setIsDragging(true);
+                    setActiveIndicator(indicator.id);
+                  }}
+                  onDragEnd={() => {
+                    setIsDragging(false);
+                    setActiveIndicator(null);
+                  }}
+                  isActive={activeIndicator === indicator.id}
+                />
+              ))}
+            </div>
+          )}
+          
+          <div className="whitespace-pre-line">{message.content}</div>
+          
+          {message.suppliers && (
+            <div className="mt-3">
+              <ChatSuppliersTable suppliers={message.suppliers} />
+            </div>
+          )}
+          
+          {message.actions && message.actions.length > 0 && (
+            <div className="flex gap-2 mt-3 flex-wrap">
+              {message.actions.map((action, actionIndex) => (
+                <Button 
+                  key={actionIndex}
+                  variant="outline"
+                  size="sm"
+                  onClick={action.onClick}
+                  className="rounded-full bg-white/50 backdrop-blur-sm border-gray-200 hover:bg-gray-100 text-xs"
+                >
+                  {action.label}
+                </Button>
+              ))}
+            </div>
+          )}
+        </div>
+        
+        {message.sender === 'user' && (
+          <Avatar className="h-8 w-8 ml-2 mt-1">
+            <AvatarImage src="" />
+            <AvatarFallback className="bg-gray-200 text-gray-700 text-xs">JD</AvatarFallback>
+          </Avatar>
+        )}
+      </div>
+    ));
+  };
+
+  return (
+    <ResizablePanelGroup direction="horizontal" className="h-full rounded-lg overflow-hidden">
+      <ResizablePanel defaultSize={65} minSize={40} className="flex flex-col h-full bg-white p-0">
+        <div className="flex-1 overflow-y-auto p-4">
+          {showWelcomeScreen ? (
+            <WelcomeScreen onQuickPrompt={handleQuickPrompt} />
+          ) : (
+            <div>
+              {renderMessages()}
+              <div ref={messagesEndRef} />
+            </div>
+          )}
+        </div>
+        
+        <div className="px-4 py-4 border-t bg-white">
+          <form onSubmit={handleSubmit} className="flex items-start gap-2">
+            <div className="relative flex-1">
+              <Input
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                placeholder="Ask a question..."
+                className="pl-4 pr-12 py-6 bg-gray-50 border-gray-200 rounded-full"
+              />
+              
+              <div className="absolute right-3 top-1/2 -translate-y-1/2 flex gap-1">
+                <Button 
+                  type="button"
+                  variant="ghost" 
+                  size="icon"
+                  onClick={() => setModuleSelectOpen(true)}
+                  className="h-8 w-8 rounded-full hover:bg-gray-200"
+                >
+                  <PlusCircle className="h-4 w-4 text-gray-500" />
+                </Button>
+              </div>
+            </div>
+            
+            <Button
+              type="button"
+              size="icon"
+              variant="ghost"
+              onClick={toggleRecording}
+              className={cn(
+                "h-12 w-12 rounded-full",
+                isRecording ? "bg-red-100 text-red-600" : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+              )}
+            >
+              <Mic className="h-5 w-5" />
+            </Button>
+            
+            <Button 
+              type="submit" 
+              size="icon"
+              className="h-12 w-12 rounded-full"
+            >
+              <Send className="h-5 w-5" />
+            </Button>
+          </form>
+        </div>
+      </ResizablePanel>
+
+      <ResizableHandle className="w-1.5 bg-gray-100 hover:bg-gray-200 transition-colors" />
+      
+      <ResizablePanel defaultSize={35} minSize={25} className="bg-white">
+        <div className="h-full overflow-y-auto p-4">
+          {isDragging ? (
+            <div className="h-full flex items-center justify-center border-2 border-dashed border-gray-300 rounded-xl bg-gray-50">
+              <div className="text-center p-6">
+                <div className="mx-auto h-12 w-12 rounded-full bg-gray-100 flex items-center justify-center mb-3">
+                  <Eye className="h-6 w-6 text-gray-500" />
+                </div>
+                <h3 className="text-lg font-medium text-gray-900">Drop to Analyze</h3>
+                <p className="text-sm text-gray-500 mt-1">
+                  Drop the item here to analyze details and insights
+                </p>
+              </div>
+            </div>
+          ) : (
+            <>
+              {showResearchPanel ? (
+                <ResearchDataPanel 
+                  data={researchData} 
+                  isLoading={isResearching}
+                  onClose={() => setShowResearchPanel(false)}
+                />
+              ) : showResultsTable ? (
+                <ResultsTable
+                  data={supplierResults}
+                  title={resultsTableTitle}
+                  onClose={() => setShowResultsTable(false)}
+                />
+              ) : showProductSandbox ? (
+                <ProductImageSandbox
+                  products={productImages}
+                  onClose={() => setShowProductSandbox(false)}
+                />
+              ) : (
+                <ActionPreview
+                  title={previewTitle}
+                  description={previewDescription}
+                  actions={[...previewActions, ...customActions]}
+                />
+              )}
+            </>
+          )}
+        </div>
+      </ResizablePanel>
+      
+      <ModuleSelector
+        isOpen={moduleSelectOpen}
+        onClose={() => setModuleSelectOpen(false)}
+        modules={availableModules}
+        activeModules={activeModules}
+        onSelect={handleSelectModule}
+      />
+    </ResizablePanelGroup>
+  );
+}
