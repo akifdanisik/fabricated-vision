@@ -20,16 +20,14 @@ export interface ModuleItem {
   title: string;
   description: string;
   icon: string;
-  category?: 'analysis' | 'data' | 'development' | 'security';
+  category: 'analysis' | 'data' | 'development' | 'security';
 }
 
 interface ModuleSelectorProps {
   isOpen: boolean;
   onClose: () => void;
   modules: ModuleItem[];
-  activeModules?: ModuleItem[];
-  onSelect: (moduleId: string) => void;
-  onSelectModule?: (moduleId: string) => void;
+  onSelectModule: (moduleId: string) => void;
 }
 
 const getIconComponent = (iconName: string) => {
@@ -46,17 +44,7 @@ const getIconComponent = (iconName: string) => {
   }
 };
 
-export const ModuleSelector = ({ 
-  isOpen, 
-  onClose, 
-  modules, 
-  activeModules = [], 
-  onSelect, 
-  onSelectModule 
-}: ModuleSelectorProps) => {
-  // Use onSelectModule if provided, otherwise fall back to onSelect
-  const handleSelect = onSelectModule || onSelect;
-
+export const ModuleSelector = ({ isOpen, onClose, modules, onSelectModule }: ModuleSelectorProps) => {
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-[700px] p-0 gap-0">
@@ -92,7 +80,7 @@ export const ModuleSelector = ({
                 <div 
                   key={module.id}
                   className="border rounded-xl p-4 cursor-pointer hover:shadow-md transition-all flex items-start gap-4"
-                  onClick={() => handleSelect(module.id)}
+                  onClick={() => onSelectModule(module.id)}
                 >
                   <div className={cn(
                     "p-3 rounded-full flex-shrink-0",
@@ -121,7 +109,7 @@ export const ModuleSelector = ({
                     <div 
                       key={module.id}
                       className="border rounded-xl p-4 cursor-pointer hover:shadow-md transition-all flex items-start gap-4"
-                      onClick={() => handleSelect(module.id)}
+                      onClick={() => onSelectModule(module.id)}
                     >
                       <div className={cn(
                         "p-3 rounded-full flex-shrink-0",

@@ -527,7 +527,7 @@ export default function ChatInterface() {
           },
           {
             id: '3',
-            title: 'Set Reorder Points',
+1          title: 'Set Reorder Points',
             description: 'Configure automatic reorder points for critical items',
             icon: 'list',
             actionLabel: 'Configure',
@@ -665,7 +665,7 @@ export default function ChatInterface() {
             predefinedCategories.find(c => c.id === 'apis')!
           ],
           performance: 95,
-          riskLevel: 'low' as const,
+          riskLevel: 'low',
           items: 32,
           contact: {
             name: 'Alex Johnson',
@@ -683,7 +683,7 @@ export default function ChatInterface() {
             predefinedCategories.find(c => c.id === 'excipients')!
           ],
           performance: 92,
-          riskLevel: 'low' as const,
+          riskLevel: 'low',
           items: 28,
           contact: {
             name: 'Maria Garcia',
@@ -701,7 +701,7 @@ export default function ChatInterface() {
             predefinedCategories.find(c => c.id === 'chemicals')!
           ],
           performance: 90,
-          riskLevel: 'low' as const,
+          riskLevel: 'low',
           items: 24,
           contact: {
             name: 'David Lee',
@@ -718,7 +718,7 @@ export default function ChatInterface() {
             predefinedCategories.find(c => c.id === 'apis')!
           ],
           performance: 89,
-          riskLevel: 'low' as const,
+          riskLevel: 'low',
           items: 45,
           contact: {
             name: 'Robert Wilson',
@@ -736,7 +736,7 @@ export default function ChatInterface() {
             predefinedCategories.find(c => c.id === 'chemicals')!
           ],
           performance: 87,
-          riskLevel: 'low' as const,
+          riskLevel: 'low',
           items: 19,
           contact: {
             name: 'John Smith',
@@ -753,7 +753,7 @@ export default function ChatInterface() {
             predefinedCategories.find(c => c.id === 'apis')!
           ],
           performance: 86,
-          riskLevel: 'low' as const,
+          riskLevel: 'low',
           items: 30,
           contact: {
             name: 'Lisa Chen',
@@ -770,7 +770,7 @@ export default function ChatInterface() {
             predefinedCategories.find(c => c.id === 'excipients')!
           ],
           performance: 85,
-          riskLevel: 'low' as const,
+          riskLevel: 'low',
           items: 22,
           contact: {
             name: 'Thomas Müller',
@@ -787,7 +787,7 @@ export default function ChatInterface() {
             predefinedCategories.find(c => c.id === 'packaging')!
           ],
           performance: 84,
-          riskLevel: 'low' as const,
+          riskLevel: 'low',
           items: 37,
           contact: {
             name: 'Hiroshi Tanaka',
@@ -804,7 +804,7 @@ export default function ChatInterface() {
             predefinedCategories.find(c => c.id === 'chemicals')!
           ],
           performance: 83,
-          riskLevel: 'low' as const,
+          riskLevel: 'low',
           items: 41,
           contact: {
             name: 'Sarah Johnson',
@@ -821,7 +821,7 @@ export default function ChatInterface() {
             predefinedCategories.find(c => c.id === 'packaging')!
           ],
           performance: 82,
-          riskLevel: 'low' as const,
+          riskLevel: 'low',
           items: 32,
           contact: {
             name: 'Sarah Miller',
@@ -871,7 +871,7 @@ export default function ChatInterface() {
             predefinedCategories.find(c => c.id === 'apis')!
           ],
           performance: 95,
-          riskLevel: 'low' as const,
+          riskLevel: 'low',
           items: 12,
           contact: {
             name: 'Alex Johnson',
@@ -889,7 +889,7 @@ export default function ChatInterface() {
             predefinedCategories.find(c => c.id === 'apis')!
           ],
           performance: 90,
-          riskLevel: 'low' as const,
+          riskLevel: 'low',
           items: 8,
           contact: {
             name: 'Maria Garcia',
@@ -906,7 +906,7 @@ export default function ChatInterface() {
             predefinedCategories.find(c => c.id === 'apis')!
           ],
           performance: 88,
-          riskLevel: 'low' as const,
+          riskLevel: 'low',
           items: 10,
           contact: {
             name: 'Lisa Chen',
@@ -923,7 +923,7 @@ export default function ChatInterface() {
             predefinedCategories.find(c => c.id === 'apis')!
           ],
           performance: 85,
-          riskLevel: 'low' as const,
+          riskLevel: 'low',
           items: 7,
           contact: {
             name: 'Robert Wilson',
@@ -940,7 +940,7 @@ export default function ChatInterface() {
             predefinedCategories.find(c => c.id === 'apis')!
           ],
           performance: 82,
-          riskLevel: 'low' as const,
+          riskLevel: 'low',
           items: 6,
           contact: {
             name: 'John Smith',
@@ -953,178 +953,48 @@ export default function ChatInterface() {
       
       return {
         id: Date.now().toString(),
-        content: `I found 5 GMP-certified suppliers for Paracetamol API with availability matching your requirements:`,
+        content: 'Here are 5 suppliers for Paracetamol API with GMP certification:',
         sender: 'ai',
         timestamp: new Date(),
         suppliers: paracetamolSuppliers,
         actions: [
           { 
-            label: 'Request samples', 
-            onClick: () => handleQuickPrompt('I want to request samples from PharmaCorp')
+            label: 'Compare Suppliers', 
+            onClick: () => handleQuickPrompt('Compare suppliers for Paracetamol API')
           },
           { 
             label: 'Create RFQ', 
             onClick: () => {
-              setConversationContext({
-                type: 'rfq',
-                step: 1,
-                data: { product: 'Paracetamol API' }
+              setConversationContext({ 
+                type: 'rfq', 
+                step: 1, 
+                data: { product: 'Paracetamol API' } 
               });
-              setTimeout(() => {
-                const message: Message = {
-                  id: Date.now().toString(),
-                  content: 'What quantity of Paracetamol API do you need?',
-                  sender: 'ai',
-                  timestamp: new Date(),
-                  actions: [
-                    { label: '100 kg', onClick: () => handleQuickPrompt('100 kg') },
-                    { label: '500 kg', onClick: () => handleQuickPrompt('500 kg') },
-                    { label: '1000+ kg', onClick: () => handleQuickPrompt('1000+ kg') }
-                  ]
-                };
-                setMessages(prev => [...prev, message]);
-              }, 500);
+              handleQuickPrompt('I want to create an RFQ for Paracetamol API')
             }
           },
           { 
-            label: 'Compare quality parameters', 
-            onClick: () => handleQuickPrompt('Compare quality parameters of Paracetamol API suppliers')
+            label: 'View Supplier Profiles', 
+            onClick: () => handleQuickPrompt('Show me the profiles of these Paracetamol API suppliers')
           }
         ]
       };
-    } else if (
-      (lowerCaseInput.includes('chemical') || 
-       lowerCaseInput.includes('product') || 
-       lowerCaseInput.includes('acid') || 
-       lowerCaseInput.includes('hydrochloric')) && 
-      (lowerCaseInput.includes('image') || 
-       lowerCaseInput.includes('show') || 
-       lowerCaseInput.includes('display'))
-    ) {
-      const productImages: Product[] = [
-        {
-          id: '1',
-          name: 'Hydrochloric Acid',
-          image: 'https://images.unsplash.com/photo-1581090464777-f3220bbe1b8b?ixlib=rb-1.2.1&auto=format&fit=crop&q=80&w=800',
-          description: 'Highly pure pharmaceutical grade hydrochloric acid.'
-        },
-        {
-          id: '2',
-          name: 'Sodium Hydroxide',
-          image: 'https://images.unsplash.com/photo-1518770660439-4636190af475?ixlib=rb-1.2.1&auto=format&fit=crop&q=80&w=800',
-          description: 'Pharmaceutical grade sodium hydroxide pellets.'
-        },
-        {
-          id: '3',
-          name: 'Citric Acid',
-          image: 'https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?ixlib=rb-1.2.1&auto=format&fit=crop&q=80&w=800',
-          description: 'Food and pharmaceutical grade citric acid.'
-        },
-        {
-          id: '4',
-          name: 'Pharmaceutical Ethanol',
-          image: 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?ixlib=rb-1.2.1&auto=format&fit=crop&q=80&w=800',
-          description: 'Pure ethanol for pharmaceutical applications.'
-        }
-      ];
-      
-      setProductImages(productImages);
-      setShowProductSandbox(true);
-      
-      console.log("Setting product images:", productImages);
-      console.log("Setting showProductSandbox to true");
-      
-      return {
-        id: Date.now().toString(),
-        content: `Here are the chemical products you requested, including Hydrochloric Acid. You can view detailed information about each product:`,
-        sender: 'ai',
-        timestamp: new Date(),
-        actions: [
-          { 
-            label: 'View all products', 
-            onClick: () => window.location.href = '/products'
-          },
-          { 
-            label: 'Download product specs', 
-            onClick: () => {
-              toast({
-                title: "Download Started",
-                description: "Product specifications are being downloaded"
-              });
-            }
-          },
-          { 
-            label: 'Close product viewer', 
-            onClick: () => setShowProductSandbox(false)
-          }
-        ]
-      };
-    } else if (lowerCaseInput.includes('create rfq') || lowerCaseInput.includes('request for quotation')) {
-      let productName = 'API Product';
-      if (lowerCaseInput.includes('for')) {
-        const forIndex = lowerCaseInput.indexOf('for');
-        if (forIndex !== -1) {
-          productName = userInput.substring(forIndex + 3).trim();
-        }
-      }
-      
-      setConversationContext({
-        type: 'rfq',
-        step: 1,
-        data: { product: productName }
-      });
-      
-      return {
-        id: Date.now().toString(),
-        content: `What quantity of ${productName} do you need?`,
-        sender: 'ai',
-        timestamp: new Date(),
-        actions: [
-          { label: '100 kg', onClick: () => handleQuickPrompt('100 kg') },
-          { label: '500 kg', onClick: () => handleQuickPrompt('500 kg') },
-          { label: '1000+ kg', onClick: () => handleQuickPrompt('1000+ kg') }
-        ]
-      };
-    } else {
-      return {
-        id: Date.now().toString(),
-        content: "I'm here to help with your pharmaceutical procurement needs. You can ask me about suppliers, inventory, or create RFQs. How can I assist you today?",
-        sender: 'ai',
-        timestamp: new Date(),
-        actions: [
-          { 
-            label: 'Find suppliers', 
-            onClick: () => handleQuickPrompt('Find GMP certified suppliers for Paracetamol API')
-          },
-          { 
-            label: 'Create RFQ', 
-            onClick: () => handleQuickPrompt('Create RFQ for API product')
-          },
-          { 
-            label: 'Show product images', 
-            onClick: () => handleQuickPrompt('Show chemical product images')
-          }
-        ]
-      };
-    }
-  };
-
-  const handleModuleRequest = (userInput: string): Message => {
-    const lowerCaseInput = userInput.toLowerCase();
-    
-    if (lowerCaseInput.includes('supplier') && (lowerCaseInput.includes('table') || lowerCaseInput.includes('list'))) {
-      const suppliers: Supplier[] = [
+    } else if (lowerCaseInput.includes('compare') && lowerCaseInput.includes('supplier')) {
+      const suppliersToCompare: Supplier[] = [
         {
           id: '1',
           name: 'PharmaCorp',
           category: 'Active Ingredients',
-          categories: [predefinedCategories.find(c => c.id === 'apis')!],
+          categories: [
+            predefinedCategories.find(c => c.id === 'apis')!
+          ],
           performance: 95,
-          riskLevel: 'low' as const,
+          riskLevel: 'low',
           items: 32,
           contact: {
             name: 'Alex Johnson',
             email: 'alex.johnson@pharmaco.com',
+            phone: '+1 (555) 123-4567',
           },
           location: 'Boston, USA',
           initials: 'PC',
@@ -1132,10 +1002,12 @@ export default function ChatInterface() {
         {
           id: '2',
           name: 'BioTech Materials',
-          category: 'Excipients',
-          categories: [predefinedCategories.find(c => c.id === 'excipients')!],
-          performance: 92,
-          riskLevel: 'low' as const,
+          category: 'Active Ingredients',
+          categories: [
+            predefinedCategories.find(c => c.id === 'apis')!
+          ],
+          performance: 90,
+          riskLevel: 'low',
           items: 28,
           contact: {
             name: 'Maria Garcia',
@@ -1143,261 +1015,527 @@ export default function ChatInterface() {
           },
           location: 'Barcelona, Spain',
           initials: 'BM',
+        },
+        {
+          id: '3',
+          name: 'ChemSource Inc.',
+          category: 'Excipients',
+          categories: [
+            predefinedCategories.find(c => c.id === 'excipients')!,
+            predefinedCategories.find(c => c.id === 'chemicals')!
+          ],
+          performance: 90,
+          riskLevel: 'low',
+          items: 24,
+          contact: {
+            name: 'David Lee',
+            email: 'd.lee@chemsource.com',
+          },
+          location: 'Singapore',
+          initials: 'CS',
         }
       ];
       
-      setSupplierResults(suppliers);
-      setShowResultsTable(true);
-      setResultsTableTitle("Suppliers");
+      return {
+        id: Date.now().toString(),
+        content: 'Here\'s a comparison of the selected suppliers:',
+        sender: 'ai',
+        timestamp: new Date(),
+        suppliers: suppliersToCompare,
+        actions: [
+          { 
+            label: 'Contact PharmaCorp', 
+            onClick: () => handleQuickPrompt('I want to contact PharmaCorp')
+          },
+          { 
+            label: 'View full comparison report', 
+            onClick: () => window.location.href = '/suppliers/compare'
+          },
+          { 
+            label: 'Create RFQ with these suppliers', 
+            onClick: () => handleQuickPrompt('Create RFQ with PharmaCorp, BioTech Materials, and ChemSource')
+          }
+        ]
+      };
+    } else if (lowerCaseInput.includes('hydrochloric acid') || lowerCaseInput.includes('hcl')) {
+      setProductImages([
+        {
+          id: '1',
+          name: 'Hydrochloric Acid (37%)',
+          image: 'https://5.imimg.com/data5/SELLER/Default/2021/3/KO/QG/XG/3823480/hydrochloric-acid-500x500.jpg',
+          description: 'High purity hydrochloric acid for pharmaceutical applications'
+        },
+        {
+          id: '2',
+          name: 'Hydrochloric Acid (Reagent Grade)',
+          image: 'https://4.imimg.com/data4/RQ/XY/MY-3077534/reagent-grade-hydrochloric-acid-500x500.jpg',
+          description: 'Reagent grade hydrochloric acid for laboratory use'
+        }
+      ]);
+      setShowProductSandbox(true);
       
       return {
         id: Date.now().toString(),
-        content: "Here's a detailed view of your suppliers:",
+        content: "Here are the hydrochloric acid products in our catalog. Would you like more information about any specific one?",
         sender: 'ai',
         timestamp: new Date(),
-        moduleType: 'suppliersTable',
-        moduleData: { suppliers },
+        actions: [
+          { 
+            label: 'View product specifications', 
+            onClick: () => handleQuickPrompt('Show me specifications for hydrochloric acid')
+          },
+          { 
+            label: 'Find suppliers for this product', 
+            onClick: () => handleQuickPrompt('Find suppliers for hydrochloric acid')
+          },
+          {
+            label: 'View product catalog',
+            onClick: () => window.location.href = '/products/catalog'
+          }
+        ]
       };
-    } else {
+    } else if (lowerCaseInput.includes('supplier') && lowerCaseInput.includes('acid')) {
+      setProductImages([
+        {
+          id: '1',
+          name: 'Hydrochloric Acid (37%)',
+          image: 'https://5.imimg.com/data5/SELLER/Default/2021/3/KO/QG/XG/3823480/hydrochloric-acid-500x500.jpg',
+          description: 'High purity hydrochloric acid for pharmaceutical applications'
+        },
+        {
+          id: '2',
+          name: 'Hydrochloric Acid (Reagent Grade)',
+          image: 'https://4.imimg.com/data4/RQ/XY/MY-3077534/reagent-grade-hydrochloric-acid-500x500.jpg',
+          description: 'Reagent grade hydrochloric acid for laboratory use'
+        },
+        {
+          id: '3',
+          name: 'Sulfuric Acid',
+          image: 'https://5.imimg.com/data5/SELLER/Default/2020/8/OD/PQ/GG/3823480/sulfuric-acid-500x500.jpg',
+          description: 'Industrial grade sulfuric acid'
+        },
+        {
+          id: '4',
+          name: 'Nitric Acid',
+          image: 'https://5.imimg.com/data5/SELLER/Default/2021/3/VN/BZ/OQ/3823480/nitric-acid-500x500.jpg',
+          description: 'Laboratory grade nitric acid'
+        }
+      ]);
+      setShowProductSandbox(true);
+      
       return {
         id: Date.now().toString(),
-        content: "I'm not sure which data display you want to see. You can ask for 'supplier table', 'inventory status', or other specific data views.",
+        content: "Here are the acid products available from our suppliers. Would you like detailed information about any specific product?",
         sender: 'ai',
         timestamp: new Date(),
+        actions: [
+          { 
+            label: 'Compare prices', 
+            onClick: () => handleQuickPrompt('Compare prices for acid products')
+          },
+          { 
+            label: 'View specifications', 
+            onClick: () => handleQuickPrompt('Show specifications for acid products')
+          },
+          {
+            label: 'View full catalog',
+            onClick: () => window.location.href = '/products/catalog'
+          }
+        ]
+      };
+    } else {
+      setShowProductSandbox(false);
+      setProductImages([]);
+    }
+    
+    return {
+      id: Date.now().toString(),
+      content: `I can help you with information about suppliers, inventory, and procurement. Here are some things you can ask me about:\n\n- Top suppliers in various categories\n- Supplier performance metrics\n- Creating purchase orders\n- Inventory levels\n- Market research on ingredients\n\nHow can I assist you today?`,
+      sender: 'ai',
+      timestamp: new Date(),
+      actions: [
+        { 
+          label: 'Show top suppliers', 
+          onClick: () => handleQuickPrompt('Show me the top 5 suppliers')
+        },
+        { 
+          label: 'Find GMP certified suppliers', 
+          onClick: () => handleQuickPrompt('Find suppliers with GMP certification for Paracetamol API')
+        }
+      ]
+    };
+  };
+
+  const handleModuleRequest = (userInput: string): Message => {
+    const lowerCaseInput = userInput.toLowerCase();
+    
+    if (lowerCaseInput.includes('supplier') || lowerCaseInput.includes('vendor')) {
+      return {
+        id: Date.now().toString(),
+        content: 'Here\'s the supplier information you requested.',
+        sender: 'ai',
+        timestamp: new Date(),
+        moduleType: 'supplier',
+        moduleData: {}
+      };
+    } else if (lowerCaseInput.includes('inventory') || lowerCaseInput.includes('stock')) {
+      return {
+        id: Date.now().toString(),
+        content: 'Here\'s the inventory information you requested.',
+        sender: 'ai',
+        timestamp: new Date(),
+        moduleType: 'inventory',
+        moduleData: {}
       };
     }
+    
+    return {
+      id: Date.now().toString(),
+      content: 'I\'m not sure what information you\'re looking for. Could you be more specific?',
+      sender: 'ai',
+      timestamp: new Date()
+    };
   };
 
   const availableModules: ModuleItem[] = [
     {
       id: 'supplier-assessment',
       title: 'Supplier Assessment',
-      description: 'Evaluate supplier quality, reliability, and performance',
-      icon: 'badge',
+      description: 'Evaluate and compare suppliers across performance metrics and risk factors.',
+      icon: 'chart',
       category: 'analysis'
     },
     {
-      id: 'inventory-planner',
-      title: 'Inventory Planner',
-      description: 'Plan and optimize inventory levels',
+      id: 'inventory-analysis',
+      title: 'Inventory Analysis',
+      description: 'Analyze inventory levels, turnover rates, and optimization opportunities.',
       icon: 'package',
       category: 'data'
     },
     {
       id: 'contract-risk',
-      title: 'Contract Risk Analysis',
-      description: 'Analyze contract terms for risks and compliance issues',
+      title: 'Contract Risk',
+      description: 'Identify and mitigate risks in supplier contracts and agreements.',
       icon: 'shield',
       category: 'security'
     },
     {
-      id: 'document-analysis',
-      title: 'Document Analysis',
-      description: 'Extract insights from documents and contracts',
-      icon: 'fileSearch',
+      id: 'market-research',
+      title: 'Market Research',
+      description: 'Access market data, pricing trends, and competitive intelligence.',
+      icon: 'search',
       category: 'analysis'
     }
   ];
 
-  const renderMessages = () => {
-    return messages.map((message, index) => (
-      <div
-        key={message.id}
-        className={cn(
-          "flex w-full mb-4",
-          message.sender === 'user' ? "justify-end" : "justify-start"
-        )}
-      >
-        {message.sender === 'ai' && (
-          <Avatar className="h-8 w-8 mr-2 mt-1">
-            <AvatarImage src="" />
-            <AvatarFallback className="bg-primary text-white text-xs">AI</AvatarFallback>
-          </Avatar>
-        )}
-        
-        <div
-          className={cn(
-            "relative px-4 py-3 rounded-lg max-w-[85%]",
-            message.sender === 'user'
-              ? "bg-primary text-white rounded-tr-none"
-              : "bg-white border border-gray-200 rounded-tl-none shadow-sm"
-          )}
-        >
-          {message.numberedIndicators && (
-            <div className="flex items-center gap-2 mb-2">
-              {message.numberedIndicators.map((indicator) => (
-                <DraggableMessage
-                  key={indicator.id}
-                  id={indicator.id}
-                  type={indicator.type}
-                  number={indicator.number}
-                  items={indicator.items}
-                  onDragStart={() => {
-                    setIsDragging(true);
-                    setActiveIndicator(indicator.id);
-                  }}
-                  onDragEnd={() => {
-                    setIsDragging(false);
-                    setActiveIndicator(null);
-                  }}
-                  isActive={activeIndicator === indicator.id}
-                />
-              ))}
-            </div>
-          )}
-          
-          <div className="whitespace-pre-line">{message.content}</div>
-          
-          {message.suppliers && (
-            <div className="mt-3">
-              <ChatSuppliersTable suppliers={message.suppliers} />
-            </div>
-          )}
-          
-          {message.actions && message.actions.length > 0 && (
-            <div className="flex gap-2 mt-3 flex-wrap">
-              {message.actions.map((action, actionIndex) => (
-                <Button 
-                  key={actionIndex}
-                  variant="outline"
-                  size="sm"
-                  onClick={action.onClick}
-                  className="rounded-full bg-white/50 backdrop-blur-sm border-gray-200 hover:bg-gray-100 text-xs"
-                >
-                  {action.label}
-                </Button>
-              ))}
-            </div>
-          )}
-        </div>
-        
-        {message.sender === 'user' && (
-          <Avatar className="h-8 w-8 ml-2 mt-1">
-            <AvatarImage src="" />
-            <AvatarFallback className="bg-gray-200 text-gray-700 text-xs">JD</AvatarFallback>
-          </Avatar>
-        )}
+  const renderNumberIndicator = (indicator: NumberIndicator) => {
+    const getIndicatorColor = () => {
+      switch (indicator.type) {
+        case 'risk':
+          return 'bg-red-100 text-red-800 border-red-200 hover:bg-red-200';
+        case 'finding':
+          return 'bg-emerald-100 text-emerald-800 border-emerald-200 hover:bg-emerald-200';
+        case 'document':
+          return 'bg-blue-100 text-blue-800 border-blue-200 hover:bg-blue-200';
+        case 'supplier':
+          return 'bg-amber-100 text-amber-800 border-amber-200 hover:bg-amber-200';
+        default:
+          return 'bg-gray-100 text-gray-800 border-gray-200 hover:bg-gray-100';
+      }
+    };
+
+    return (
+      <Popover>
+        <PopoverTrigger asChild>
+          <Button 
+            variant="outline" 
+            size="sm" 
+            className={`h-6 w-6 p-0 rounded-full font-medium inline-flex items-center justify-center ${getIndicatorColor()}`}
+            onClick={() => setActiveIndicator(indicator.id === activeIndicator ? null : indicator.id)}
+          >
+            {indicator.number}
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent className="w-80 p-0">
+          <div className="px-3 py-2 border-b border-gray-100 bg-gray-50">
+            <h3 className="text-sm font-medium flex items-center gap-2">
+              {indicator.type === 'risk' && <AlertCircle className="h-4 w-4 text-red-500" />}
+              {indicator.type === 'finding' && <FileText className="h-4 w-4 text-emerald-500" />}
+              {indicator.type === 'document' && <FileText className="h-4 w-4 text-blue-500" />}
+              {indicator.type === 'supplier' && <FileText className="h-4 w-4 text-amber-500" />}
+              {indicator.number} {indicator.type === 'risk' ? 'Risks' : 
+                indicator.type === 'finding' ? 'Findings' : 
+                indicator.type === 'document' ? 'Documents' : 'Suppliers'}
+            </h3>
+          </div>
+          <div className="max-h-[300px] overflow-auto">
+            {indicator.items.map((item) => (
+              <div key={item.id} className="px-3 py-2 border-b border-gray-100 last:border-0 hover:bg-gray-50">
+                <div className="flex items-start gap-2">
+                  {item.severity === 'high' && <div className="h-2 w-2 mt-1.5 rounded-full bg-red-500" />}
+                  {item.severity === 'medium' && <div className="h-2 w-2 mt-1.5 rounded-full bg-amber-500" />}
+                  {item.severity === 'low' && <div className="h-2 w-2 mt-1.5 rounded-full bg-green-500" />}
+                  <div>
+                    <h4 className="text-sm font-medium">{item.title}</h4>
+                    <p className="text-xs text-gray-500">{item.description}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </PopoverContent>
+      </Popover>
+    );
+  };
+
+  const renderMessageWithNumberedIndicators = (content: string, indicators?: NumberIndicator[]) => {
+    if (!indicators || indicators.length === 0) return content;
+    
+    return (
+      <div className="whitespace-pre-wrap">
+        {content.split(/(\s+)/).map((part, index) => {
+          if (part.includes('identified') || part.includes('analyzed') || part.includes('found')) {
+            const indicatorsToRender = indicators.filter(ind => 
+              (part.includes('risk') && ind.type === 'risk') || 
+              (part.includes('finding') && ind.type === 'finding')
+            );
+            
+            if (indicatorsToRender.length > 0) {
+              return (
+                <span key={index}>
+                  {part}
+                  {' '}
+                  {indicatorsToRender.map(ind => (
+                    <span key={ind.id} className="inline-block mx-1">
+                      {renderNumberIndicator(ind)}
+                    </span>
+                  ))}
+                </span>
+              );
+            }
+          }
+          return part;
+        })}
       </div>
-    ));
+    );
   };
 
   return (
-    <ResizablePanelGroup direction="horizontal" className="h-full rounded-lg overflow-hidden">
-      <ResizablePanel defaultSize={65} minSize={40} className="flex flex-col h-full bg-white p-0">
-        <div className="flex-1 overflow-y-auto p-4">
-          {showWelcomeScreen ? (
-            <WelcomeScreen onSelectQuickStart={handleQuickPrompt} onQuickPrompt={handleQuickPrompt} />
-          ) : (
-            <div>
-              {renderMessages()}
-              <div ref={messagesEndRef} />
-            </div>
-          )}
-        </div>
-        
-        <div className="px-4 py-4 border-t bg-white">
-          <form onSubmit={handleSubmit} className="flex items-start gap-2">
-            <div className="relative flex-1">
-              <Input
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                placeholder="Ask a question..."
-                className="pl-4 pr-12 py-6 bg-gray-50 border-gray-200 rounded-full"
+    <div className="flex flex-col h-full">
+      <ResizablePanelGroup direction="horizontal">
+        <ResizablePanel defaultSize={65} minSize={50} className="flex flex-col bg-[#f8f8f8]">
+          <div className="flex-1 overflow-auto px-4 bg-[#f8f8f8]">
+            {showWelcomeScreen ? (
+              <WelcomeScreen 
+                onSelectQuickStart={handleQuickPrompt} 
+                userName="John"
               />
-              
-              <div className="absolute right-3 top-1/2 -translate-y-1/2 flex gap-1">
-                <Button 
-                  type="button"
-                  variant="ghost" 
-                  size="icon"
-                  onClick={() => setModuleSelectOpen(true)}
-                  className="h-8 w-8 rounded-full hover:bg-gray-200"
-                >
-                  <PlusCircle className="h-4 w-4 text-gray-500" />
-                </Button>
-              </div>
-            </div>
-            
-            <Button
-              type="button"
-              size="icon"
-              variant="ghost"
-              onClick={toggleRecording}
-              className={cn(
-                "h-12 w-12 rounded-full",
-                isRecording ? "bg-red-100 text-red-600" : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-              )}
-            >
-              <Mic className="h-5 w-5" />
-            </Button>
-            
-            <Button 
-              type="submit" 
-              size="icon"
-              className="h-12 w-12 rounded-full"
-            >
-              <Send className="h-5 w-5" />
-            </Button>
-          </form>
-        </div>
-      </ResizablePanel>
-
-      <ResizableHandle className="w-1.5 bg-gray-100 hover:bg-gray-200 transition-colors" />
-      
-      <ResizablePanel defaultSize={35} minSize={25} className="bg-white">
-        <div className="h-full overflow-y-auto p-4">
-          {isDragging ? (
-            <div className="h-full flex items-center justify-center border-2 border-dashed border-gray-300 rounded-xl bg-gray-50">
-              <div className="text-center p-6">
-                <div className="mx-auto h-12 w-12 rounded-full bg-gray-100 flex items-center justify-center mb-3">
-                  <Eye className="h-6 w-6 text-gray-500" />
-                </div>
-                <h3 className="text-lg font-medium text-gray-900">Drop to Analyze</h3>
-                <p className="text-sm text-gray-500 mt-1">
-                  Drop the item here to analyze details and insights
-                </p>
-              </div>
-            </div>
-          ) : (
-            <>
-              {showResearchPanel ? (
-                <ResearchDataPanel 
-                  documents={researchData} 
-                  isLoading={isResearching}
-                  onClose={() => setShowResearchPanel(false)}
-                  isVisible={true}
-                />
-              ) : showResultsTable ? (
-                <ResultsTable
-                  suppliers={supplierResults}
-                  title={resultsTableTitle}
-                  onClose={() => setShowResultsTable(false)}
-                />
-              ) : showProductSandbox ? (
+            ) : (
+              <div className="py-4 space-y-6">
+                {messages.map((message) => (
+                  <div 
+                    key={message.id} 
+                    className={cn(
+                      "flex w-full mx-auto",
+                      message.sender === 'user' ? "justify-end" : "justify-start"
+                    )}
+                  >
+                    <div className={cn(
+                      "flex items-start max-w-[80%] group",
+                      message.sender === 'user' ? "flex-row-reverse" : "flex-row"
+                    )}>
+                      <Avatar className={cn(
+                        "h-8 w-8 mt-1",
+                        message.sender === 'user' ? "ml-3" : "mr-3",
+                        message.sender === 'user' ? "bg-gray-500" : "bg-gray-100"
+                      )}>
+                        <AvatarFallback className={message.sender === 'user' ? "text-white" : "text-gray-500"}>
+                          {message.sender === 'user' ? 'U' : 'A'}
+                        </AvatarFallback>
+                      </Avatar>
+                      
+                      <div>
+                        <div className={cn(
+                          "rounded-2xl py-4 px-5",
+                          message.sender === 'user' 
+                            ? "bg-gray-800 text-white" 
+                            : message.isResearch
+                              ? "bg-gray-100 text-gray-800"
+                              : "bg-gray-100 text-gray-800"
+                        )}>
+                          {message.sender === 'user' ? (
+                            <div className="whitespace-pre-wrap">{message.content}</div>
+                          ) : message.numberedIndicators ? (
+                            renderMessageWithNumberedIndicators(message.content, message.numberedIndicators)
+                          ) : (
+                            <DraggableMessage 
+                              content={message.content} 
+                              onDragStart={() => setIsDragging(true)}
+                            />
+                          )}
+                        </div>
+                        
+                        {message.suppliers && message.suppliers.length > 0 && (
+                          <div className="mt-3">
+                            <ChatSuppliersTable 
+                              suppliers={message.suppliers} 
+                              compact={true}
+                            />
+                          </div>
+                        )}
+                        
+                        {message.moduleType && (
+                          <div className="mt-3">
+                            <ModuleRenderer 
+                              type={message.moduleType} 
+                              data={message.moduleData} 
+                            />
+                          </div>
+                        )}
+                        
+                        {message.actions && message.actions.length > 0 && (
+                          <div className="flex flex-wrap gap-2 mt-2">
+                            {message.actions.map((action, i) => (
+                              <Button 
+                                key={i} 
+                                size="sm" 
+                                variant="outline" 
+                                onClick={action.onClick}
+                                className="rounded-full text-xs font-normal"
+                              >
+                                {action.label}
+                              </Button>
+                            ))}
+                          </div>
+                        )}
+                        
+                        {message.sender === 'ai' && (
+                          <div className="flex items-center gap-4 mt-2">
+                            <button 
+                              className="text-gray-400 hover:text-gray-600 transition-colors"
+                              title="View"
+                              onClick={() => toast({ title: "View Response", description: "Expanded view coming soon" })}
+                            >
+                              <Eye className="h-4 w-4" />
+                            </button>
+                            <button 
+                              className="text-gray-400 hover:text-green-600 transition-colors"
+                              title="Thumbs Up"
+                              onClick={() => toast({ title: "Feedback Received", description: "You liked this response" })}
+                            >
+                              <ThumbsUp className="h-4 w-4" />
+                            </button>
+                            <button 
+                              className="text-gray-400 hover:text-red-600 transition-colors"
+                              title="Thumbs Down"
+                              onClick={() => toast({ title: "Feedback Received", description: "You disliked this response" })}
+                            >
+                              <ThumbsDown className="h-4 w-4" />
+                            </button>
+                            <button 
+                              className="text-gray-400 hover:text-blue-600 transition-colors"
+                              title="Regenerate"
+                              onClick={() => toast({ title: "Regenerating", description: "Generating a new response" })}
+                            >
+                              <RefreshCw className="h-4 w-4" />
+                            </button>
+                            <button 
+                              className="text-gray-400 hover:text-purple-600 transition-colors"
+                              title="Copy"
+                              onClick={() => {
+                                navigator.clipboard.writeText(message.content);
+                                toast({ title: "Copied", description: "Response copied to clipboard" });
+                              }}
+                            >
+                              <Copy className="h-4 w-4" />
+                            </button>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                ))}
                 <ProductImageSandbox
                   products={productImages}
-                  onClose={() => setShowProductSandbox(false)}
-                  isVisible={true}
+                  isVisible={showProductSandbox}
                 />
-              ) : (
-                <ActionPreview
-                  title={previewTitle}
-                  description={previewDescription}
-                  actions={[...previewActions, ...customActions]}
+                <div ref={messagesEndRef} />
+              </div>
+            )}
+          </div>
+          
+          <div className="p-4 border-t">
+            <form onSubmit={handleSubmit} className="flex items-center gap-2">
+              <Button 
+                type="button" 
+                variant="ghost" 
+                size="icon" 
+                className="rounded-full"
+                onClick={() => setModuleSelectOpen(true)}
+              >
+                <Grid className="h-5 w-5 text-gray-500" />
+              </Button>
+              
+              <div className="relative flex-1">
+                <Input
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  placeholder="Ask anything about suppliers, inventory, or orders..."
+                  className="pr-32 rounded-full bg-gray-100 border-0 focus-visible:ring-gray-300"
                 />
-              )}
-            </>
-          )}
-        </div>
-      </ResizablePanel>
+                <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1">
+                  <Button 
+                    type="button" 
+                    variant="ghost" 
+                    size="icon" 
+                    className={cn(
+                      "h-8 w-8 rounded-full",
+                      isRecording ? "text-red-500" : "text-gray-400"
+                    )}
+                    onClick={toggleRecording}
+                  >
+                    <Mic className="h-4 w-4" />
+                  </Button>
+                </div>
+              </div>
+              
+              <Button type="submit" size="icon" className="rounded-full">
+                <Send className="h-4 w-4" />
+              </Button>
+            </form>
+          </div>
+        </ResizablePanel>
+        
+        <ResizableHandle withHandle />
+        
+        <ResizablePanel defaultSize={35} minSize={30}>
+          <ActionPreview 
+            title={customActions.length > 0 ? "Your Action Batch" : previewTitle}
+            description={customActions.length > 0 ? "Drag more content from the chat to add actions" : previewDescription}
+            actions={previewActions}
+            customActions={customActions}
+            onAddCustomAction={addCustomAction}
+            onRemoveCustomAction={removeCustomAction}
+            className="h-full"
+          />
+        </ResizablePanel>
+      </ResizablePanelGroup>
       
-      <ModuleSelector
-        isOpen={moduleSelectOpen}
+      <ResearchDataPanel 
+        isVisible={showResearchPanel}
+        documents={researchData}
+        suppliers={supplierResults}
+        isLoading={isResearching}
+        onClose={() => setShowResearchPanel(false)}
+        title={supplierResults.length > 0 && researchData.length === 0 ? resultsTableTitle : "Research Data"}
+      />
+      
+      <ModuleSelector 
+        isOpen={moduleSelectOpen} 
         onClose={() => setModuleSelectOpen(false)}
         modules={availableModules}
-        activeModules={activeModules}
-        onSelect={handleSelectModule}
+        onSelectModule={handleSelectModule}
       />
-    </ResizablePanelGroup>
+    </div>
   );
 }
