@@ -992,30 +992,38 @@ export default function ChatInterface() {
           }
         ]
       };
-    } else if (lowerCaseInput.includes('chemical') && (lowerCaseInput.includes('image') || lowerCaseInput.includes('product'))) {
+    } else if (
+      (lowerCaseInput.includes('chemical') || 
+       lowerCaseInput.includes('product') || 
+       lowerCaseInput.includes('acid') || 
+       lowerCaseInput.includes('hydrochloric')) && 
+      (lowerCaseInput.includes('image') || 
+       lowerCaseInput.includes('show') || 
+       lowerCaseInput.includes('display'))
+    ) {
       const productImages: Product[] = [
         {
           id: '1',
           name: 'Hydrochloric Acid',
-          image: 'https://images.unsplash.com/photo-1603126857599-f6e157fa2fe6?ixlib=rb-1.2.1&auto=format&fit=crop&q=80&w=800',
+          image: 'https://images.unsplash.com/photo-1581090464777-f3220bbe1b8b?ixlib=rb-1.2.1&auto=format&fit=crop&q=80&w=800',
           description: 'Highly pure pharmaceutical grade hydrochloric acid.'
         },
         {
           id: '2',
           name: 'Sodium Hydroxide',
-          image: 'https://images.unsplash.com/photo-1612639267275-7c4ae6a12d7b?ixlib=rb-1.2.1&auto=format&fit=crop&q=80&w=800',
+          image: 'https://images.unsplash.com/photo-1518770660439-4636190af475?ixlib=rb-1.2.1&auto=format&fit=crop&q=80&w=800',
           description: 'Pharmaceutical grade sodium hydroxide pellets.'
         },
         {
           id: '3',
           name: 'Citric Acid',
-          image: 'https://images.unsplash.com/photo-1629207331321-716dc0095785?ixlib=rb-1.2.1&auto=format&fit=crop&q=80&w=800',
+          image: 'https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?ixlib=rb-1.2.1&auto=format&fit=crop&q=80&w=800',
           description: 'Food and pharmaceutical grade citric acid.'
         },
         {
           id: '4',
           name: 'Pharmaceutical Ethanol',
-          image: 'https://images.unsplash.com/photo-1620880248264-f2e405a69441?ixlib=rb-1.2.1&auto=format&fit=crop&q=80&w=800',
+          image: 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?ixlib=rb-1.2.1&auto=format&fit=crop&q=80&w=800',
           description: 'Pure ethanol for pharmaceutical applications.'
         }
       ];
@@ -1023,22 +1031,25 @@ export default function ChatInterface() {
       setProductImages(productImages);
       setShowProductSandbox(true);
       
+      console.log("Setting product images:", productImages);
+      console.log("Setting showProductSandbox to true");
+      
       return {
         id: Date.now().toString(),
-        content: `Here are some chemical product images from our database. You can view detailed information about each product:`,
+        content: `Here are the chemical products you requested, including Hydrochloric Acid. You can view detailed information about each product:`,
         sender: 'ai',
         timestamp: new Date(),
         actions: [
           { 
-            label: 'View product details', 
+            label: 'View all products', 
             onClick: () => window.location.href = '/products'
           },
           { 
-            label: 'Download product catalog', 
+            label: 'Download product specs', 
             onClick: () => {
               toast({
                 title: "Download Started",
-                description: "Product catalog is being downloaded"
+                description: "Product specifications are being downloaded"
               });
             }
           },
@@ -1366,6 +1377,7 @@ export default function ChatInterface() {
                 <ProductImageSandbox
                   products={productImages}
                   onClose={() => setShowProductSandbox(false)}
+                  isVisible={true}
                 />
               ) : (
                 <ActionPreview
