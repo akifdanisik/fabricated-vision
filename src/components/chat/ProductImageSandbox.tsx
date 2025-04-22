@@ -1,9 +1,10 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { ImageOff, RefreshCw, Image as ImageIcon, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { toast } from '@/hooks/use-toast';
 
 interface Product {
   id: string;
@@ -25,8 +26,27 @@ const ProductImageSandbox: React.FC<ProductImageSandboxProps> = ({
 }) => {
   const [imageStates, setImageStates] = useState<Record<string, 'loading' | 'error' | 'success'>>({});
   const [retryAttempts, setRetryAttempts] = useState<Record<string, number>>({});
+  const [loadedProducts, setLoadedProducts] = useState<Product[]>([]);
 
-  if (!isVisible || products.length === 0) return null;
+  useEffect(() => {
+    // Initialize all products as loading when the component receives products
+    if (products.length > 0) {
+      const initialStates: Record<string, 'loading' | 'error' | 'success'> = {};
+      products.forEach(product => {
+        initialStates[product.id] = 'loading';
+      });
+      setImageStates(initialStates);
+      setLoadedProducts(products);
+      
+      // Log products received for debugging
+      console.log("Products received in sandbox:", products);
+    }
+  }, [products]);
+
+  if (!isVisible || loadedProducts.length === 0) {
+    console.log("ProductImageSandbox not visible or no products");
+    return null;
+  }
 
   const handleImageError = (productId: string, imageSrc: string) => {
     console.log("Image failed to load:", imageSrc);
@@ -35,9 +55,17 @@ const ProductImageSandbox: React.FC<ProductImageSandboxProps> = ({
       ...prev,
       [productId]: 'error'
     }));
+    
+    toast({
+      title: "Image failed to load",
+      description: `Could not load image for ${loadedProducts.find(p => p.id === productId)?.name || 'product'}`,
+      variant: "destructive"
+    });
   };
 
   const handleImageLoad = (productId: string) => {
+    console.log("Image loaded successfully:", productId);
+    
     setImageStates(prev => ({
       ...prev, 
       [productId]: 'success'
@@ -55,6 +83,13 @@ const ProductImageSandbox: React.FC<ProductImageSandboxProps> = ({
       ...prev,
       [productId]: 'loading'
     }));
+    
+    console.log("Retrying image load for product:", productId);
+  };
+
+  const getFallbackImage = (productName: string) => {
+    // Generate a fallback image URL based on product name if original fails
+    return `https://via.placeholder.com/400x400?text=${encodeURIComponent(productName)}`;
   };
 
   return (
@@ -74,7 +109,7 @@ const ProductImageSandbox: React.FC<ProductImageSandboxProps> = ({
       </div>
       <ScrollArea className="h-[250px]">
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-          {products.map((product) => {
+          {loadedProducts.map((product) => {
             const imageState = imageStates[product.id] || 'loading';
             const retryCount = retryAttempts[product.id] || 0;
             const randomParam = `?v=${retryCount}`;
@@ -92,6 +127,16 @@ const ProductImageSandbox: React.FC<ProductImageSandboxProps> = ({
                         onLoad={() => handleImageLoad(product.id)}
                       />
                       
+                      {/* Fallback image for error cases */}
+                      {imageState === 'error' && (
+                        <img
+                          src={getFallbackImage(product.name)}
+                          alt={`${product.name} (fallback)`}
+                          className="w-full h-full object-contain absolute inset-0 z-0"
+                          onLoad={() => console.log("Fallback image loaded for:", product.name)}
+                        />
+                      )}
+                      
                       {imageState === 'loading' && (
                         <div className="absolute inset-0 flex items-center justify-center bg-gray-100">
                           <RefreshCw className="h-8 w-8 text-gray-400 animate-spin" />
@@ -99,7 +144,7 @@ const ProductImageSandbox: React.FC<ProductImageSandboxProps> = ({
                       )}
                       
                       {imageState === 'error' && (
-                        <div className="absolute inset-0 flex flex-col items-center justify-center bg-gray-100 p-2">
+                        <div className="absolute inset-0 flex flex-col items-center justify-center bg-gray-100/50 p-2 z-10">
                           <ImageOff className="h-8 w-8 text-gray-400 mb-2" />
                           <button 
                             onClick={() => handleRetry(product.id)}
