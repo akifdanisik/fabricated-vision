@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { 
   ChevronDown, 
@@ -11,31 +12,30 @@ import {
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 
+// Updated model/module names and descriptions
 const models = [
   {
-    id: 'analysis',
-    name: 'Analysis Module',
-    description: 'Advanced data insights and analysis',
+    id: 'supplier-inventory',
+    name: 'Supplier & Inventory Intelligence',
+    description: 'Find the right suppliers and stay ahead of inventory risks with predictive procurement insights. 1. Submit your sourcing criteria or BOM 2. Get AI-matched supplier recommendations 3. Receive predictive inventory forecasts',
     active: true,
   },
   {
-    id: 'data',
-    name: 'Data Management Module',
-    description: 'Comprehensive data handling and processing',
+    id: 'market-price',
+    name: 'Market & Price Intelligence',
+    description: 'Real-time insights on price fluctuations, FX risk, global supply trends, tariffs, and material availability.',
     active: true,
-    badge: "CORE",
   },
   {
-    id: 'development',
-    name: 'Development Module',
-    description: 'Streamlined project and workflow management',
+    id: 'compliance-contract-risk',
+    name: 'Compliance, Contract & Risk Intelligence',
+    description: 'Unified compliance and contract management powered by AI. Tracks certifications, contract obligations, renewal dates, and risk indicators from suppliers.',
     active: true,
-    badge: "BETA",
   },
   {
-    id: 'security',
-    name: 'Security Module',
-    description: 'Advanced risk assessment and compliance',
+    id: 'workflow-automation',
+    name: 'Workflow Automation & Collaboration',
+    description: '',
     active: true,
   }
 ];
@@ -49,8 +49,8 @@ export default function ChatHeaderTabs({
 }) {
   const [modelOpen, setModelOpen] = useState(false);
 
-  // This would normally live in app state
-  const [currentModel, setCurrentModel] = useState('analysis');
+  // Default to the first module
+  const [currentModel, setCurrentModel] = useState(models[0].id);
 
   return (
     <div className="w-full border-b bg-white px-6 pt-2 pb-1 z-20">
@@ -76,7 +76,7 @@ export default function ChatHeaderTabs({
               </button>
             </PopoverTrigger>
             <PopoverContent side="bottom" align="start" className="p-0 border bg-white shadow-xl rounded-xl min-w-[340px] max-w-[400px] z-50">
-              <div className="p-4 border-b font-semibold text-gray-600 text-sm">Model</div>
+              <div className="p-4 border-b font-semibold text-gray-600 text-sm">Module</div>
               <div className="py-1 divide-y divide-gray-100">
                 {models.map(model => (
                   <button
@@ -103,11 +103,13 @@ export default function ChatHeaderTabs({
                           <span className="ml-2 w-4 h-4 inline-block rounded-full border border-gray-400 bg-gray-800" />
                         }
                       </div>
-                      <div className="text-xs text-gray-500 mt-0.5">{model.description}</div>
+                      {model.description &&
+                        <div className="text-xs text-gray-500 mt-0.5">{model.description}</div>
+                      }
                     </div>
                   </button>
                 ))}
-                <button className="w-full px-4 py-2 text-[15px] text-left text-gray-500 font-medium hover:bg-gray-50">More models &rarr;</button>
+                <button className="w-full px-4 py-2 text-[15px] text-left text-gray-500 font-medium hover:bg-gray-50">More modules &rarr;</button>
               </div>
             </PopoverContent>
           </Popover>
@@ -116,3 +118,4 @@ export default function ChatHeaderTabs({
     </div>
   );
 }
+
