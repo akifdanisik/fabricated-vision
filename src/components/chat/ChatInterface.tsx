@@ -23,6 +23,7 @@ import {
   PopoverTrigger, 
   PopoverContent 
 } from '@/components/ui/popover';
+import ProductImageSandbox from './ProductImageSandbox';
 
 interface NumberedItem {
   id: string;
@@ -55,6 +56,13 @@ interface Message {
   numberedIndicators?: NumberIndicator[];
 }
 
+interface Product {
+  id: string;
+  name: string;
+  image: string;
+  description: string;
+}
+
 export default function ChatInterface() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
@@ -85,6 +93,8 @@ export default function ChatInterface() {
 
   const [isDragging, setIsDragging] = useState(false);
   const [activeIndicator, setActiveIndicator] = useState<string | null>(null);
+  const [productImages, setProductImages] = useState<Product[]>([]);
+  const [showProductSandbox, setShowProductSandbox] = useState(false);
   const { 
     customActions, 
     addCustomAction, 
@@ -1047,6 +1057,41 @@ export default function ChatInterface() {
           }
         ]
       };
+    } else if (lowerCaseInput.includes('hydrochloric acid') || lowerCaseInput.includes('hcl')) {
+      setProductImages([
+        {
+          id: '1',
+          name: 'Hydrochloric Acid (37%)',
+          image: '/public/lovable-uploads/0956f925-373d-40e5-a6ce-8d986514ff7f.png',
+          description: 'High purity hydrochloric acid for pharmaceutical applications'
+        }
+      ]);
+      setShowProductSandbox(true);
+    } else if (lowerCaseInput.includes('supplier') && lowerCaseInput.includes('acid')) {
+      setProductImages([
+        {
+          id: '1',
+          name: 'Hydrochloric Acid (37%)',
+          image: '/public/lovable-uploads/0956f925-373d-40e5-a6ce-8d986514ff7f.png',
+          description: 'High purity hydrochloric acid for pharmaceutical applications'
+        },
+        {
+          id: '2',
+          name: 'Sulfuric Acid',
+          image: 'https://placehold.co/200x200?text=Sulfuric+Acid',
+          description: 'Industrial grade sulfuric acid'
+        },
+        {
+          id: '3',
+          name: 'Nitric Acid',
+          image: 'https://placehold.co/200x200?text=Nitric+Acid',
+          description: 'Laboratory grade nitric acid'
+        }
+      ]);
+      setShowProductSandbox(true);
+    } else {
+      setShowProductSandbox(false);
+      setProductImages([]);
     }
     
     return {
@@ -1356,6 +1401,10 @@ export default function ChatInterface() {
                     </div>
                   </div>
                 ))}
+                <ProductImageSandbox
+                  products={productImages}
+                  isVisible={showProductSandbox}
+                />
                 <div ref={messagesEndRef} />
               </div>
             )}
