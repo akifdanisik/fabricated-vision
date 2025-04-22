@@ -12,33 +12,33 @@ import {
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 
-// Updated model/module names and descriptions
+// Updated model names with shorter descriptions
 const models = [
   {
     id: 'supplier-inventory',
     name: 'Supplier & Inventory Intelligence',
-    description: 'Find the right suppliers and stay ahead of inventory risks with predictive procurement insights. 1. Submit your sourcing criteria or BOM 2. Get AI-matched supplier recommendations 3. Receive predictive inventory forecasts',
+    description: 'AI-powered supplier matching and inventory forecasting.',
     active: true,
     badge: null
   },
   {
     id: 'market-price',
     name: 'Market & Price Intelligence',
-    description: 'Real-time insights on price fluctuations, FX risk, global supply trends, tariffs, and material availability.',
+    description: 'Real-time global market and pricing insights.',
     active: true,
     badge: null
   },
   {
     id: 'compliance-contract-risk',
     name: 'Compliance, Contract & Risk Intelligence',
-    description: 'Unified compliance and contract management powered by AI. Tracks certifications, contract obligations, renewal dates, and risk indicators from suppliers.',
+    description: 'AI-driven compliance and contract risk management.',
     active: true,
     badge: null
   },
   {
     id: 'workflow-automation',
     name: 'Workflow Automation & Collaboration',
-    description: '',
+    description: 'Streamline procurement workflows and collaboration.',
     active: true,
     badge: null
   }
