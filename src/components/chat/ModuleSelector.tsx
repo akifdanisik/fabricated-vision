@@ -47,29 +47,44 @@ const getIconComponent = (iconName: string) => {
 export const ModuleSelector = ({ isOpen, onClose, modules, onSelectModule }: ModuleSelectorProps) => {
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[700px] p-0 gap-0">
-        <DialogHeader className="p-6 pb-2">
-          <DialogTitle className="text-xl font-semibold">Select AI Module</DialogTitle>
-          <DialogDescription>
+      <DialogContent className="sm:max-w-[700px] p-0 gap-0 glass-card">
+        <DialogHeader className="p-6 pb-2 border-b border-border">
+          <DialogTitle className="text-xl font-semibold text-foreground">Select AI Module</DialogTitle>
+          <DialogDescription className="text-muted-foreground">
             Choose a specialized AI module to enhance your procurement process
           </DialogDescription>
         </DialogHeader>
         
         <Tabs defaultValue="all" className="w-full">
-          <TabsList className="px-6 justify-start border-b rounded-none h-auto py-2 bg-transparent">
-            <TabsTrigger value="all" className="rounded-full px-4 data-[state=active]:bg-primary data-[state=active]:text-white">
+          <TabsList className="px-6 justify-start border-b border-border rounded-none h-auto py-2 bg-background">
+            <TabsTrigger 
+              value="all" 
+              className="rounded-full px-4 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground hover:bg-accent/10"
+            >
               All Modules
             </TabsTrigger>
-            <TabsTrigger value="analysis" className="rounded-full px-4 data-[state=active]:bg-blue-500 data-[state=active]:text-white">
+            <TabsTrigger 
+              value="analysis" 
+              className="rounded-full px-4 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground hover:bg-accent/10"
+            >
               Analysis
             </TabsTrigger>
-            <TabsTrigger value="data" className="rounded-full px-4 data-[state=active]:bg-green-500 data-[state=active]:text-white">
+            <TabsTrigger 
+              value="data" 
+              className="rounded-full px-4 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground hover:bg-accent/10"
+            >
               Data
             </TabsTrigger>
-            <TabsTrigger value="development" className="rounded-full px-4 data-[state=active]:bg-purple-500 data-[state=active]:text-white">
+            <TabsTrigger 
+              value="development" 
+              className="rounded-full px-4 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground hover:bg-accent/10"
+            >
               Development
             </TabsTrigger>
-            <TabsTrigger value="security" className="rounded-full px-4 data-[state=active]:bg-red-500 data-[state=active]:text-white">
+            <TabsTrigger 
+              value="security" 
+              className="rounded-full px-4 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground hover:bg-accent/10"
+            >
               Security
             </TabsTrigger>
           </TabsList>
@@ -79,7 +94,7 @@ export const ModuleSelector = ({ isOpen, onClose, modules, onSelectModule }: Mod
               {modules.map((module) => (
                 <div 
                   key={module.id}
-                  className="border rounded-xl p-4 cursor-pointer hover:shadow-md transition-all flex items-start gap-4"
+                  className="border border-border rounded-xl p-4 cursor-pointer hover:shadow-sm transition-all flex items-start gap-4 bg-white hover:bg-accent/5"
                   onClick={() => onSelectModule(module.id)}
                 >
                   <div className={cn(
@@ -92,8 +107,8 @@ export const ModuleSelector = ({ isOpen, onClose, modules, onSelectModule }: Mod
                     {getIconComponent(module.icon)}
                   </div>
                   <div>
-                    <h3 className="font-medium text-gray-900">{module.title}</h3>
-                    <p className="text-sm text-gray-500">{module.description}</p>
+                    <h3 className="font-medium text-foreground">{module.title}</h3>
+                    <p className="text-sm text-muted-foreground">{module.description}</p>
                   </div>
                 </div>
               ))}
@@ -108,7 +123,7 @@ export const ModuleSelector = ({ isOpen, onClose, modules, onSelectModule }: Mod
                   .map((module) => (
                     <div 
                       key={module.id}
-                      className="border rounded-xl p-4 cursor-pointer hover:shadow-md transition-all flex items-start gap-4"
+                      className="border border-border rounded-xl p-4 cursor-pointer hover:shadow-sm transition-all flex items-start gap-4 bg-white hover:bg-accent/5"
                       onClick={() => onSelectModule(module.id)}
                     >
                       <div className={cn(
@@ -121,8 +136,8 @@ export const ModuleSelector = ({ isOpen, onClose, modules, onSelectModule }: Mod
                         {getIconComponent(module.icon)}
                       </div>
                       <div>
-                        <h3 className="font-medium text-gray-900">{module.title}</h3>
-                        <p className="text-sm text-gray-500">{module.description}</p>
+                        <h3 className="font-medium text-foreground">{module.title}</h3>
+                        <p className="text-sm text-muted-foreground">{module.description}</p>
                       </div>
                     </div>
                   ))}
