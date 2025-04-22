@@ -1062,33 +1062,87 @@ export default function ChatInterface() {
         {
           id: '1',
           name: 'Hydrochloric Acid (37%)',
-          image: '/public/lovable-uploads/0956f925-373d-40e5-a6ce-8d986514ff7f.png',
+          image: '/lovable-uploads/0956f925-373d-40e5-a6ce-8d986514ff7f.png',
           description: 'High purity hydrochloric acid for pharmaceutical applications'
+        },
+        {
+          id: '2',
+          name: 'Hydrochloric Acid (Reagent Grade)',
+          image: '/lovable-uploads/75ef375a-c73d-45b4-88c9-3e20ec5a9d78.png',
+          description: 'Reagent grade hydrochloric acid for laboratory use'
         }
       ]);
       setShowProductSandbox(true);
+      
+      return {
+        id: Date.now().toString(),
+        content: "Here are the hydrochloric acid products in our catalog. Would you like more information about any specific one?",
+        sender: 'ai',
+        timestamp: new Date(),
+        actions: [
+          { 
+            label: 'View product specifications', 
+            onClick: () => handleQuickPrompt('Show me specifications for hydrochloric acid')
+          },
+          { 
+            label: 'Find suppliers for this product', 
+            onClick: () => handleQuickPrompt('Find suppliers for hydrochloric acid')
+          },
+          {
+            label: 'View product catalog',
+            onClick: () => window.location.href = '/products/catalog'
+          }
+        ]
+      };
     } else if (lowerCaseInput.includes('supplier') && lowerCaseInput.includes('acid')) {
       setProductImages([
         {
           id: '1',
           name: 'Hydrochloric Acid (37%)',
-          image: '/public/lovable-uploads/0956f925-373d-40e5-a6ce-8d986514ff7f.png',
+          image: '/lovable-uploads/0956f925-373d-40e5-a6ce-8d986514ff7f.png',
           description: 'High purity hydrochloric acid for pharmaceutical applications'
         },
         {
           id: '2',
+          name: 'Hydrochloric Acid (Reagent Grade)',
+          image: '/lovable-uploads/75ef375a-c73d-45b4-88c9-3e20ec5a9d78.png',
+          description: 'Reagent grade hydrochloric acid for laboratory use'
+        },
+        {
+          id: '3',
           name: 'Sulfuric Acid',
           image: 'https://placehold.co/200x200?text=Sulfuric+Acid',
           description: 'Industrial grade sulfuric acid'
         },
         {
-          id: '3',
+          id: '4',
           name: 'Nitric Acid',
           image: 'https://placehold.co/200x200?text=Nitric+Acid',
           description: 'Laboratory grade nitric acid'
         }
       ]);
       setShowProductSandbox(true);
+      
+      return {
+        id: Date.now().toString(),
+        content: "Here are the acid products available from our suppliers. Would you like detailed information about any specific product?",
+        sender: 'ai',
+        timestamp: new Date(),
+        actions: [
+          { 
+            label: 'Compare prices', 
+            onClick: () => handleQuickPrompt('Compare prices for acid products')
+          },
+          { 
+            label: 'View specifications', 
+            onClick: () => handleQuickPrompt('Show specifications for acid products')
+          },
+          {
+            label: 'View full catalog',
+            onClick: () => window.location.href = '/products/catalog'
+          }
+        ]
+      };
     } else {
       setShowProductSandbox(false);
       setProductImages([]);
