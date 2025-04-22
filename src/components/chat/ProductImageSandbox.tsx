@@ -30,7 +30,7 @@ const ProductImageSandbox: React.FC<ProductImageSandboxProps> = ({
 
   useEffect(() => {
     // Initialize all products as loading when the component receives products
-    if (products.length > 0) {
+    if (products && products.length > 0) {
       const initialStates: Record<string, 'loading' | 'error' | 'success'> = {};
       products.forEach(product => {
         initialStates[product.id] = 'loading';
@@ -42,11 +42,6 @@ const ProductImageSandbox: React.FC<ProductImageSandboxProps> = ({
       console.log("Products received in sandbox:", products);
     }
   }, [products]);
-
-  if (!isVisible || loadedProducts.length === 0) {
-    console.log("ProductImageSandbox not visible or no products");
-    return null;
-  }
 
   const handleImageError = (productId: string, imageSrc: string) => {
     console.log("Image failed to load:", imageSrc);
@@ -91,6 +86,13 @@ const ProductImageSandbox: React.FC<ProductImageSandboxProps> = ({
     // Generate a fallback image URL based on product name if original fails
     return `https://via.placeholder.com/400x400?text=${encodeURIComponent(productName)}`;
   };
+
+  if (!isVisible || !loadedProducts || loadedProducts.length === 0) {
+    console.log("ProductImageSandbox not visible or no products:", { isVisible, loadedProducts });
+    return null;
+  }
+
+  console.log("Rendering ProductImageSandbox with products:", loadedProducts);
 
   return (
     <Card className="mt-4 p-4 bg-white/50 backdrop-blur-sm border border-gray-100">
