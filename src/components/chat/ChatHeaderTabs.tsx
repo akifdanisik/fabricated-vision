@@ -12,41 +12,41 @@ import {
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 
-// Updated model names with shorter descriptions
+// Fashion Product Lifecycle Management modules
 const models = [
   {
-    id: 'supplier-inventory',
-    name: 'Supplier & Inventory Intelligence',
-    description: 'AI-powered supplier matching and inventory forecasting.',
+    id: 'design-development',
+    name: 'Design & Development',
+    description: 'Manage concept to prototype development cycle.',
     active: true,
     badge: null
   },
   {
-    id: 'market-price',
-    name: 'Market & Price Intelligence',
-    description: 'Real-time global market and pricing insights.',
+    id: 'sourcing-production',
+    name: 'Sourcing & Production',
+    description: 'Factory selection and production management.',
     active: true,
     badge: null
   },
   {
-    id: 'compliance-contract-risk',
-    name: 'Compliance, Contract & Risk Intelligence',
-    description: 'AI-driven compliance and contract risk management.',
+    id: 'quality-compliance',
+    name: 'Quality & Compliance',
+    description: 'Quality control and regulatory compliance.',
     active: true,
     badge: null
   },
   {
-    id: 'workflow-automation',
-    name: 'Workflow Automation & Collaboration',
-    description: 'Streamline procurement workflows and collaboration.',
+    id: 'launch-lifecycle',
+    name: 'Launch & Lifecycle',
+    description: 'Product launch and end-of-life management.',
     active: true,
     badge: null
   }
 ];
 
 export default function ChatHeaderTabs({
-  folderName = "fabricated",
-  chatName = "AI Procurement Modules Overview"
+  folderName = "collections",
+  chatName = "Fashion PLM Overview"
 }: {
   folderName?: string;
   chatName?: string;
@@ -74,13 +74,13 @@ export default function ChatHeaderTabs({
           {/* Model Select Popover */}
           <Popover open={modelOpen} onOpenChange={setModelOpen}>
             <PopoverTrigger asChild>
-              <button aria-label="Select Model" className="flex items-center gap-1 rounded px-1 ml-2 bg-transparent hover:bg-muted/80 text-gray-700 text-[15px]">
+              <button aria-label="Select Module" className="flex items-center gap-1 rounded px-1 ml-2 bg-transparent hover:bg-muted/80 text-gray-700 text-[15px]">
                 <span className="text-xs font-medium text-gray-500">{models.find(m => m.id === currentModel)?.name ?? ""}</span>
                 <ChevronDown className="w-4 h-4 text-gray-400" />
               </button>
             </PopoverTrigger>
             <PopoverContent side="bottom" align="start" className="p-0 border bg-white shadow-xl rounded-xl min-w-[340px] max-w-[400px] z-50">
-              <div className="p-4 border-b font-semibold text-gray-600 text-sm">Module</div>
+              <div className="p-4 border-b font-semibold text-gray-600 text-sm">PLM Module</div>
               <div className="py-1 divide-y divide-gray-100">
                 {models.map(model => (
                   <button

@@ -1,3 +1,4 @@
+
 import Layout from '@/components/layout/Layout';
 import ChatInterface from '@/components/chat/ChatInterface';
 import { useEffect, useState } from 'react';
@@ -22,8 +23,8 @@ const Chat = () => {
   
   return <Layout fullWidth hideNavbar>
       <ChatHeaderTabs
-        folderName="fabricated"
-        chatName="AI Procurement Modules Overview"
+        folderName="collections"
+        chatName="Fashion PLM Assistant"
       />
       <div className="flex flex-col h-[calc(100vh-0px)] bg-[#f8f8f8] rounded-2xl overflow-hidden">
         <div className="flex justify-between items-center px-6 py-3 border-b bg-white rounded-t-2xl">
@@ -58,7 +59,7 @@ const Chat = () => {
                   </Avatar>
                   <div>
                     <p className="text-sm font-medium">John Doe</p>
-                    <p className="text-xs text-gray-500">john.doe@example.com</p>
+                    <p className="text-xs text-gray-500">john.doe@fashionbrand.com</p>
                   </div>
                 </DropdownMenuLabel>
                 
